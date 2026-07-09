@@ -1,0 +1,706 @@
+Student_ID,Age,Gender,Academic_Level,Country,Avg_Daily_Usage_Hours,Most_Used_Platform,Affects_Academic_Performance,Sleep_Hours_Per_Night,Mental_Health_Score,Addicted_Score,Physical_Activity,Addiction_Level,Sleep_Addiction_Indicator,Physical_Activity_Indicator
+1,19,Female,Undergraduate,Bangladesh,5.2,Instagram,Yes,6.5,6,8,Sedang,Sedang,Sedang,Sedang
+2,22,Male,Graduate,India,2.1,Twitter,No,7.5,8,3,Tinggi,Rendah,Sedang,Rendah
+3,20,Female,Undergraduate,USA,6.0,TikTok,Yes,5.0,5,9,Rendah,Sedang,Tinggi,Tinggi
+4,18,Male,High School,UK,3.0,YouTube,No,7.0,7,4,Sedang,Rendah,Sedang,Sedang
+5,21,Male,Graduate,Canada,4.5,Facebook,Yes,6.0,6,7,Tinggi,Sedang,Sedang,Rendah
+6,19,Female,Undergraduate,Australia,7.2,Instagram,Yes,4.5,4,9,Tinggi,Tinggi,Tinggi,Rendah
+7,23,Male,Graduate,Germany,1.5,LinkedIn,No,8.0,9,2,Sedang,Rendah,Rendah,Sedang
+8,20,Female,Undergraduate,Brazil,5.8,Snapchat,Yes,6.0,6,8,Rendah,Sedang,Sedang,Tinggi
+9,18,Male,High School,Japan,4.0,TikTok,No,6.5,7,5,Sedang,Sedang,Sedang,Sedang
+10,21,Female,Graduate,South Korea,3.3,Instagram,No,7.0,7,4,Sedang,Sedang,Sedang,Sedang
+11,19,Male,Undergraduate,France,4.8,Snapchat,Yes,6.2,5,7,Rendah,Sedang,Sedang,Tinggi
+12,20,Female,Undergraduate,Spain,5.5,TikTok,Yes,5.8,6,8,Rendah,Sedang,Tinggi,Tinggi
+13,22,Male,Graduate,Italy,2.8,LinkedIn,No,7.2,8,4,Tinggi,Rendah,Sedang,Rendah
+14,18,Female,High School,Mexico,6.5,Instagram,Yes,5.5,5,9,Rendah,Sedang,Tinggi,Tinggi
+15,21,Male,Undergraduate,Russia,3.7,YouTube,No,6.8,7,5,Rendah,Sedang,Sedang,Tinggi
+16,20,Female,Undergraduate,China,4.2,TikTok,Yes,6.0,6,7,Tinggi,Sedang,Sedang,Rendah
+17,24,Male,Graduate,Sweden,2.0,LinkedIn,No,7.8,8,3,Tinggi,Rendah,Sedang,Rendah
+18,19,Female,High School,Norway,5.0,Instagram,Yes,5.7,5,8,Sedang,Sedang,Tinggi,Sedang
+19,21,Male,Undergraduate,Denmark,3.5,Facebook,No,6.7,7,5,Tinggi,Sedang,Sedang,Rendah
+20,20,Female,Undergraduate,Netherlands,4.7,Snapchat,Yes,5.9,6,7,Tinggi,Sedang,Tinggi,Rendah
+21,18,Male,High School,Belgium,5.3,TikTok,Yes,5.5,5,8,Sedang,Sedang,Tinggi,Sedang
+22,23,Female,Graduate,Switzerland,2.5,LinkedIn,No,7.3,8,4,Rendah,Rendah,Sedang,Tinggi
+23,19,Male,Undergraduate,Austria,4.9,Instagram,Yes,5.8,6,7,Tinggi,Sedang,Tinggi,Rendah
+24,20,Female,Undergraduate,Portugal,5.7,TikTok,Yes,5.4,5,8,Tinggi,Sedang,Tinggi,Rendah
+25,22,Male,Graduate,Greece,3.2,Facebook,No,6.9,7,5,Tinggi,Sedang,Sedang,Rendah
+26,19,Female,High School,Ireland,6.1,Instagram,Yes,5.2,5,9,Rendah,Sedang,Tinggi,Tinggi
+27,21,Male,Undergraduate,New Zealand,3.8,YouTube,No,6.6,7,5,Sedang,Sedang,Sedang,Sedang
+28,20,Female,Undergraduate,Singapore,4.4,TikTok,Yes,5.9,6,7,Tinggi,Sedang,Tinggi,Rendah
+29,24,Male,Graduate,Malaysia,2.2,LinkedIn,No,7.4,8,3,Sedang,Rendah,Sedang,Sedang
+30,19,Female,High School,Thailand,5.9,Instagram,Yes,5.3,5,8,Sedang,Sedang,Tinggi,Sedang
+31,21,Male,Undergraduate,Vietnam,3.6,Facebook,No,6.7,7,5,Tinggi,Sedang,Sedang,Rendah
+32,20,Female,Undergraduate,Philippines,4.8,Snapchat,Yes,5.7,6,7,Tinggi,Sedang,Tinggi,Rendah
+33,18,Male,High School,Indonesia,5.4,TikTok,Yes,5.4,5,8,Rendah,Sedang,Tinggi,Tinggi
+34,23,Female,Graduate,Taiwan,2.6,LinkedIn,No,7.2,8,4,Sedang,Rendah,Sedang,Sedang
+35,19,Male,Undergraduate,Hong Kong,4.7,Instagram,Yes,5.8,6,7,Tinggi,Sedang,Tinggi,Rendah
+36,20,Female,Undergraduate,Turkey,5.6,TikTok,Yes,5.5,5,8,Sedang,Sedang,Tinggi,Sedang
+37,22,Male,Graduate,Israel,3.1,Facebook,No,6.8,7,5,Rendah,Sedang,Sedang,Tinggi
+38,19,Female,High School,UAE,6.2,Instagram,Yes,5.1,5,9,Sedang,Sedang,Tinggi,Sedang
+39,21,Male,Undergraduate,Egypt,3.9,YouTube,No,6.5,7,6,Rendah,Sedang,Sedang,Tinggi
+40,20,Female,Undergraduate,Morocco,4.5,TikTok,Yes,5.8,6,7,Rendah,Sedang,Tinggi,Tinggi
+41,24,Male,Graduate,South Africa,2.3,LinkedIn,No,7.3,8,4,Sedang,Rendah,Sedang,Sedang
+42,19,Female,High School,Nigeria,5.8,Instagram,Yes,5.4,5,8,Tinggi,Sedang,Tinggi,Rendah
+43,21,Male,Undergraduate,Kenya,3.7,Facebook,No,6.6,7,5,Sedang,Sedang,Sedang,Sedang
+44,20,Female,Undergraduate,Ghana,4.6,Snapchat,Yes,5.7,6,7,Tinggi,Sedang,Tinggi,Rendah
+45,18,Male,High School,Argentina,5.5,TikTok,Yes,5.3,5,8,Sedang,Sedang,Tinggi,Sedang
+46,23,Female,Graduate,Chile,2.7,LinkedIn,No,7.1,8,4,Tinggi,Rendah,Sedang,Rendah
+47,19,Male,Undergraduate,Colombia,4.8,Instagram,Yes,5.9,6,7,Sedang,Sedang,Tinggi,Sedang
+48,20,Female,Undergraduate,Peru,5.5,TikTok,Yes,5.6,5,8,Sedang,Sedang,Tinggi,Sedang
+49,22,Male,Graduate,Venezuela,3.3,Facebook,No,6.7,7,5,Tinggi,Sedang,Sedang,Rendah
+50,19,Female,High School,Ecuador,6.3,Instagram,Yes,5.2,5,9,Rendah,Sedang,Tinggi,Tinggi
+51,21,Male,Undergraduate,Uruguay,3.8,YouTube,No,6.4,7,6,Rendah,Sedang,Sedang,Tinggi
+52,20,Female,Undergraduate,Paraguay,4.7,TikTok,Yes,5.8,6,7,Sedang,Sedang,Tinggi,Sedang
+53,24,Male,Graduate,Bolivia,2.4,LinkedIn,No,7.2,8,4,Rendah,Rendah,Sedang,Tinggi
+54,19,Female,High School,Costa Rica,5.7,Instagram,Yes,5.5,5,8,Sedang,Sedang,Tinggi,Sedang
+55,21,Male,Undergraduate,Panama,3.6,Facebook,No,6.5,7,5,Sedang,Sedang,Sedang,Sedang
+56,20,Female,Undergraduate,Jamaica,4.9,Snapchat,Yes,5.6,6,7,Sedang,Sedang,Tinggi,Sedang
+57,18,Male,High School,Trinidad,5.6,TikTok,Yes,5.2,5,8,Rendah,Sedang,Tinggi,Tinggi
+58,23,Female,Graduate,Bahamas,2.8,LinkedIn,No,7.0,8,4,Tinggi,Rendah,Sedang,Rendah
+59,19,Male,Undergraduate,Iceland,4.6,Instagram,Yes,5.9,6,7,Tinggi,Sedang,Tinggi,Rendah
+60,20,Female,Undergraduate,Finland,5.4,TikTok,Yes,5.7,5,8,Tinggi,Sedang,Tinggi,Rendah
+61,22,Male,Graduate,Poland,3.1,Facebook,No,7.1,7,5,Tinggi,Sedang,Sedang,Rendah
+62,19,Female,Undergraduate,Romania,5.6,Instagram,Yes,5.6,5,8,Rendah,Sedang,Tinggi,Tinggi
+63,20,Male,Undergraduate,Hungary,4.2,TikTok,Yes,6.0,6,7,Tinggi,Sedang,Sedang,Rendah
+64,18,Female,High School,Czech Republic,6.1,Snapchat,Yes,5.2,4,9,Sedang,Sedang,Tinggi,Sedang
+65,23,Male,Graduate,Slovakia,2.3,LinkedIn,No,7.4,8,3,Rendah,Rendah,Sedang,Tinggi
+66,21,Female,Undergraduate,Croatia,4.8,Instagram,Yes,5.8,6,7,Rendah,Sedang,Tinggi,Tinggi
+67,20,Male,Undergraduate,Serbia,3.9,YouTube,No,6.5,7,6,Rendah,Sedang,Sedang,Tinggi
+68,19,Female,High School,Slovenia,5.7,TikTok,Yes,5.4,5,8,Sedang,Sedang,Tinggi,Sedang
+69,22,Male,Graduate,Bulgaria,2.8,LinkedIn,No,7.2,8,4,Sedang,Rendah,Sedang,Sedang
+70,20,Female,Undergraduate,Estonia,4.5,Instagram,Yes,5.9,6,7,Tinggi,Sedang,Tinggi,Rendah
+71,18,Male,High School,Latvia,5.4,Snapchat,Yes,5.5,5,8,Sedang,Sedang,Tinggi,Sedang
+72,21,Female,Graduate,Lithuania,3.2,Facebook,No,6.8,7,5,Sedang,Sedang,Sedang,Sedang
+73,19,Male,Undergraduate,Ukraine,4.9,TikTok,Yes,5.7,6,7,Rendah,Sedang,Tinggi,Tinggi
+74,20,Female,Undergraduate,Moldova,5.8,Instagram,Yes,5.3,5,8,Sedang,Sedang,Tinggi,Sedang
+75,23,Male,Graduate,Belarus,2.5,LinkedIn,No,7.3,8,4,Sedang,Rendah,Sedang,Sedang
+76,21,Female,Undergraduate,Kazakhstan,4.6,Snapchat,Yes,5.8,6,7,Sedang,Sedang,Tinggi,Sedang
+77,19,Male,High School,Uzbekistan,5.5,TikTok,Yes,5.4,5,8,Rendah,Sedang,Tinggi,Tinggi
+78,22,Female,Graduate,Kyrgyzstan,2.9,Facebook,No,7.0,7,5,Sedang,Rendah,Sedang,Sedang
+79,20,Male,Undergraduate,Tajikistan,4.7,YouTube,Yes,5.9,6,7,Rendah,Sedang,Tinggi,Tinggi
+80,18,Female,High School,Armenia,5.9,Instagram,Yes,5.2,5,9,Tinggi,Sedang,Tinggi,Rendah
+81,21,Male,Graduate,Georgia,3.0,LinkedIn,No,7.1,8,4,Tinggi,Rendah,Sedang,Rendah
+82,19,Female,Undergraduate,Azerbaijan,4.8,TikTok,Yes,5.7,6,7,Sedang,Sedang,Tinggi,Sedang
+83,20,Male,Undergraduate,Cyprus,3.8,Facebook,No,6.6,7,6,Sedang,Sedang,Sedang,Sedang
+84,22,Female,Graduate,Malta,2.7,LinkedIn,No,7.2,8,4,Rendah,Rendah,Sedang,Tinggi
+85,18,Male,High School,Luxembourg,5.6,Snapchat,Yes,5.3,5,8,Sedang,Sedang,Tinggi,Sedang
+86,21,Female,Undergraduate,Monaco,4.5,Instagram,Yes,5.8,6,7,Sedang,Sedang,Tinggi,Sedang
+87,19,Male,High School,Andorra,5.3,TikTok,Yes,5.5,5,8,Sedang,Sedang,Tinggi,Sedang
+88,23,Female,Graduate,San Marino,2.6,LinkedIn,No,7.3,8,4,Tinggi,Rendah,Sedang,Rendah
+89,20,Male,Undergraduate,Vatican City,4.4,YouTube,Yes,6.0,6,7,Tinggi,Sedang,Sedang,Rendah
+90,18,Female,High School,Liechtenstein,5.8,Instagram,Yes,5.2,5,9,Rendah,Sedang,Tinggi,Tinggi
+91,22,Male,Graduate,Montenegro,2.9,Facebook,No,7.0,7,5,Rendah,Rendah,Sedang,Tinggi
+92,19,Female,Undergraduate,Albania,4.7,TikTok,Yes,5.8,6,7,Sedang,Sedang,Tinggi,Sedang
+93,21,Male,Undergraduate,North Macedonia,3.7,Snapchat,No,6.5,7,6,Sedang,Sedang,Sedang,Sedang
+94,20,Female,High School,Kosovo,5.5,Instagram,Yes,5.4,5,8,Sedang,Sedang,Tinggi,Sedang
+95,23,Male,Graduate,Bosnia,2.4,LinkedIn,No,7.4,8,4,Rendah,Rendah,Sedang,Tinggi
+96,19,Female,Undergraduate,Qatar,4.9,TikTok,Yes,5.7,6,7,Sedang,Sedang,Tinggi,Sedang
+97,18,Male,High School,Kuwait,5.7,Snapchat,Yes,5.3,5,8,Rendah,Sedang,Tinggi,Tinggi
+98,22,Female,Graduate,Bahrain,2.8,LinkedIn,No,7.1,8,4,Rendah,Rendah,Sedang,Tinggi
+99,20,Male,Undergraduate,Oman,4.6,Instagram,Yes,5.9,6,7,Sedang,Sedang,Tinggi,Sedang
+100,21,Female,Undergraduate,Jordan,5.4,TikTok,Yes,5.5,5,8,Tinggi,Sedang,Tinggi,Rendah
+101,19,Male,High School,Lebanon,5.8,YouTube,Yes,5.2,5,9,Sedang,Sedang,Tinggi,Sedang
+102,23,Female,Graduate,Iraq,2.5,LinkedIn,No,7.3,8,4,Tinggi,Rendah,Sedang,Rendah
+103,20,Male,Undergraduate,Yemen,4.7,Facebook,Yes,5.8,6,7,Sedang,Sedang,Tinggi,Sedang
+104,18,Female,High School,Syria,5.6,Instagram,Yes,5.4,5,8,Sedang,Sedang,Tinggi,Sedang
+105,22,Male,Graduate,Afghanistan,2.9,LinkedIn,No,7.0,7,5,Tinggi,Rendah,Sedang,Rendah
+106,19,Female,Undergraduate,Pakistan,4.8,TikTok,Yes,5.7,6,7,Tinggi,Sedang,Tinggi,Rendah
+107,21,Male,Undergraduate,Nepal,3.8,YouTube,No,6.6,7,6,Sedang,Sedang,Sedang,Sedang
+108,20,Female,High School,Bhutan,5.5,Snapchat,Yes,5.5,5,8,Tinggi,Sedang,Tinggi,Rendah
+109,23,Male,Graduate,Sri Lanka,2.6,LinkedIn,No,7.2,8,4,Tinggi,Rendah,Sedang,Rendah
+110,19,Female,Undergraduate,Maldives,4.9,Instagram,Yes,5.8,6,7,Tinggi,Sedang,Tinggi,Rendah
+111,20,Male,Undergraduate,Bangladesh,6.1,Instagram,Yes,6.2,5,8,Sedang,Sedang,Sedang,Sedang
+112,21,Female,Undergraduate,India,5.8,TikTok,Yes,5.9,6,7,Rendah,Sedang,Tinggi,Tinggi
+113,19,Male,Undergraduate,Nepal,4.9,Facebook,No,7.1,7,5,Sedang,Sedang,Sedang,Sedang
+114,22,Female,Graduate,Pakistan,5.5,Instagram,Yes,6.0,5,8,Tinggi,Sedang,Sedang,Rendah
+115,20,Male,Undergraduate,Sri Lanka,5.2,TikTok,Yes,6.3,6,7,Tinggi,Sedang,Sedang,Rendah
+116,19,Female,Undergraduate,Maldives,4.8,Instagram,No,7.2,8,5,Tinggi,Sedang,Sedang,Rendah
+117,21,Male,Graduate,Bangladesh,6.0,Facebook,Yes,5.8,5,8,Tinggi,Sedang,Tinggi,Rendah
+118,20,Female,Undergraduate,India,5.7,Instagram,Yes,6.1,6,7,Sedang,Sedang,Sedang,Sedang
+119,22,Male,Graduate,Nepal,4.7,TikTok,No,7.3,7,5,Sedang,Sedang,Sedang,Sedang
+120,19,Female,Undergraduate,Pakistan,5.4,Instagram,Yes,6.2,5,8,Sedang,Sedang,Sedang,Sedang
+121,20,Male,Undergraduate,Sri Lanka,5.9,Facebook,Yes,5.9,6,7,Rendah,Sedang,Tinggi,Tinggi
+122,21,Female,Graduate,Maldives,4.6,Instagram,No,7.4,8,5,Sedang,Sedang,Sedang,Sedang
+123,19,Male,Undergraduate,Bangladesh,5.3,TikTok,Yes,6.3,5,8,Tinggi,Sedang,Sedang,Rendah
+124,22,Female,Graduate,India,5.8,Instagram,Yes,5.8,6,7,Tinggi,Sedang,Tinggi,Rendah
+125,20,Male,Undergraduate,Nepal,4.5,Facebook,No,7.5,7,5,Sedang,Sedang,Sedang,Sedang
+126,21,Female,Graduate,Pakistan,5.2,Instagram,Yes,6.4,5,8,Tinggi,Sedang,Sedang,Rendah
+127,19,Male,Undergraduate,Sri Lanka,5.7,TikTok,Yes,5.7,6,7,Rendah,Sedang,Tinggi,Tinggi
+128,20,Female,Undergraduate,Maldives,4.4,Instagram,No,7.6,8,5,Sedang,Sedang,Sedang,Sedang
+129,22,Male,Graduate,Bangladesh,5.1,Facebook,Yes,6.5,5,8,Sedang,Sedang,Sedang,Sedang
+130,21,Female,Graduate,India,5.6,Instagram,Yes,5.6,6,7,Rendah,Sedang,Tinggi,Tinggi
+131,19,Male,Undergraduate,Nepal,4.3,TikTok,No,7.7,7,5,Tinggi,Sedang,Sedang,Rendah
+132,20,Female,Undergraduate,Pakistan,5.0,Instagram,Yes,6.6,5,8,Tinggi,Sedang,Sedang,Rendah
+133,22,Male,Graduate,Sri Lanka,5.5,Facebook,Yes,5.5,6,7,Tinggi,Sedang,Tinggi,Rendah
+134,21,Female,Graduate,Maldives,4.2,Instagram,No,7.8,8,5,Sedang,Sedang,Sedang,Sedang
+135,19,Male,Undergraduate,Bangladesh,4.9,TikTok,Yes,6.7,5,8,Tinggi,Sedang,Sedang,Rendah
+136,20,Female,Undergraduate,India,5.4,Instagram,Yes,5.4,6,7,Tinggi,Sedang,Tinggi,Rendah
+137,22,Male,Graduate,Nepal,4.1,Facebook,No,7.9,7,5,Sedang,Sedang,Sedang,Sedang
+138,21,Female,Graduate,Pakistan,4.8,Instagram,Yes,6.8,5,8,Sedang,Sedang,Sedang,Sedang
+139,19,Male,Undergraduate,Sri Lanka,5.3,TikTok,Yes,5.3,6,7,Rendah,Sedang,Tinggi,Tinggi
+140,20,Female,Undergraduate,Maldives,4.0,Instagram,No,8.0,8,5,Rendah,Sedang,Rendah,Tinggi
+141,22,Male,Graduate,Bangladesh,4.7,Facebook,Yes,6.9,5,8,Sedang,Sedang,Sedang,Sedang
+142,21,Female,Graduate,India,5.2,Instagram,Yes,5.2,6,7,Rendah,Sedang,Tinggi,Tinggi
+143,19,Male,Undergraduate,Nepal,3.9,TikTok,No,8.1,7,5,Tinggi,Sedang,Rendah,Rendah
+144,20,Female,Undergraduate,Pakistan,4.6,Instagram,Yes,7.0,5,8,Tinggi,Sedang,Sedang,Rendah
+145,22,Male,Graduate,Sri Lanka,5.1,Facebook,Yes,5.1,6,7,Sedang,Sedang,Tinggi,Sedang
+146,21,Female,Graduate,Maldives,3.8,Instagram,No,8.2,8,5,Tinggi,Sedang,Rendah,Rendah
+147,19,Male,Undergraduate,Bangladesh,4.5,TikTok,Yes,7.1,5,8,Rendah,Sedang,Sedang,Tinggi
+148,20,Female,Undergraduate,India,5.0,Instagram,Yes,5.0,6,7,Sedang,Sedang,Tinggi,Sedang
+149,22,Male,Graduate,Nepal,3.7,Facebook,No,8.3,7,5,Sedang,Sedang,Rendah,Sedang
+150,21,Female,Graduate,Pakistan,4.4,Instagram,Yes,7.2,5,8,Sedang,Sedang,Sedang,Sedang
+151,19,Male,Undergraduate,Sri Lanka,4.9,TikTok,Yes,4.9,6,7,Tinggi,Sedang,Tinggi,Rendah
+152,20,Female,Undergraduate,Maldives,3.6,Instagram,No,8.4,8,5,Rendah,Sedang,Rendah,Tinggi
+153,22,Male,Graduate,Bangladesh,4.3,Facebook,Yes,7.3,5,8,Sedang,Sedang,Sedang,Sedang
+154,21,Female,Graduate,India,4.8,Instagram,Yes,4.8,6,7,Rendah,Sedang,Tinggi,Tinggi
+155,19,Male,Undergraduate,Nepal,3.5,TikTok,No,8.5,7,5,Rendah,Sedang,Rendah,Tinggi
+156,20,Female,Undergraduate,Pakistan,4.2,Instagram,Yes,7.4,5,8,Tinggi,Sedang,Sedang,Rendah
+157,22,Male,Graduate,Sri Lanka,4.7,Facebook,Yes,4.7,6,7,Sedang,Sedang,Tinggi,Sedang
+158,21,Female,Graduate,Maldives,3.4,Instagram,No,8.6,8,5,Sedang,Sedang,Rendah,Sedang
+159,19,Male,Undergraduate,Bangladesh,4.1,TikTok,Yes,7.5,5,8,Rendah,Sedang,Sedang,Tinggi
+160,20,Female,Undergraduate,India,4.6,Instagram,Yes,4.6,6,7,Sedang,Sedang,Tinggi,Sedang
+161,19,Female,Undergraduate,Bangladesh,5.3,Instagram,Yes,6.1,5,7,Tinggi,Sedang,Sedang,Rendah
+162,21,Male,Graduate,India,4.8,Facebook,No,7.2,7,6,Sedang,Sedang,Sedang,Sedang
+163,20,Female,Undergraduate,Nepal,5.5,TikTok,Yes,5.9,6,8,Sedang,Sedang,Tinggi,Sedang
+164,22,Male,Graduate,Pakistan,4.7,Instagram,Yes,6.3,5,7,Sedang,Sedang,Sedang,Sedang
+165,19,Female,Undergraduate,Sri Lanka,5.1,Facebook,No,7.0,7,5,Tinggi,Sedang,Sedang,Rendah
+166,21,Male,Graduate,Maldives,5.4,TikTok,Yes,6.0,6,8,Sedang,Sedang,Sedang,Sedang
+167,20,Female,Undergraduate,Bangladesh,4.9,Instagram,Yes,6.4,5,7,Sedang,Sedang,Sedang,Sedang
+168,22,Male,Graduate,India,5.2,Facebook,No,7.1,7,6,Sedang,Sedang,Sedang,Sedang
+169,19,Female,Undergraduate,Nepal,5.6,TikTok,Yes,5.8,6,8,Sedang,Sedang,Tinggi,Sedang
+170,21,Male,Graduate,Pakistan,4.6,Instagram,Yes,6.5,5,7,Rendah,Sedang,Sedang,Tinggi
+171,20,Female,Undergraduate,Sri Lanka,5.0,Facebook,No,7.3,7,5,Tinggi,Sedang,Sedang,Rendah
+172,22,Male,Graduate,Maldives,5.3,TikTok,Yes,5.7,6,8,Tinggi,Sedang,Tinggi,Rendah
+173,19,Female,Undergraduate,Bangladesh,4.8,Instagram,Yes,6.6,5,7,Sedang,Sedang,Sedang,Sedang
+174,21,Male,Graduate,India,5.1,Facebook,No,7.4,7,6,Rendah,Sedang,Sedang,Tinggi
+175,20,Female,Undergraduate,Nepal,5.7,TikTok,Yes,5.6,6,8,Sedang,Sedang,Tinggi,Sedang
+176,22,Male,Graduate,Pakistan,4.5,Instagram,Yes,6.7,5,7,Sedang,Sedang,Sedang,Sedang
+177,19,Female,Undergraduate,Sri Lanka,4.9,Facebook,No,7.5,7,5,Rendah,Sedang,Sedang,Tinggi
+178,21,Male,Graduate,Maldives,5.2,TikTok,Yes,5.5,6,8,Rendah,Sedang,Tinggi,Tinggi
+179,20,Female,Undergraduate,Bangladesh,4.7,Instagram,Yes,6.8,5,7,Sedang,Sedang,Sedang,Sedang
+180,22,Male,Graduate,India,5.0,Facebook,No,7.6,7,6,Sedang,Sedang,Sedang,Sedang
+181,19,Female,Undergraduate,Nepal,5.8,TikTok,Yes,5.4,6,8,Sedang,Sedang,Tinggi,Sedang
+182,21,Male,Graduate,Pakistan,4.4,Instagram,Yes,6.9,5,7,Sedang,Sedang,Sedang,Sedang
+183,20,Female,Undergraduate,Sri Lanka,4.8,Facebook,No,7.7,7,5,Sedang,Sedang,Sedang,Sedang
+184,22,Male,Graduate,Maldives,5.1,TikTok,Yes,5.3,6,8,Rendah,Sedang,Tinggi,Tinggi
+185,19,Female,Undergraduate,Bangladesh,4.6,Instagram,Yes,7.0,5,7,Tinggi,Sedang,Sedang,Rendah
+186,21,Male,Graduate,India,4.9,Facebook,No,7.8,7,6,Sedang,Sedang,Sedang,Sedang
+187,20,Female,Undergraduate,Nepal,5.9,TikTok,Yes,5.2,6,8,Tinggi,Sedang,Tinggi,Rendah
+188,22,Male,Graduate,Pakistan,4.3,Instagram,Yes,7.1,5,7,Tinggi,Sedang,Sedang,Rendah
+189,19,Female,Undergraduate,Sri Lanka,4.7,Facebook,No,7.9,7,5,Rendah,Sedang,Sedang,Tinggi
+190,21,Male,Graduate,Maldives,5.0,TikTok,Yes,5.1,6,8,Sedang,Sedang,Tinggi,Sedang
+191,20,Female,Undergraduate,Bangladesh,4.5,Instagram,Yes,7.2,5,7,Sedang,Sedang,Sedang,Sedang
+192,22,Male,Graduate,India,4.8,Facebook,No,8.0,7,6,Rendah,Sedang,Rendah,Tinggi
+193,19,Female,Undergraduate,Nepal,6.0,TikTok,Yes,5.0,6,8,Rendah,Sedang,Tinggi,Tinggi
+194,21,Male,Graduate,Pakistan,4.2,Instagram,Yes,7.3,5,7,Tinggi,Sedang,Sedang,Rendah
+195,20,Female,Undergraduate,Sri Lanka,4.6,Facebook,No,8.1,7,5,Rendah,Sedang,Rendah,Tinggi
+196,22,Male,Graduate,Maldives,4.9,TikTok,Yes,4.9,6,8,Rendah,Sedang,Tinggi,Tinggi
+197,19,Female,Undergraduate,Bangladesh,4.4,Instagram,Yes,7.4,5,7,Sedang,Sedang,Sedang,Sedang
+198,21,Male,Graduate,India,4.7,Facebook,No,8.2,7,6,Tinggi,Sedang,Rendah,Rendah
+199,20,Female,Undergraduate,Nepal,6.1,TikTok,Yes,4.8,6,8,Tinggi,Sedang,Tinggi,Rendah
+200,22,Male,Graduate,Pakistan,4.1,Instagram,Yes,7.5,5,7,Sedang,Sedang,Sedang,Sedang
+201,19,Female,Undergraduate,Sri Lanka,4.5,Facebook,No,8.3,7,5,Sedang,Sedang,Rendah,Sedang
+202,21,Male,Graduate,Maldives,4.8,TikTok,Yes,4.7,6,8,Sedang,Sedang,Tinggi,Sedang
+203,20,Female,Undergraduate,Bangladesh,4.3,Instagram,Yes,7.6,5,7,Tinggi,Sedang,Sedang,Rendah
+204,22,Male,Graduate,India,4.6,Facebook,No,8.4,7,6,Rendah,Sedang,Rendah,Tinggi
+205,19,Female,Undergraduate,Nepal,6.2,TikTok,Yes,4.6,6,8,Sedang,Sedang,Tinggi,Sedang
+206,21,Male,Graduate,Pakistan,4.0,Instagram,Yes,7.7,5,7,Sedang,Sedang,Sedang,Sedang
+207,20,Female,Undergraduate,Sri Lanka,4.4,Facebook,No,8.5,7,5,Sedang,Sedang,Rendah,Sedang
+208,22,Male,Graduate,Maldives,4.7,TikTok,Yes,4.5,6,8,Sedang,Sedang,Tinggi,Sedang
+209,19,Female,Undergraduate,Bangladesh,4.2,Instagram,Yes,7.8,5,7,Sedang,Sedang,Sedang,Sedang
+210,21,Male,Graduate,India,4.5,Facebook,No,8.6,7,6,Sedang,Sedang,Rendah,Sedang
+211,20,Female,Undergraduate,Nepal,6.3,TikTok,Yes,4.4,6,8,Tinggi,Sedang,Tinggi,Rendah
+212,22,Male,Graduate,Pakistan,3.9,Instagram,Yes,7.9,5,7,Rendah,Sedang,Sedang,Tinggi
+213,19,Female,Undergraduate,Sri Lanka,4.3,Facebook,No,8.7,7,5,Rendah,Sedang,Rendah,Tinggi
+214,21,Male,Graduate,Maldives,4.6,TikTok,Yes,4.3,6,8,Rendah,Sedang,Tinggi,Tinggi
+215,20,Female,Undergraduate,Bangladesh,4.1,Instagram,Yes,8.0,5,7,Tinggi,Sedang,Rendah,Rendah
+216,22,Male,Graduate,India,4.4,Facebook,No,8.8,7,6,Tinggi,Sedang,Rendah,Rendah
+217,19,Female,Undergraduate,Nepal,6.4,TikTok,Yes,4.2,6,8,Rendah,Sedang,Tinggi,Tinggi
+218,21,Male,Graduate,Pakistan,3.8,Instagram,Yes,8.1,5,7,Sedang,Sedang,Rendah,Sedang
+219,20,Female,Undergraduate,Sri Lanka,4.2,Facebook,No,8.9,7,5,Sedang,Sedang,Rendah,Sedang
+220,22,Male,Graduate,Maldives,4.5,TikTok,Yes,4.1,6,8,Tinggi,Sedang,Tinggi,Rendah
+221,19,Female,Undergraduate,USA,6.5,Instagram,Yes,6.0,5,9,Rendah,Sedang,Sedang,Tinggi
+222,21,Male,Graduate,UK,5.8,TikTok,Yes,6.5,6,7,Sedang,Sedang,Sedang,Sedang
+223,20,Female,Undergraduate,Australia,4.5,Instagram,No,7.5,8,5,Sedang,Sedang,Sedang,Sedang
+224,22,Male,Graduate,Germany,4.2,Facebook,No,7.8,7,4,Tinggi,Sedang,Sedang,Rendah
+225,19,Female,Undergraduate,Japan,3.8,LINE,No,7.9,8,3,Rendah,Sedang,Sedang,Tinggi
+226,21,Male,Graduate,Italy,5.5,Instagram,Yes,6.8,6,7,Tinggi,Sedang,Sedang,Rendah
+227,20,Female,Undergraduate,South Korea,5.2,KakaoTalk,Yes,6.5,6,6,Sedang,Sedang,Sedang,Sedang
+228,22,Male,Graduate,Russia,4.8,VKontakte,No,7.2,7,5,Tinggi,Sedang,Sedang,Rendah
+229,19,Female,Undergraduate,USA,7.0,TikTok,Yes,5.8,4,9,Tinggi,Sedang,Tinggi,Rendah
+230,21,Male,Graduate,UK,5.5,Instagram,Yes,6.7,6,7,Sedang,Sedang,Sedang,Sedang
+231,20,Female,Undergraduate,Australia,4.7,Facebook,No,7.4,7,5,Rendah,Sedang,Sedang,Tinggi
+232,22,Male,Graduate,Germany,4.0,Instagram,No,7.9,8,4,Tinggi,Sedang,Sedang,Rendah
+233,19,Female,Undergraduate,Japan,3.5,LINE,No,8.0,8,3,Sedang,Sedang,Rendah,Sedang
+234,21,Male,Graduate,Italy,5.7,TikTok,Yes,6.5,5,8,Sedang,Sedang,Sedang,Sedang
+235,20,Female,Undergraduate,South Korea,5.0,KakaoTalk,Yes,6.8,6,6,Sedang,Sedang,Sedang,Sedang
+236,22,Male,Graduate,Russia,4.5,VKontakte,No,7.4,7,5,Sedang,Sedang,Sedang,Sedang
+237,19,Female,Undergraduate,USA,6.8,Instagram,Yes,5.9,4,9,Sedang,Sedang,Tinggi,Sedang
+238,21,Male,Graduate,UK,5.6,Facebook,Yes,6.6,6,7,Tinggi,Sedang,Sedang,Rendah
+239,20,Female,Undergraduate,Australia,4.6,Instagram,No,7.3,7,5,Tinggi,Sedang,Sedang,Rendah
+240,22,Male,Graduate,Germany,4.1,Facebook,No,7.7,8,4,Rendah,Sedang,Sedang,Tinggi
+241,19,Female,Undergraduate,Japan,3.7,LINE,No,7.8,8,3,Tinggi,Sedang,Sedang,Rendah
+242,21,Male,Graduate,Italy,5.4,Instagram,Yes,6.7,5,7,Tinggi,Sedang,Sedang,Rendah
+243,20,Female,Undergraduate,South Korea,5.1,KakaoTalk,Yes,6.6,6,6,Tinggi,Sedang,Sedang,Rendah
+244,22,Male,Graduate,Russia,4.7,VKontakte,No,7.3,7,5,Sedang,Sedang,Sedang,Sedang
+245,19,Female,Undergraduate,USA,6.9,TikTok,Yes,5.7,4,9,Sedang,Sedang,Tinggi,Sedang
+246,21,Male,Graduate,UK,5.7,Instagram,Yes,6.4,6,7,Rendah,Sedang,Sedang,Tinggi
+247,20,Female,Undergraduate,Australia,4.8,Facebook,No,7.2,7,5,Rendah,Sedang,Sedang,Tinggi
+248,22,Male,Graduate,Germany,3.9,Instagram,No,7.8,8,4,Tinggi,Sedang,Sedang,Rendah
+249,19,Female,Undergraduate,Japan,3.6,LINE,No,8.1,8,3,Tinggi,Sedang,Rendah,Rendah
+250,21,Male,Graduate,Italy,5.6,TikTok,Yes,6.6,5,8,Rendah,Sedang,Sedang,Tinggi
+251,20,Female,Undergraduate,South Korea,4.9,KakaoTalk,Yes,6.9,6,6,Rendah,Sedang,Sedang,Tinggi
+252,22,Male,Graduate,Russia,4.6,VKontakte,No,7.5,7,5,Tinggi,Sedang,Sedang,Rendah
+253,19,Female,Undergraduate,USA,6.7,Instagram,Yes,5.8,4,9,Sedang,Sedang,Tinggi,Sedang
+254,21,Male,Graduate,UK,5.4,Facebook,Yes,6.5,6,7,Rendah,Sedang,Sedang,Tinggi
+255,20,Female,Undergraduate,Australia,4.4,Instagram,No,7.4,7,5,Sedang,Sedang,Sedang,Sedang
+256,22,Male,Graduate,Germany,4.0,Facebook,No,7.6,8,4,Tinggi,Sedang,Sedang,Rendah
+257,19,Female,Undergraduate,Japan,3.4,LINE,No,8.2,8,3,Tinggi,Sedang,Rendah,Rendah
+258,21,Male,Graduate,Italy,5.3,Instagram,Yes,6.8,5,7,Tinggi,Sedang,Sedang,Rendah
+259,20,Female,Undergraduate,South Korea,5.0,KakaoTalk,Yes,6.7,6,6,Tinggi,Sedang,Sedang,Rendah
+260,22,Male,Graduate,Russia,4.4,VKontakte,No,7.6,7,5,Rendah,Sedang,Sedang,Tinggi
+261,19,Female,Undergraduate,USA,6.6,TikTok,Yes,5.6,4,9,Tinggi,Sedang,Tinggi,Rendah
+262,21,Male,Graduate,UK,5.3,Instagram,Yes,6.3,6,7,Rendah,Sedang,Sedang,Tinggi
+263,20,Female,Undergraduate,Australia,4.3,Facebook,No,7.5,7,5,Rendah,Sedang,Sedang,Tinggi
+264,22,Male,Graduate,Germany,3.8,Instagram,No,7.7,8,4,Rendah,Sedang,Sedang,Tinggi
+265,19,Female,Undergraduate,Japan,3.3,LINE,No,8.3,8,3,Sedang,Sedang,Rendah,Sedang
+266,21,Male,Graduate,Italy,5.2,TikTok,Yes,6.9,5,8,Rendah,Sedang,Sedang,Tinggi
+267,20,Female,Undergraduate,South Korea,4.8,KakaoTalk,Yes,7.0,6,6,Sedang,Sedang,Sedang,Sedang
+268,22,Male,Graduate,Russia,4.3,VKontakte,No,7.7,7,5,Tinggi,Sedang,Sedang,Rendah
+269,19,Female,Undergraduate,USA,6.4,Instagram,Yes,5.7,4,9,Tinggi,Sedang,Tinggi,Rendah
+270,21,Male,Graduate,UK,5.2,Facebook,Yes,6.4,6,7,Tinggi,Sedang,Sedang,Rendah
+271,20,Female,Undergraduate,Australia,4.5,Instagram,No,7.3,7,5,Tinggi,Sedang,Sedang,Rendah
+272,22,Male,Graduate,Germany,3.7,Facebook,No,7.8,8,4,Sedang,Sedang,Sedang,Sedang
+273,19,Female,Undergraduate,Japan,3.2,LINE,No,8.4,8,3,Rendah,Sedang,Rendah,Tinggi
+274,21,Male,Graduate,Italy,5.4,Instagram,Yes,6.7,5,7,Rendah,Sedang,Sedang,Tinggi
+275,20,Female,Undergraduate,South Korea,4.7,KakaoTalk,Yes,7.1,6,6,Rendah,Sedang,Sedang,Tinggi
+276,22,Male,Graduate,Russia,4.2,VKontakte,No,7.8,7,5,Rendah,Sedang,Sedang,Tinggi
+277,19,Female,Undergraduate,USA,6.6,TikTok,Yes,5.5,4,9,Rendah,Sedang,Tinggi,Tinggi
+278,21,Male,Graduate,UK,5.1,Instagram,Yes,6.5,6,7,Tinggi,Sedang,Sedang,Rendah
+279,20,Female,Undergraduate,Australia,4.4,Facebook,No,7.4,7,5,Sedang,Sedang,Sedang,Sedang
+280,22,Male,Graduate,Germany,3.6,Instagram,No,7.9,8,4,Sedang,Sedang,Sedang,Sedang
+281,19,Female,Undergraduate,Japan,3.1,LINE,No,8.5,8,3,Tinggi,Sedang,Rendah,Rendah
+282,21,Male,Graduate,Italy,5.3,TikTok,Yes,6.8,5,8,Rendah,Sedang,Sedang,Tinggi
+283,20,Female,Undergraduate,South Korea,4.6,KakaoTalk,Yes,7.2,6,6,Rendah,Sedang,Sedang,Tinggi
+284,22,Male,Graduate,Russia,4.1,VKontakte,No,7.9,7,5,Rendah,Sedang,Sedang,Tinggi
+285,19,Female,Undergraduate,USA,6.7,Instagram,Yes,5.4,4,9,Rendah,Sedang,Tinggi,Tinggi
+286,21,Male,Graduate,UK,5.0,Facebook,Yes,6.6,6,7,Sedang,Sedang,Sedang,Sedang
+287,20,Female,Undergraduate,Australia,4.3,Instagram,No,7.5,7,5,Rendah,Sedang,Sedang,Tinggi
+288,22,Male,Graduate,Germany,3.5,Facebook,No,8.0,8,4,Tinggi,Sedang,Rendah,Rendah
+289,19,Female,Undergraduate,Japan,3.0,LINE,No,8.6,8,3,Sedang,Rendah,Rendah,Sedang
+290,21,Male,Graduate,Italy,5.2,Instagram,Yes,6.9,5,7,Sedang,Sedang,Sedang,Sedang
+291,20,Female,Undergraduate,South Korea,4.5,KakaoTalk,Yes,7.3,6,6,Sedang,Sedang,Sedang,Sedang
+292,22,Male,Graduate,Russia,4.0,VKontakte,No,8.0,7,5,Sedang,Sedang,Rendah,Sedang
+293,19,Female,Undergraduate,USA,6.8,TikTok,Yes,5.3,4,9,Rendah,Sedang,Tinggi,Tinggi
+294,21,Male,Graduate,UK,4.9,Instagram,Yes,6.7,6,7,Rendah,Sedang,Sedang,Tinggi
+295,20,Female,Undergraduate,Australia,4.2,Facebook,No,7.6,7,5,Tinggi,Sedang,Sedang,Rendah
+296,22,Male,Graduate,Germany,3.4,Instagram,No,8.1,8,4,Rendah,Sedang,Rendah,Tinggi
+297,19,Female,Undergraduate,Japan,2.9,LINE,No,8.7,8,3,Tinggi,Rendah,Rendah,Rendah
+298,21,Male,Graduate,Italy,5.1,TikTok,Yes,7.0,5,8,Sedang,Sedang,Sedang,Sedang
+299,20,Female,Undergraduate,South Korea,4.4,KakaoTalk,Yes,7.4,6,6,Rendah,Sedang,Sedang,Tinggi
+300,22,Male,Graduate,Russia,3.9,VKontakte,No,8.1,7,5,Sedang,Sedang,Rendah,Sedang
+301,19,Female,Undergraduate,USA,6.9,Instagram,Yes,5.2,4,9,Rendah,Sedang,Tinggi,Tinggi
+302,21,Male,Graduate,UK,4.8,Facebook,Yes,6.8,6,7,Sedang,Sedang,Sedang,Sedang
+303,20,Female,Undergraduate,Australia,4.1,Instagram,No,7.7,7,5,Rendah,Sedang,Sedang,Tinggi
+304,22,Male,Graduate,Germany,3.3,Facebook,No,8.2,8,4,Sedang,Sedang,Rendah,Sedang
+305,19,Female,Undergraduate,Japan,2.8,LINE,No,8.8,8,3,Sedang,Rendah,Rendah,Sedang
+306,21,Male,Graduate,Italy,5.0,Instagram,Yes,7.1,5,7,Rendah,Sedang,Sedang,Tinggi
+307,20,Female,Undergraduate,South Korea,4.3,KakaoTalk,Yes,7.5,6,6,Tinggi,Sedang,Sedang,Rendah
+308,22,Male,Graduate,Russia,3.8,VKontakte,No,8.2,7,5,Sedang,Sedang,Rendah,Sedang
+309,19,Female,Undergraduate,USA,7.0,TikTok,Yes,5.1,4,9,Rendah,Sedang,Tinggi,Tinggi
+310,21,Male,Graduate,UK,4.7,Instagram,Yes,6.9,6,7,Sedang,Sedang,Sedang,Sedang
+311,20,Female,Undergraduate,Australia,4.0,Facebook,No,7.8,7,5,Rendah,Sedang,Sedang,Tinggi
+312,22,Male,Graduate,Germany,3.2,Instagram,No,8.3,8,4,Rendah,Sedang,Rendah,Tinggi
+313,19,Female,Undergraduate,Japan,2.7,LINE,No,8.9,8,3,Rendah,Rendah,Rendah,Tinggi
+314,21,Male,Graduate,Italy,4.9,TikTok,Yes,7.2,5,8,Tinggi,Sedang,Sedang,Rendah
+315,20,Female,Undergraduate,South Korea,4.2,KakaoTalk,Yes,7.6,6,6,Tinggi,Sedang,Sedang,Rendah
+316,22,Male,Graduate,Russia,3.7,VKontakte,No,8.3,7,5,Rendah,Sedang,Rendah,Tinggi
+317,19,Female,Undergraduate,USA,7.1,Instagram,Yes,5.0,4,9,Rendah,Tinggi,Tinggi,Tinggi
+318,21,Male,Graduate,UK,4.6,Facebook,Yes,7.0,6,7,Sedang,Sedang,Sedang,Sedang
+319,20,Female,Undergraduate,Australia,3.9,Instagram,No,7.9,7,5,Rendah,Sedang,Sedang,Tinggi
+320,22,Male,Graduate,Germany,3.1,Facebook,No,8.4,8,4,Tinggi,Sedang,Rendah,Rendah
+321,19,Female,Undergraduate,Spain,5.2,Instagram,Yes,6.8,6,7,Tinggi,Sedang,Sedang,Rendah
+322,21,Male,Graduate,Denmark,4.1,Facebook,No,7.8,8,4,Sedang,Sedang,Sedang,Sedang
+323,20,Female,Undergraduate,Ireland,5.0,Instagram,Yes,7.0,7,6,Tinggi,Sedang,Sedang,Rendah
+324,22,Male,Graduate,India,5.8,WhatsApp,Yes,6.5,5,8,Tinggi,Sedang,Sedang,Rendah
+325,19,Female,Undergraduate,Switzerland,4.0,Instagram,No,7.9,8,4,Tinggi,Sedang,Sedang,Rendah
+326,21,Male,Graduate,Turkey,5.5,Instagram,Yes,6.7,6,7,Tinggi,Sedang,Sedang,Rendah
+327,20,Female,Undergraduate,USA,6.8,TikTok,Yes,5.5,5,9,Tinggi,Sedang,Tinggi,Rendah
+328,22,Male,Graduate,Mexico,5.6,WhatsApp,Yes,6.6,6,7,Tinggi,Sedang,Sedang,Rendah
+329,19,Female,Undergraduate,France,4.5,Instagram,No,7.5,7,5,Tinggi,Sedang,Sedang,Rendah
+330,21,Male,Graduate,Canada,5.3,Instagram,Yes,6.9,6,7,Tinggi,Sedang,Sedang,Rendah
+331,20,Female,Undergraduate,Spain,5.1,TikTok,Yes,6.7,6,7,Tinggi,Sedang,Sedang,Rendah
+332,22,Male,Graduate,Denmark,3.9,Facebook,No,7.9,8,4,Sedang,Sedang,Sedang,Sedang
+333,19,Female,Undergraduate,Ireland,4.8,Instagram,Yes,7.1,7,6,Rendah,Sedang,Sedang,Tinggi
+334,21,Male,Graduate,India,5.9,WhatsApp,Yes,6.4,5,8,Rendah,Sedang,Sedang,Tinggi
+335,20,Female,Undergraduate,Switzerland,3.8,Instagram,No,8.0,8,4,Rendah,Sedang,Rendah,Tinggi
+336,22,Male,Graduate,Turkey,5.4,TikTok,Yes,6.8,6,7,Sedang,Sedang,Sedang,Sedang
+337,19,Female,Undergraduate,USA,6.9,Instagram,Yes,5.4,5,9,Sedang,Sedang,Tinggi,Sedang
+338,21,Male,Graduate,Mexico,5.7,WhatsApp,Yes,6.5,6,7,Sedang,Sedang,Sedang,Sedang
+339,20,Female,Undergraduate,France,4.4,Instagram,No,7.6,7,5,Sedang,Sedang,Sedang,Sedang
+340,22,Male,Graduate,Canada,5.2,TikTok,Yes,7.0,6,7,Tinggi,Sedang,Sedang,Rendah
+341,19,Female,Undergraduate,Spain,5.0,Instagram,Yes,6.9,6,7,Sedang,Sedang,Sedang,Sedang
+342,21,Male,Graduate,Denmark,3.8,Facebook,No,8.0,8,4,Rendah,Sedang,Rendah,Tinggi
+343,20,Female,Undergraduate,Ireland,4.7,TikTok,Yes,7.2,7,6,Rendah,Sedang,Sedang,Tinggi
+344,22,Male,Graduate,India,6.0,WhatsApp,Yes,6.3,5,8,Sedang,Sedang,Sedang,Sedang
+345,19,Female,Undergraduate,Switzerland,3.7,Instagram,No,8.1,8,4,Sedang,Sedang,Rendah,Sedang
+346,21,Male,Graduate,Turkey,5.3,Instagram,Yes,6.9,6,7,Tinggi,Sedang,Sedang,Rendah
+347,20,Female,Undergraduate,USA,7.0,TikTok,Yes,5.3,5,9,Tinggi,Sedang,Tinggi,Rendah
+348,22,Male,Graduate,Mexico,5.8,WhatsApp,Yes,6.4,6,7,Rendah,Sedang,Sedang,Tinggi
+349,19,Female,Undergraduate,France,4.3,Instagram,No,7.7,7,5,Rendah,Sedang,Sedang,Tinggi
+350,21,Male,Graduate,Canada,5.1,Instagram,Yes,7.1,6,7,Sedang,Sedang,Sedang,Sedang
+351,20,Female,Undergraduate,Spain,4.9,TikTok,Yes,7.0,6,7,Sedang,Sedang,Sedang,Sedang
+352,22,Male,Graduate,Denmark,3.7,Facebook,No,8.1,8,4,Tinggi,Sedang,Rendah,Rendah
+353,19,Female,Undergraduate,Ireland,4.6,Instagram,Yes,7.3,7,6,Sedang,Sedang,Sedang,Sedang
+354,21,Male,Graduate,India,6.1,WhatsApp,Yes,6.2,5,8,Tinggi,Sedang,Sedang,Rendah
+355,20,Female,Undergraduate,Switzerland,3.6,Instagram,No,8.2,8,4,Tinggi,Sedang,Rendah,Rendah
+356,22,Male,Graduate,Turkey,5.2,TikTok,Yes,7.0,6,7,Sedang,Sedang,Sedang,Sedang
+357,19,Female,Undergraduate,USA,7.1,Instagram,Yes,5.2,5,9,Sedang,Tinggi,Tinggi,Sedang
+358,21,Male,Graduate,Mexico,5.9,WhatsApp,Yes,6.3,6,7,Sedang,Sedang,Sedang,Sedang
+359,20,Female,Undergraduate,France,4.2,Instagram,No,7.8,7,5,Sedang,Sedang,Sedang,Sedang
+360,22,Male,Graduate,Canada,5.0,TikTok,Yes,7.2,6,7,Sedang,Sedang,Sedang,Sedang
+361,19,Female,Undergraduate,Spain,4.8,Instagram,Yes,7.1,6,7,Rendah,Sedang,Sedang,Tinggi
+362,21,Male,Graduate,Denmark,3.6,Facebook,No,8.2,8,4,Rendah,Sedang,Rendah,Tinggi
+363,20,Female,Undergraduate,Ireland,4.5,TikTok,Yes,7.4,7,6,Tinggi,Sedang,Sedang,Rendah
+364,22,Male,Graduate,India,6.2,WhatsApp,Yes,6.1,5,8,Sedang,Sedang,Sedang,Sedang
+365,19,Female,Undergraduate,Switzerland,3.5,Instagram,No,8.3,8,4,Sedang,Sedang,Rendah,Sedang
+366,21,Male,Graduate,Turkey,5.1,Instagram,Yes,7.1,6,7,Tinggi,Sedang,Sedang,Rendah
+367,20,Female,Undergraduate,USA,7.2,TikTok,Yes,5.1,5,9,Tinggi,Tinggi,Tinggi,Rendah
+368,22,Male,Graduate,Mexico,6.0,WhatsApp,Yes,6.2,6,7,Sedang,Sedang,Sedang,Sedang
+369,19,Female,Undergraduate,France,4.1,Instagram,No,7.9,7,5,Sedang,Sedang,Sedang,Sedang
+370,21,Male,Graduate,Canada,4.9,Instagram,Yes,7.3,6,7,Tinggi,Sedang,Sedang,Rendah
+371,20,Female,Undergraduate,Spain,4.7,TikTok,Yes,7.2,6,7,Sedang,Sedang,Sedang,Sedang
+372,22,Male,Graduate,Denmark,3.5,Facebook,No,8.3,8,4,Sedang,Sedang,Rendah,Sedang
+373,19,Female,Undergraduate,Ireland,4.4,Instagram,Yes,7.5,7,6,Rendah,Sedang,Sedang,Tinggi
+374,21,Male,Graduate,India,6.3,WhatsApp,Yes,6.0,5,8,Rendah,Sedang,Sedang,Tinggi
+375,20,Female,Undergraduate,Switzerland,3.4,Instagram,No,8.4,8,4,Rendah,Sedang,Rendah,Tinggi
+376,22,Male,Graduate,Turkey,5.0,TikTok,Yes,7.2,6,7,Rendah,Sedang,Sedang,Tinggi
+377,19,Female,Undergraduate,USA,7.3,Instagram,Yes,5.0,5,9,Sedang,Tinggi,Tinggi,Sedang
+378,21,Male,Graduate,Mexico,6.1,WhatsApp,Yes,6.1,6,7,Sedang,Sedang,Sedang,Sedang
+379,20,Female,Undergraduate,France,4.0,Instagram,No,8.0,7,5,Sedang,Sedang,Rendah,Sedang
+380,22,Male,Graduate,Canada,4.8,TikTok,Yes,7.4,6,7,Rendah,Sedang,Sedang,Tinggi
+381,19,Female,Undergraduate,Spain,4.6,Instagram,Yes,7.3,6,7,Tinggi,Sedang,Sedang,Rendah
+382,21,Male,Graduate,Denmark,3.4,Facebook,No,8.4,8,4,Tinggi,Sedang,Rendah,Rendah
+383,20,Female,Undergraduate,Ireland,4.3,TikTok,Yes,7.6,7,6,Tinggi,Sedang,Sedang,Rendah
+384,22,Male,Graduate,India,6.4,WhatsApp,Yes,5.9,5,8,Rendah,Sedang,Tinggi,Tinggi
+385,19,Female,Undergraduate,Switzerland,3.3,Instagram,No,8.5,8,4,Rendah,Sedang,Rendah,Tinggi
+386,21,Male,Graduate,Turkey,4.9,Instagram,Yes,7.3,6,7,Rendah,Sedang,Sedang,Tinggi
+387,20,Female,Undergraduate,USA,7.4,TikTok,Yes,4.9,5,9,Rendah,Tinggi,Tinggi,Tinggi
+388,22,Male,Graduate,Mexico,6.2,WhatsApp,Yes,6.0,6,7,Tinggi,Sedang,Sedang,Rendah
+389,19,Female,Undergraduate,France,3.9,Instagram,No,8.1,7,5,Sedang,Sedang,Rendah,Sedang
+390,21,Male,Graduate,Canada,4.7,Instagram,Yes,7.5,6,7,Sedang,Sedang,Sedang,Sedang
+391,20,Female,Undergraduate,Spain,4.5,TikTok,Yes,7.4,6,7,Rendah,Sedang,Sedang,Tinggi
+392,22,Male,Graduate,Denmark,3.3,Facebook,No,8.5,8,4,Sedang,Sedang,Rendah,Sedang
+393,19,Female,Undergraduate,Ireland,4.2,Instagram,Yes,7.7,7,6,Rendah,Sedang,Sedang,Tinggi
+394,21,Male,Graduate,India,6.5,WhatsApp,Yes,5.8,5,8,Tinggi,Sedang,Tinggi,Rendah
+395,20,Female,Undergraduate,Switzerland,3.2,Instagram,No,8.6,8,4,Sedang,Sedang,Rendah,Sedang
+396,22,Male,Graduate,Turkey,4.8,TikTok,Yes,7.4,6,7,Sedang,Sedang,Sedang,Sedang
+397,19,Female,Undergraduate,USA,7.5,Instagram,Yes,4.8,5,9,Rendah,Tinggi,Tinggi,Tinggi
+398,21,Male,Graduate,Mexico,6.3,WhatsApp,Yes,5.9,6,7,Tinggi,Sedang,Tinggi,Rendah
+399,20,Female,Undergraduate,France,3.8,Instagram,No,8.2,7,5,Rendah,Sedang,Rendah,Tinggi
+400,22,Male,Graduate,Canada,4.6,TikTok,Yes,7.6,6,7,Sedang,Sedang,Sedang,Sedang
+401,19,Female,Undergraduate,Spain,4.4,Instagram,Yes,7.5,6,7,Tinggi,Sedang,Sedang,Rendah
+402,21,Male,Graduate,Denmark,3.2,Facebook,No,8.6,8,4,Rendah,Sedang,Rendah,Tinggi
+403,20,Female,Undergraduate,Ireland,4.1,TikTok,Yes,7.8,7,6,Sedang,Sedang,Sedang,Sedang
+404,22,Male,Graduate,India,6.6,WhatsApp,Yes,5.7,5,8,Sedang,Sedang,Tinggi,Sedang
+405,19,Female,Undergraduate,Switzerland,3.1,Instagram,No,8.7,8,4,Tinggi,Sedang,Rendah,Rendah
+406,21,Male,Graduate,Turkey,4.7,Instagram,Yes,7.5,6,7,Sedang,Sedang,Sedang,Sedang
+407,20,Female,Undergraduate,USA,7.6,TikTok,Yes,4.7,5,9,Tinggi,Tinggi,Tinggi,Rendah
+408,22,Male,Graduate,Mexico,6.4,WhatsApp,Yes,5.8,6,7,Tinggi,Sedang,Tinggi,Rendah
+409,19,Female,Undergraduate,France,3.7,Instagram,No,8.3,7,5,Tinggi,Sedang,Rendah,Rendah
+410,21,Male,Graduate,Canada,4.5,Instagram,Yes,7.7,6,7,Sedang,Sedang,Sedang,Sedang
+411,20,Female,Undergraduate,Spain,4.3,TikTok,Yes,7.6,6,7,Sedang,Sedang,Sedang,Sedang
+412,22,Male,Graduate,Denmark,3.1,Facebook,No,8.7,8,4,Rendah,Sedang,Rendah,Tinggi
+413,19,Female,Undergraduate,Ireland,4.0,Instagram,Yes,7.9,7,6,Sedang,Sedang,Sedang,Sedang
+414,21,Male,Graduate,India,6.7,WhatsApp,Yes,5.6,5,8,Rendah,Sedang,Tinggi,Tinggi
+415,20,Female,Undergraduate,Switzerland,3.0,Instagram,No,8.8,8,4,Rendah,Rendah,Rendah,Tinggi
+416,22,Male,Graduate,Turkey,4.6,TikTok,Yes,7.6,6,7,Tinggi,Sedang,Sedang,Rendah
+417,19,Female,Undergraduate,USA,7.7,Instagram,Yes,4.6,5,9,Sedang,Tinggi,Tinggi,Sedang
+418,21,Male,Graduate,Mexico,6.5,WhatsApp,Yes,5.7,6,7,Tinggi,Sedang,Tinggi,Rendah
+419,20,Female,Undergraduate,France,3.6,Instagram,No,8.4,7,5,Sedang,Sedang,Rendah,Sedang
+420,22,Male,Graduate,Canada,4.4,TikTok,Yes,7.8,6,7,Tinggi,Sedang,Sedang,Rendah
+421,19,Female,Undergraduate,Spain,4.2,Instagram,Yes,7.7,6,7,Sedang,Sedang,Sedang,Sedang
+422,21,Male,Graduate,Denmark,3.0,Facebook,No,8.8,8,4,Rendah,Rendah,Rendah,Tinggi
+423,20,Female,Undergraduate,Ireland,3.9,TikTok,Yes,8.0,7,6,Rendah,Sedang,Rendah,Tinggi
+424,22,Male,Graduate,India,6.8,WhatsApp,Yes,5.5,5,8,Sedang,Sedang,Tinggi,Sedang
+425,19,Female,Undergraduate,Switzerland,2.9,Instagram,No,8.9,8,4,Sedang,Rendah,Rendah,Sedang
+426,21,Male,Graduate,Turkey,4.5,Instagram,Yes,7.7,6,7,Tinggi,Sedang,Sedang,Rendah
+427,20,Female,Undergraduate,USA,7.8,TikTok,Yes,4.5,5,9,Sedang,Tinggi,Tinggi,Sedang
+428,22,Male,Graduate,Mexico,6.6,WhatsApp,Yes,5.6,6,7,Tinggi,Sedang,Tinggi,Rendah
+429,19,Female,Undergraduate,France,3.5,Instagram,No,8.5,7,5,Tinggi,Sedang,Rendah,Rendah
+430,21,Male,Graduate,Canada,4.3,Instagram,Yes,7.9,6,7,Rendah,Sedang,Sedang,Tinggi
+431,20,Female,Undergraduate,Spain,4.1,TikTok,Yes,7.8,6,7,Sedang,Sedang,Sedang,Sedang
+432,22,Male,Graduate,Denmark,2.9,Facebook,No,8.9,8,4,Sedang,Rendah,Rendah,Sedang
+433,19,Female,Undergraduate,Ireland,3.8,Instagram,Yes,8.1,7,6,Sedang,Sedang,Rendah,Sedang
+434,21,Male,Graduate,India,6.9,WhatsApp,Yes,5.4,5,8,Rendah,Sedang,Tinggi,Tinggi
+435,20,Female,Undergraduate,Switzerland,2.8,Instagram,No,9.0,8,4,Sedang,Rendah,Rendah,Sedang
+436,22,Male,Graduate,Turkey,4.4,TikTok,Yes,7.8,6,7,Sedang,Sedang,Sedang,Sedang
+437,19,Female,Undergraduate,USA,7.9,Instagram,Yes,4.4,5,9,Rendah,Tinggi,Tinggi,Tinggi
+438,21,Male,Graduate,Mexico,6.7,WhatsApp,Yes,5.5,6,7,Rendah,Sedang,Tinggi,Tinggi
+439,20,Female,Undergraduate,France,3.4,Instagram,No,8.6,7,5,Rendah,Sedang,Rendah,Tinggi
+440,22,Male,Graduate,Canada,4.2,TikTok,Yes,8.0,6,7,Rendah,Sedang,Rendah,Tinggi
+441,19,Female,Undergraduate,Spain,4.0,Instagram,Yes,7.9,6,7,Tinggi,Sedang,Sedang,Rendah
+442,21,Male,Graduate,Denmark,2.8,Facebook,No,9.0,8,4,Tinggi,Rendah,Rendah,Rendah
+443,20,Female,Undergraduate,Ireland,3.7,TikTok,Yes,8.2,7,6,Rendah,Sedang,Rendah,Tinggi
+444,22,Male,Graduate,India,7.0,WhatsApp,Yes,5.3,5,8,Tinggi,Sedang,Tinggi,Rendah
+445,19,Female,Undergraduate,Switzerland,2.7,Instagram,No,9.1,8,4,Tinggi,Rendah,Rendah,Rendah
+446,21,Male,Graduate,Turkey,4.3,Instagram,Yes,7.9,6,7,Sedang,Sedang,Sedang,Sedang
+447,20,Female,Undergraduate,USA,8.0,TikTok,Yes,4.3,5,9,Rendah,Tinggi,Tinggi,Tinggi
+448,22,Male,Graduate,Mexico,6.8,WhatsApp,Yes,5.4,6,7,Tinggi,Sedang,Tinggi,Rendah
+449,19,Female,Undergraduate,France,3.3,Instagram,No,8.7,7,5,Rendah,Sedang,Rendah,Tinggi
+450,21,Male,Graduate,Canada,4.1,Instagram,Yes,8.1,6,7,Sedang,Sedang,Rendah,Sedang
+451,20,Female,Undergraduate,Spain,3.9,TikTok,Yes,8.0,6,7,Sedang,Sedang,Rendah,Sedang
+452,22,Male,Graduate,Denmark,2.7,Facebook,No,9.1,8,4,Tinggi,Rendah,Rendah,Rendah
+453,19,Female,Undergraduate,Ireland,3.6,Instagram,Yes,8.3,7,6,Rendah,Sedang,Rendah,Tinggi
+454,21,Male,Graduate,India,7.1,WhatsApp,Yes,5.2,5,8,Tinggi,Tinggi,Tinggi,Rendah
+455,20,Female,Undergraduate,Switzerland,2.6,Instagram,No,9.2,8,4,Rendah,Rendah,Rendah,Tinggi
+456,22,Male,Graduate,Turkey,4.2,TikTok,Yes,8.0,6,7,Rendah,Sedang,Rendah,Tinggi
+457,19,Female,Undergraduate,USA,8.1,Instagram,Yes,4.2,5,9,Tinggi,Tinggi,Tinggi,Rendah
+458,21,Male,Graduate,Mexico,6.9,WhatsApp,Yes,5.3,6,7,Tinggi,Sedang,Tinggi,Rendah
+459,20,Female,Undergraduate,France,3.2,Instagram,No,8.8,7,5,Tinggi,Sedang,Rendah,Rendah
+460,22,Male,Graduate,Canada,4.0,TikTok,Yes,8.2,6,7,Sedang,Sedang,Rendah,Sedang
+461,19,Female,Undergraduate,Spain,3.8,Instagram,Yes,8.1,6,7,Tinggi,Sedang,Rendah,Rendah
+462,21,Male,Graduate,Denmark,2.6,Facebook,No,9.2,8,4,Tinggi,Rendah,Rendah,Rendah
+463,20,Female,Undergraduate,Ireland,3.5,TikTok,Yes,8.4,7,6,Rendah,Sedang,Rendah,Tinggi
+464,22,Male,Graduate,India,7.2,WhatsApp,Yes,5.1,5,8,Sedang,Tinggi,Tinggi,Sedang
+465,19,Female,Undergraduate,Switzerland,2.5,Instagram,No,9.3,8,4,Sedang,Rendah,Rendah,Sedang
+466,21,Male,Graduate,Turkey,4.1,Instagram,Yes,8.1,6,7,Sedang,Sedang,Rendah,Sedang
+467,20,Female,Undergraduate,USA,8.2,TikTok,Yes,4.1,5,9,Rendah,Tinggi,Tinggi,Tinggi
+468,22,Male,Graduate,Mexico,7.0,WhatsApp,Yes,5.2,6,7,Tinggi,Sedang,Tinggi,Rendah
+469,19,Female,Undergraduate,France,3.1,Instagram,No,8.9,7,5,Rendah,Sedang,Rendah,Tinggi
+470,21,Male,Graduate,Canada,3.9,Instagram,Yes,8.3,6,7,Sedang,Sedang,Rendah,Sedang
+471,20,Female,Undergraduate,Spain,3.7,TikTok,Yes,8.2,6,7,Tinggi,Sedang,Rendah,Rendah
+472,22,Male,Graduate,Denmark,2.5,Facebook,No,9.3,8,4,Sedang,Rendah,Rendah,Sedang
+473,19,Female,Undergraduate,Ireland,3.4,Instagram,Yes,8.5,7,6,Sedang,Sedang,Rendah,Sedang
+474,21,Male,Graduate,India,7.3,WhatsApp,Yes,5.0,5,8,Rendah,Tinggi,Tinggi,Tinggi
+475,20,Female,Undergraduate,Switzerland,2.4,Instagram,No,9.4,8,4,Sedang,Rendah,Rendah,Sedang
+476,22,Male,Graduate,Turkey,4.0,TikTok,Yes,8.2,6,7,Sedang,Sedang,Rendah,Sedang
+477,19,Female,Undergraduate,USA,8.3,Instagram,Yes,4.0,5,9,Tinggi,Tinggi,Tinggi,Rendah
+478,21,Male,Graduate,Mexico,7.1,WhatsApp,Yes,5.1,6,7,Rendah,Tinggi,Tinggi,Tinggi
+479,20,Female,Undergraduate,France,3.0,Instagram,No,9.0,7,5,Rendah,Rendah,Rendah,Tinggi
+480,22,Male,Graduate,Canada,3.8,TikTok,Yes,8.4,6,7,Rendah,Sedang,Rendah,Tinggi
+481,19,Female,Undergraduate,Spain,3.6,Instagram,Yes,8.3,6,7,Rendah,Sedang,Rendah,Tinggi
+482,21,Male,Graduate,Denmark,2.4,Facebook,No,9.4,8,4,Tinggi,Rendah,Rendah,Rendah
+483,20,Female,Undergraduate,Ireland,3.3,TikTok,Yes,8.6,7,6,Sedang,Sedang,Rendah,Sedang
+484,22,Male,Graduate,India,7.4,WhatsApp,Yes,4.9,5,8,Tinggi,Tinggi,Tinggi,Rendah
+485,19,Female,Undergraduate,Switzerland,2.3,Instagram,No,9.5,8,4,Tinggi,Rendah,Rendah,Rendah
+486,21,Male,Graduate,Turkey,3.9,Instagram,Yes,8.3,6,7,Tinggi,Sedang,Rendah,Rendah
+487,20,Female,Undergraduate,USA,8.4,TikTok,Yes,3.9,5,9,Rendah,Tinggi,Tinggi,Tinggi
+488,22,Male,Graduate,Mexico,7.2,WhatsApp,Yes,5.0,6,7,Rendah,Tinggi,Tinggi,Tinggi
+489,19,Female,Undergraduate,France,2.9,Instagram,No,9.1,7,5,Rendah,Rendah,Rendah,Tinggi
+490,21,Male,Graduate,Canada,3.7,Instagram,Yes,8.5,6,7,Rendah,Sedang,Rendah,Tinggi
+491,20,Female,Undergraduate,Spain,3.5,TikTok,Yes,8.4,6,7,Tinggi,Sedang,Rendah,Rendah
+492,22,Male,Graduate,Denmark,2.3,Facebook,No,9.5,8,4,Sedang,Rendah,Rendah,Sedang
+493,19,Female,Undergraduate,Ireland,3.2,Instagram,Yes,8.7,7,6,Sedang,Sedang,Rendah,Sedang
+494,21,Male,Graduate,India,7.5,WhatsApp,Yes,4.8,5,8,Sedang,Tinggi,Tinggi,Sedang
+495,20,Female,Undergraduate,Switzerland,2.2,Instagram,No,9.6,8,4,Tinggi,Rendah,Rendah,Rendah
+496,22,Male,Graduate,Turkey,3.8,TikTok,Yes,8.4,6,7,Tinggi,Sedang,Rendah,Rendah
+497,19,Female,Undergraduate,USA,8.5,Instagram,Yes,3.8,5,9,Sedang,Tinggi,Tinggi,Sedang
+498,21,Male,Graduate,Mexico,7.3,WhatsApp,Yes,4.9,6,7,Rendah,Tinggi,Tinggi,Tinggi
+499,20,Female,Undergraduate,France,2.8,Instagram,No,9.2,7,5,Sedang,Rendah,Rendah,Sedang
+500,22,Male,Graduate,Canada,3.6,TikTok,Yes,8.6,6,7,Tinggi,Sedang,Rendah,Rendah
+501,19,Female,Undergraduate,Brazil,6.2,WhatsApp,Yes,6.3,6,7,Rendah,Sedang,Sedang,Tinggi
+502,21,Male,Graduate,China,4.5,WeChat,No,7.8,7,5,Sedang,Sedang,Sedang,Sedang
+503,20,Female,Undergraduate,Netherlands,3.8,Instagram,No,8.2,8,4,Tinggi,Sedang,Rendah,Rendah
+504,22,Male,Graduate,New Zealand,4.7,Instagram,Yes,7.5,7,6,Rendah,Sedang,Sedang,Tinggi
+505,19,Female,Undergraduate,Singapore,5.1,TikTok,Yes,7.0,6,7,Tinggi,Sedang,Sedang,Rendah
+506,21,Male,Graduate,Malaysia,5.5,WhatsApp,Yes,6.8,6,7,Tinggi,Sedang,Sedang,Rendah
+507,20,Female,Undergraduate,UAE,6.5,Instagram,Yes,6.5,5,8,Tinggi,Sedang,Sedang,Rendah
+508,22,Male,Graduate,Poland,4.2,Facebook,No,7.9,7,5,Sedang,Sedang,Sedang,Sedang
+509,19,Female,Undergraduate,India,6.8,WhatsApp,Yes,6.0,5,8,Tinggi,Sedang,Sedang,Rendah
+510,21,Male,Graduate,Canada,4.8,Instagram,Yes,7.4,7,6,Sedang,Sedang,Sedang,Sedang
+511,20,Female,Undergraduate,Brazil,6.1,Instagram,Yes,6.4,6,7,Rendah,Sedang,Sedang,Tinggi
+512,22,Male,Graduate,China,4.4,WeChat,No,7.9,7,5,Rendah,Sedang,Sedang,Tinggi
+513,19,Female,Undergraduate,Netherlands,3.7,TikTok,No,8.3,8,4,Rendah,Sedang,Rendah,Tinggi
+514,21,Male,Graduate,New Zealand,4.6,Instagram,Yes,7.6,7,6,Tinggi,Sedang,Sedang,Rendah
+515,20,Female,Undergraduate,Singapore,5.2,TikTok,Yes,6.9,6,7,Sedang,Sedang,Sedang,Sedang
+516,22,Male,Graduate,Malaysia,5.6,WhatsApp,Yes,6.7,6,7,Tinggi,Sedang,Sedang,Rendah
+517,19,Female,Undergraduate,UAE,6.6,Instagram,Yes,6.4,5,8,Rendah,Sedang,Sedang,Tinggi
+518,21,Male,Graduate,Poland,4.1,Facebook,No,8.0,7,5,Tinggi,Sedang,Rendah,Rendah
+519,20,Female,Undergraduate,India,6.9,WhatsApp,Yes,5.9,5,8,Rendah,Sedang,Tinggi,Tinggi
+520,22,Male,Graduate,Canada,4.7,TikTok,Yes,7.5,7,6,Rendah,Sedang,Sedang,Tinggi
+521,19,Female,Undergraduate,Brazil,6.0,WhatsApp,Yes,6.5,6,7,Sedang,Sedang,Sedang,Sedang
+522,21,Male,Graduate,China,4.3,WeChat,No,8.0,7,5,Tinggi,Sedang,Rendah,Rendah
+523,20,Female,Undergraduate,Netherlands,3.6,Instagram,No,8.4,8,4,Tinggi,Sedang,Rendah,Rendah
+524,22,Male,Graduate,New Zealand,4.5,Facebook,Yes,7.7,7,6,Sedang,Sedang,Sedang,Sedang
+525,19,Female,Undergraduate,Singapore,5.3,TikTok,Yes,6.8,6,7,Sedang,Sedang,Sedang,Sedang
+526,21,Male,Graduate,Malaysia,5.7,WhatsApp,Yes,6.6,6,7,Tinggi,Sedang,Sedang,Rendah
+527,20,Female,Undergraduate,UAE,6.7,Instagram,Yes,6.3,5,8,Rendah,Sedang,Sedang,Tinggi
+528,22,Male,Graduate,Poland,4.0,Facebook,No,8.1,7,5,Rendah,Sedang,Rendah,Tinggi
+529,19,Female,Undergraduate,India,7.0,WhatsApp,Yes,5.8,5,8,Sedang,Sedang,Tinggi,Sedang
+530,21,Male,Graduate,Canada,4.6,Instagram,Yes,7.6,7,6,Sedang,Sedang,Sedang,Sedang
+531,20,Female,Undergraduate,Brazil,5.9,TikTok,Yes,6.6,6,7,Sedang,Sedang,Sedang,Sedang
+532,22,Male,Graduate,China,4.2,WeChat,No,8.1,7,5,Sedang,Sedang,Rendah,Sedang
+533,19,Female,Undergraduate,Netherlands,3.5,Instagram,No,8.5,8,4,Rendah,Sedang,Rendah,Tinggi
+534,21,Male,Graduate,New Zealand,4.4,Facebook,Yes,7.8,7,6,Sedang,Sedang,Sedang,Sedang
+535,20,Female,Undergraduate,Singapore,5.4,TikTok,Yes,6.7,6,7,Tinggi,Sedang,Sedang,Rendah
+536,22,Male,Graduate,Malaysia,5.8,WhatsApp,Yes,6.5,6,7,Sedang,Sedang,Sedang,Sedang
+537,19,Female,Undergraduate,UAE,6.8,Instagram,Yes,6.2,5,8,Rendah,Sedang,Sedang,Tinggi
+538,21,Male,Graduate,Poland,3.9,Facebook,No,8.2,7,5,Sedang,Sedang,Rendah,Sedang
+539,20,Female,Undergraduate,India,7.1,WhatsApp,Yes,5.7,5,8,Sedang,Tinggi,Tinggi,Sedang
+540,22,Male,Graduate,Canada,4.5,TikTok,Yes,7.7,7,6,Rendah,Sedang,Sedang,Tinggi
+541,19,Female,Undergraduate,Brazil,5.8,WhatsApp,Yes,6.7,6,7,Sedang,Sedang,Sedang,Sedang
+542,21,Male,Graduate,China,4.1,WeChat,No,8.2,7,5,Rendah,Sedang,Rendah,Tinggi
+543,20,Female,Undergraduate,Netherlands,3.4,Instagram,No,8.6,8,4,Tinggi,Sedang,Rendah,Rendah
+544,22,Male,Graduate,New Zealand,4.3,Instagram,Yes,7.9,7,6,Rendah,Sedang,Sedang,Tinggi
+545,19,Female,Undergraduate,Singapore,5.5,TikTok,Yes,6.6,6,7,Tinggi,Sedang,Sedang,Rendah
+546,21,Male,Graduate,Malaysia,5.9,WhatsApp,Yes,6.4,6,7,Sedang,Sedang,Sedang,Sedang
+547,20,Female,Undergraduate,UAE,6.9,Instagram,Yes,6.1,5,8,Rendah,Sedang,Sedang,Tinggi
+548,22,Male,Graduate,Poland,3.8,Facebook,No,8.3,7,5,Sedang,Sedang,Rendah,Sedang
+549,19,Female,Undergraduate,India,7.2,WhatsApp,Yes,5.6,5,8,Sedang,Tinggi,Tinggi,Sedang
+550,21,Male,Graduate,Canada,4.4,Instagram,Yes,7.8,7,6,Sedang,Sedang,Sedang,Sedang
+551,20,Female,Undergraduate,Brazil,5.7,TikTok,Yes,6.8,6,7,Sedang,Sedang,Sedang,Sedang
+552,22,Male,Graduate,China,4.0,WeChat,No,8.3,7,5,Tinggi,Sedang,Rendah,Rendah
+553,19,Female,Undergraduate,Netherlands,3.3,Instagram,No,8.7,8,4,Sedang,Sedang,Rendah,Sedang
+554,21,Male,Graduate,New Zealand,4.2,Facebook,Yes,8.0,7,6,Sedang,Sedang,Rendah,Sedang
+555,20,Female,Undergraduate,Singapore,5.6,TikTok,Yes,6.5,6,7,Sedang,Sedang,Sedang,Sedang
+556,22,Male,Graduate,Malaysia,6.0,WhatsApp,Yes,6.3,6,7,Tinggi,Sedang,Sedang,Rendah
+557,19,Female,Undergraduate,UAE,7.0,Instagram,Yes,6.0,5,8,Sedang,Sedang,Sedang,Sedang
+558,21,Male,Graduate,Poland,3.7,Facebook,No,8.4,7,5,Tinggi,Sedang,Rendah,Rendah
+559,20,Female,Undergraduate,India,7.3,WhatsApp,Yes,5.5,5,8,Sedang,Tinggi,Tinggi,Sedang
+560,22,Male,Graduate,Canada,4.3,TikTok,Yes,7.9,7,6,Rendah,Sedang,Sedang,Tinggi
+561,19,Female,Undergraduate,Brazil,5.6,WhatsApp,Yes,6.9,6,7,Tinggi,Sedang,Sedang,Rendah
+562,21,Male,Graduate,China,3.9,WeChat,No,8.4,7,5,Tinggi,Sedang,Rendah,Rendah
+563,20,Female,Undergraduate,Netherlands,3.2,Instagram,No,8.8,8,4,Sedang,Sedang,Rendah,Sedang
+564,22,Male,Graduate,New Zealand,4.1,Instagram,Yes,8.1,7,6,Tinggi,Sedang,Rendah,Rendah
+565,19,Female,Undergraduate,Singapore,5.7,TikTok,Yes,6.4,6,7,Sedang,Sedang,Sedang,Sedang
+566,21,Male,Graduate,Malaysia,6.1,WhatsApp,Yes,6.2,6,7,Sedang,Sedang,Sedang,Sedang
+567,20,Female,Undergraduate,UAE,7.1,Instagram,Yes,5.9,5,8,Sedang,Tinggi,Tinggi,Sedang
+568,22,Male,Graduate,Poland,3.6,Facebook,No,8.5,7,5,Rendah,Sedang,Rendah,Tinggi
+569,19,Female,Undergraduate,India,7.4,WhatsApp,Yes,5.4,5,8,Tinggi,Tinggi,Tinggi,Rendah
+570,21,Male,Graduate,Canada,4.2,Instagram,Yes,8.0,7,6,Rendah,Sedang,Rendah,Tinggi
+571,20,Female,Undergraduate,Spain,6.1,Instagram,Yes,7.2,5,7,Rendah,Sedang,Sedang,Tinggi
+572,23,Male,Graduate,Denmark,3.8,Twitter,No,7.8,8,4,Tinggi,Sedang,Sedang,Rendah
+573,19,Female,Undergraduate,Ireland,5.5,TikTok,Yes,6.8,6,8,Tinggi,Sedang,Sedang,Rendah
+574,22,Male,Graduate,India,7.2,Facebook,Yes,5.9,4,9,Tinggi,Tinggi,Tinggi,Rendah
+575,21,Female,Undergraduate,Switzerland,4.2,Instagram,No,7.5,7,5,Tinggi,Sedang,Sedang,Rendah
+576,24,Male,Graduate,Turkey,6.8,TikTok,Yes,6.2,5,8,Rendah,Sedang,Sedang,Tinggi
+577,20,Female,Undergraduate,USA,5.9,Instagram,Yes,6.7,6,7,Rendah,Sedang,Sedang,Tinggi
+578,22,Male,Graduate,Mexico,6.5,Facebook,Yes,6.1,5,8,Sedang,Sedang,Sedang,Sedang
+579,19,Female,Undergraduate,France,4.7,Twitter,No,7.4,7,5,Rendah,Sedang,Sedang,Tinggi
+580,23,Male,Graduate,Canada,5.2,Instagram,Yes,7.0,6,6,Sedang,Sedang,Sedang,Sedang
+581,21,Female,Undergraduate,UK,6.3,TikTok,Yes,6.4,5,8,Sedang,Sedang,Sedang,Sedang
+582,24,Male,Graduate,Italy,4.9,Facebook,No,7.3,7,5,Tinggi,Sedang,Sedang,Rendah
+583,20,Female,Undergraduate,Russia,6.7,Instagram,Yes,6.0,5,8,Tinggi,Sedang,Sedang,Rendah
+584,22,Male,Graduate,China,5.8,WeChat,Yes,6.5,6,7,Rendah,Sedang,Sedang,Tinggi
+585,19,Female,Undergraduate,Japan,4.5,Twitter,No,7.6,8,4,Tinggi,Sedang,Sedang,Rendah
+586,23,Male,Graduate,Poland,6.4,Facebook,Yes,6.3,5,8,Rendah,Sedang,Sedang,Tinggi
+587,21,Female,Undergraduate,Finland,4.1,Instagram,No,7.7,7,5,Rendah,Sedang,Sedang,Tinggi
+588,24,Male,Graduate,Spain,6.6,TikTok,Yes,6.2,5,8,Sedang,Sedang,Sedang,Sedang
+589,20,Female,Undergraduate,Denmark,4.4,Instagram,No,7.4,7,5,Rendah,Sedang,Sedang,Tinggi
+590,22,Male,Graduate,Ireland,5.7,Twitter,Yes,6.8,6,7,Tinggi,Sedang,Sedang,Rendah
+591,19,Female,Undergraduate,India,7.0,Instagram,Yes,5.8,4,9,Sedang,Sedang,Tinggi,Sedang
+592,23,Male,Graduate,Switzerland,4.3,Facebook,No,7.5,7,5,Rendah,Sedang,Sedang,Tinggi
+593,21,Female,Undergraduate,Turkey,6.9,TikTok,Yes,6.1,5,8,Tinggi,Sedang,Sedang,Rendah
+594,24,Male,Graduate,USA,5.6,Instagram,Yes,6.9,6,7,Tinggi,Sedang,Sedang,Rendah
+595,20,Female,Undergraduate,Mexico,6.2,Facebook,Yes,6.3,5,8,Tinggi,Sedang,Sedang,Rendah
+596,21,Male,Undergraduate,France,5.8,Instagram,Yes,6.7,6,7,Tinggi,Sedang,Sedang,Rendah
+597,23,Female,Graduate,Canada,4.9,TikTok,No,7.3,7,5,Sedang,Sedang,Sedang,Sedang
+598,20,Male,Undergraduate,UK,6.4,Facebook,Yes,6.2,5,8,Tinggi,Sedang,Sedang,Rendah
+599,22,Female,Graduate,Italy,5.1,Twitter,No,7.1,7,5,Tinggi,Sedang,Sedang,Rendah
+600,19,Male,Undergraduate,Russia,6.7,Instagram,Yes,6.0,4,8,Sedang,Sedang,Sedang,Sedang
+601,24,Female,Graduate,China,5.5,WeChat,Yes,6.8,6,7,Tinggi,Sedang,Sedang,Rendah
+602,21,Male,Undergraduate,Japan,4.3,Twitter,No,7.6,8,4,Sedang,Sedang,Sedang,Sedang
+603,23,Female,Graduate,Poland,6.2,Instagram,Yes,6.4,5,8,Rendah,Sedang,Sedang,Tinggi
+604,20,Male,Undergraduate,Finland,4.5,Facebook,No,7.4,7,5,Sedang,Sedang,Sedang,Sedang
+605,22,Female,Graduate,Spain,6.3,TikTok,Yes,6.3,5,8,Rendah,Sedang,Sedang,Tinggi
+606,19,Male,Undergraduate,Denmark,4.7,Instagram,No,7.2,7,5,Rendah,Sedang,Sedang,Tinggi
+607,24,Female,Graduate,Ireland,5.9,Twitter,Yes,6.6,6,7,Tinggi,Sedang,Sedang,Rendah
+608,21,Male,Undergraduate,India,7.1,Facebook,Yes,5.7,4,9,Tinggi,Tinggi,Tinggi,Rendah
+609,23,Female,Graduate,Switzerland,4.4,Instagram,No,7.4,7,5,Sedang,Sedang,Sedang,Sedang
+610,20,Male,Undergraduate,Turkey,6.6,TikTok,Yes,6.2,5,8,Tinggi,Sedang,Sedang,Rendah
+611,22,Female,Graduate,USA,5.4,Instagram,Yes,6.9,6,7,Rendah,Sedang,Sedang,Tinggi
+612,19,Male,Undergraduate,Mexico,6.5,Facebook,Yes,6.1,5,8,Rendah,Sedang,Sedang,Tinggi
+613,24,Female,Graduate,France,4.8,Twitter,No,7.3,7,5,Sedang,Sedang,Sedang,Sedang
+614,21,Male,Undergraduate,Canada,5.7,Instagram,Yes,6.7,6,7,Tinggi,Sedang,Sedang,Rendah
+615,23,Female,Graduate,UK,6.1,TikTok,Yes,6.4,5,8,Tinggi,Sedang,Sedang,Rendah
+616,20,Male,Undergraduate,Italy,4.6,Facebook,No,7.2,7,5,Sedang,Sedang,Sedang,Sedang
+617,22,Female,Graduate,Russia,6.8,Instagram,Yes,5.9,4,9,Sedang,Sedang,Tinggi,Sedang
+618,19,Male,Undergraduate,China,5.6,WeChat,Yes,6.8,6,7,Sedang,Sedang,Sedang,Sedang
+619,24,Female,Graduate,Japan,4.2,Twitter,No,7.5,8,4,Tinggi,Sedang,Sedang,Rendah
+620,21,Male,Undergraduate,Poland,6.3,TikTok,Yes,6.3,5,8,Tinggi,Sedang,Sedang,Rendah
+621,23,Female,Graduate,Finland,4.4,Instagram,No,7.4,7,5,Tinggi,Sedang,Sedang,Rendah
+622,20,Male,Undergraduate,Spain,6.5,Facebook,Yes,6.2,5,8,Sedang,Sedang,Sedang,Sedang
+623,22,Female,Graduate,Denmark,4.6,Twitter,No,7.3,7,5,Rendah,Sedang,Sedang,Tinggi
+624,19,Male,Undergraduate,Ireland,5.8,Instagram,Yes,6.6,6,7,Tinggi,Sedang,Sedang,Rendah
+625,24,Female,Graduate,India,7.0,TikTok,Yes,5.8,4,9,Tinggi,Sedang,Tinggi,Rendah
+626,21,Male,Undergraduate,Switzerland,4.5,Facebook,No,7.3,7,5,Sedang,Sedang,Sedang,Sedang
+627,23,Female,Graduate,Turkey,6.7,Instagram,Yes,6.1,5,8,Rendah,Sedang,Sedang,Tinggi
+628,20,Male,Undergraduate,USA,5.5,Twitter,Yes,6.8,6,7,Sedang,Sedang,Sedang,Sedang
+629,22,Female,Graduate,Mexico,6.4,Facebook,Yes,6.2,5,8,Rendah,Sedang,Sedang,Tinggi
+630,19,Male,Undergraduate,France,4.7,Instagram,No,7.2,7,5,Tinggi,Sedang,Sedang,Rendah
+631,24,Female,Graduate,Canada,5.6,TikTok,Yes,6.7,6,7,Tinggi,Sedang,Sedang,Rendah
+632,21,Male,Undergraduate,UK,6.2,Facebook,Yes,6.3,5,8,Sedang,Sedang,Sedang,Sedang
+633,23,Female,Graduate,Italy,4.8,Twitter,No,7.1,7,5,Tinggi,Sedang,Sedang,Rendah
+634,20,Male,Undergraduate,Russia,6.9,Instagram,Yes,5.9,4,9,Tinggi,Sedang,Tinggi,Rendah
+635,22,Female,Graduate,China,5.7,WeChat,Yes,6.7,6,7,Rendah,Sedang,Sedang,Tinggi
+636,19,Male,Undergraduate,Japan,4.4,Twitter,No,7.4,8,4,Tinggi,Sedang,Sedang,Rendah
+637,24,Female,Graduate,Poland,6.1,TikTok,Yes,6.4,5,8,Tinggi,Sedang,Sedang,Rendah
+638,21,Male,Undergraduate,Finland,4.3,Instagram,No,7.5,7,5,Tinggi,Sedang,Sedang,Rendah
+639,23,Female,Graduate,Spain,6.4,Facebook,Yes,6.2,5,8,Rendah,Sedang,Sedang,Tinggi
+640,20,Male,Undergraduate,Denmark,4.5,Twitter,No,7.3,7,5,Sedang,Sedang,Sedang,Sedang
+641,22,Female,Graduate,Ireland,5.9,Instagram,Yes,6.5,6,7,Sedang,Sedang,Sedang,Sedang
+642,19,Male,Undergraduate,India,7.2,TikTok,Yes,5.7,4,9,Rendah,Tinggi,Tinggi,Tinggi
+643,24,Female,Graduate,Switzerland,4.6,Facebook,No,7.2,7,5,Rendah,Sedang,Sedang,Tinggi
+644,21,Male,Undergraduate,Turkey,6.8,Instagram,Yes,6.0,5,8,Sedang,Sedang,Sedang,Sedang
+645,23,Female,Graduate,USA,5.3,Twitter,Yes,6.8,6,7,Tinggi,Sedang,Sedang,Rendah
+646,22,Male,Graduate,Mexico,6.3,Facebook,Yes,6.2,5,8,Sedang,Sedang,Sedang,Sedang
+647,20,Female,Undergraduate,France,4.8,Instagram,No,7.1,7,5,Sedang,Sedang,Sedang,Sedang
+648,23,Male,Graduate,Canada,5.7,TikTok,Yes,6.6,6,7,Sedang,Sedang,Sedang,Sedang
+649,21,Female,Undergraduate,UK,6.2,Twitter,Yes,6.3,5,8,Rendah,Sedang,Sedang,Tinggi
+650,24,Male,Graduate,Italy,4.7,Facebook,No,7.2,7,5,Sedang,Sedang,Sedang,Sedang
+651,19,Female,Undergraduate,Russia,6.8,Instagram,Yes,5.9,4,9,Sedang,Sedang,Tinggi,Sedang
+652,22,Male,Graduate,China,5.6,WeChat,Yes,6.7,6,7,Tinggi,Sedang,Sedang,Rendah
+653,20,Female,Undergraduate,Japan,4.3,Twitter,No,7.5,8,4,Sedang,Sedang,Sedang,Sedang
+654,23,Male,Graduate,Poland,6.2,TikTok,Yes,6.3,5,8,Sedang,Sedang,Sedang,Sedang
+655,21,Female,Undergraduate,Finland,4.4,Instagram,No,7.4,7,5,Rendah,Sedang,Sedang,Tinggi
+656,24,Male,Graduate,Spain,6.5,Facebook,Yes,6.1,5,8,Sedang,Sedang,Sedang,Sedang
+657,19,Female,Undergraduate,Denmark,4.6,Twitter,No,7.3,7,5,Sedang,Sedang,Sedang,Sedang
+658,22,Male,Graduate,Ireland,5.8,Instagram,Yes,6.6,6,7,Rendah,Sedang,Sedang,Tinggi
+659,20,Female,Undergraduate,India,7.1,TikTok,Yes,5.8,4,9,Sedang,Tinggi,Tinggi,Sedang
+660,23,Male,Graduate,Switzerland,4.5,Facebook,No,7.3,7,5,Sedang,Sedang,Sedang,Sedang
+661,21,Female,Undergraduate,Turkey,6.7,Instagram,Yes,6.0,5,8,Tinggi,Sedang,Sedang,Rendah
+662,24,Male,Graduate,USA,5.4,Twitter,Yes,6.8,6,7,Sedang,Sedang,Sedang,Sedang
+663,19,Female,Undergraduate,Mexico,6.4,TikTok,Yes,6.2,5,8,Tinggi,Sedang,Sedang,Rendah
+664,22,Male,Graduate,France,4.7,Facebook,No,7.2,7,5,Tinggi,Sedang,Sedang,Rendah
+665,20,Female,Undergraduate,Canada,5.6,Instagram,Yes,6.7,6,7,Sedang,Sedang,Sedang,Sedang
+666,23,Male,Graduate,UK,6.3,Twitter,Yes,6.2,5,8,Tinggi,Sedang,Sedang,Rendah
+667,21,Female,Undergraduate,Italy,4.8,TikTok,No,7.1,7,5,Sedang,Sedang,Sedang,Sedang
+668,24,Male,Graduate,Russia,6.9,Instagram,Yes,5.9,4,9,Sedang,Sedang,Tinggi,Sedang
+669,19,Female,Undergraduate,China,5.7,WeChat,Yes,6.7,6,7,Rendah,Sedang,Sedang,Tinggi
+670,22,Male,Graduate,Japan,4.4,Twitter,No,7.4,8,4,Tinggi,Sedang,Sedang,Rendah
+671,20,Female,Undergraduate,Poland,6.1,Facebook,Yes,6.4,5,8,Sedang,Sedang,Sedang,Sedang
+672,23,Male,Graduate,Finland,4.3,Instagram,No,7.5,7,5,Tinggi,Sedang,Sedang,Rendah
+673,21,Female,Undergraduate,Spain,6.4,TikTok,Yes,6.2,5,8,Sedang,Sedang,Sedang,Sedang
+674,24,Male,Graduate,Denmark,4.5,Twitter,No,7.3,7,5,Sedang,Sedang,Sedang,Sedang
+675,19,Female,Undergraduate,Ireland,5.9,Instagram,Yes,6.5,6,7,Sedang,Sedang,Sedang,Sedang
+676,22,Male,Graduate,India,7.2,Facebook,Yes,5.7,4,9,Rendah,Tinggi,Tinggi,Tinggi
+677,20,Female,Undergraduate,Switzerland,4.6,TikTok,No,7.2,7,5,Tinggi,Sedang,Sedang,Rendah
+678,23,Male,Graduate,Turkey,6.8,Instagram,Yes,6.0,5,8,Rendah,Sedang,Sedang,Tinggi
+679,21,Female,Undergraduate,USA,5.3,Twitter,Yes,6.8,6,7,Rendah,Sedang,Sedang,Tinggi
+680,24,Male,Graduate,Mexico,6.2,Facebook,Yes,6.3,5,8,Rendah,Sedang,Sedang,Tinggi
+681,19,Female,Undergraduate,France,4.7,Instagram,No,7.2,7,5,Tinggi,Sedang,Sedang,Rendah
+682,22,Male,Graduate,Canada,5.8,TikTok,Yes,6.6,6,7,Rendah,Sedang,Sedang,Tinggi
+683,20,Female,Undergraduate,UK,6.1,Twitter,Yes,6.4,5,8,Rendah,Sedang,Sedang,Tinggi
+684,23,Male,Graduate,Italy,4.8,Facebook,No,7.1,7,5,Rendah,Sedang,Sedang,Tinggi
+685,21,Female,Undergraduate,Russia,6.7,Instagram,Yes,6.0,4,9,Rendah,Sedang,Sedang,Tinggi
+686,24,Male,Graduate,China,5.5,WeChat,Yes,6.8,6,7,Tinggi,Sedang,Sedang,Rendah
+687,19,Female,Undergraduate,Japan,4.2,Twitter,No,7.5,8,4,Sedang,Sedang,Sedang,Sedang
+688,22,Male,Graduate,Poland,6.3,TikTok,Yes,6.2,5,8,Sedang,Sedang,Sedang,Sedang
+689,20,Female,Undergraduate,Finland,4.4,Instagram,No,7.4,7,5,Sedang,Sedang,Sedang,Sedang
+690,23,Male,Graduate,Spain,6.5,Facebook,Yes,6.1,5,8,Rendah,Sedang,Sedang,Tinggi
+691,21,Female,Undergraduate,Denmark,4.6,Twitter,No,7.3,7,5,Tinggi,Sedang,Sedang,Rendah
+692,24,Male,Graduate,Ireland,5.9,Instagram,Yes,6.5,6,7,Sedang,Sedang,Sedang,Sedang
+693,19,Female,Undergraduate,India,7.0,TikTok,Yes,5.8,4,9,Tinggi,Sedang,Tinggi,Rendah
+694,22,Male,Graduate,Switzerland,4.5,Facebook,No,7.3,7,5,Tinggi,Sedang,Sedang,Rendah
+695,20,Female,Undergraduate,Turkey,6.6,Instagram,Yes,6.1,5,8,Rendah,Sedang,Sedang,Tinggi
+696,23,Male,Graduate,USA,5.5,Twitter,Yes,6.7,6,7,Tinggi,Sedang,Sedang,Rendah
+697,21,Female,Undergraduate,Mexico,6.3,TikTok,Yes,6.2,5,8,Sedang,Sedang,Sedang,Sedang
+698,24,Male,Graduate,France,4.8,Facebook,No,7.1,7,5,Tinggi,Sedang,Sedang,Rendah
+699,19,Female,Undergraduate,Canada,5.7,Instagram,Yes,6.6,6,7,Tinggi,Sedang,Sedang,Rendah
+700,22,Male,Graduate,UK,6.2,Twitter,Yes,6.3,5,8,Rendah,Sedang,Sedang,Tinggi
+701,20,Female,Undergraduate,Italy,4.7,TikTok,No,7.2,7,5,Rendah,Sedang,Sedang,Tinggi
+702,23,Male,Graduate,Russia,6.8,Instagram,Yes,5.9,4,9,Sedang,Sedang,Tinggi,Sedang
+703,21,Female,Undergraduate,China,5.6,WeChat,Yes,6.7,6,7,Sedang,Sedang,Sedang,Sedang
+704,24,Male,Graduate,Japan,4.3,Twitter,No,7.5,8,4,Tinggi,Sedang,Sedang,Rendah
+705,19,Female,Undergraduate,Poland,6.2,Facebook,Yes,6.3,5,8,Rendah,Sedang,Sedang,Tinggi
