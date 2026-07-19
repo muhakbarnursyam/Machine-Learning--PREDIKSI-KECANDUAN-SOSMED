@@ -89,7 +89,105 @@ df = pd.read_csv(
 # ==========================================================
 
 def prepare_training_data(data):
+@st.cache_resource
+def train_models_automatically():
 
+    (
+        X,
+        y,
+        target_encoder,
+        feature_encoders,
+        scaler,
+        feature_columns
+    ) = prepare_training_data(df)
+
+    X_train, X_test, y_train, y_test = train_test_split(
+
+        X,
+
+        y,
+
+        test_size=0.2,
+
+        random_state=42,
+
+        stratify=y
+    )
+
+    # Scaling
+    X_train_scaled = scaler.fit_transform(
+        X_train
+    )
+
+    X_test_scaled = scaler.transform(
+        X_test
+    )
+
+    models = {
+
+        "Logistic Regression":
+            LogisticRegression(
+                max_iter=1000
+            ),
+
+        "Decision Tree":
+            DecisionTreeClassifier(
+                random_state=42
+            ),
+
+        "Random Forest":
+            RandomForestClassifier(
+                n_estimators=200,
+                random_state=42
+            ),
+
+        "KNN":
+            KNeighborsClassifier(),
+
+        "Naive Bayes":
+            GaussianNB(),
+
+        "SVM":
+            SVC(
+                probability=True
+            )
+    }
+
+    if xgb:
+
+        models["XGBoost"] = XGBClassifier(
+
+            eval_metric="mlogloss",
+
+            random_state=42
+        )
+
+    trained_models = {}
+
+    for nama, model in models.items():
+
+        model.fit(
+
+            X_train_scaled,
+
+            y_train
+        )
+
+        trained_models[nama] = model
+
+    return (
+
+        trained_models,
+
+        scaler,
+
+        target_encoder,
+
+        feature_encoders,
+
+        feature_columns
+
+    )
     data = data.copy()
 
     # Hapus duplikat
