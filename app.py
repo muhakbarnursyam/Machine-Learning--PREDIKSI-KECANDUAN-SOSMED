@@ -89,7 +89,6 @@ df = pd.read_csv(
 # ==========================================================
 
 def prepare_training_data(data):
-@st.cache_resource
 def train_models_automatically():
 
     (
