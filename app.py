@@ -33,7 +33,7 @@ except ImportError:
 # ==========================================================
 st.set_page_config(
     page_title="Prediksi Kecanduan Media Sosial",
-    page_icon="https://pelajarinfo.id/wp-content/uploads/2022/08/Universitas-Negeri-Makassar-Logo.png",
+    page_icon="https://i.pinimg.com/originals/13/a1/56/13a15667ed324c559ca73f6d2108392b.jpg",
     layout="wide"
 )
 
