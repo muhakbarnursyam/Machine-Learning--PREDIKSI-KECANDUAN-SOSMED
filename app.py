@@ -114,7 +114,7 @@ def prepare_training_data(data):
 # --- HOME ---
 if menu == "Home":
     st.header("Machine Learning Project")
-    st.image("https://images.unsplash.com/photo-1611162618071-b39a2ec055fb")
+    st.image("https://i0.wp.com/metrum.co.id/kanal/uploads/2022/01/pict-19-kecanduan-medsos.jpg?w=800&ssl=1")
     st.write(
         """
         ## Prediksi Tingkat Kecanduan Media Sosial
