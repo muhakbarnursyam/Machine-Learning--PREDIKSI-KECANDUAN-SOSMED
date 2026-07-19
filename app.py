@@ -89,6 +89,78 @@ df = pd.read_csv(
 # ==========================================================
 
 def prepare_training_data(data):
+    data = data.copy()
+
+    # Hapus duplikat
+    data = data.drop_duplicates()
+
+    # Kolom yang tidak digunakan
+    drop_cols = [
+        "Student_ID",
+        "Addicted_Score",
+        "Sleep_Addiction_Indicator",
+        "Physical_Activity_Indicator"
+    ]
+
+    drop_cols = [
+        col for col in drop_cols
+        if col in data.columns
+    ]
+
+    data = data.drop(
+        columns=drop_cols
+    )
+
+    # Target
+    target = "Addiction_Level"
+
+    if target not in data.columns:
+
+        st.error(
+            "Kolom 'Addiction_Level' tidak ditemukan pada dataset training."
+        )
+
+        st.stop()
+
+    # Pisahkan fitur dan target
+    X = data.drop(
+        columns=[target]
+    )
+
+    y = data[target]
+
+    # Encode target
+    target_encoder = LabelEncoder()
+
+    y_encoded = target_encoder.fit_transform(
+        y.astype(str)
+    )
+
+    # Encoder fitur
+    feature_encoders = {}
+
+    categorical_columns = X.select_dtypes(
+        include="object"
+    ).columns
+
+    for col in categorical_columns:
+
+        encoder = LabelEncoder()
+
+        X[col] = encoder.fit_transform(
+            X[col].astype(str)
+        )
+
+        feature_encoders[col] = encoder
+
+    # Simpan urutan kolom
+    feature_columns = list(
+        X.columns
+    )
+
+    # Scaling
+    scaler = StandardScaler()
+    
 def train_models_automatically():
     (
         X,
@@ -977,147 +1049,423 @@ elif menu == "Prediksi Manual":
 
 elif menu == "Prediksi Dataset Upload":
 
-    st.header("📁 Upload Dataset Baru & Perbandingan Model")
+    st.header(
+        "📁 Upload Dataset Baru untuk Prediksi"
+    )
 
     st.info(
         """
-        Upload dataset CSV baru yang memiliki kolom 'Addiction_Level'.
-        Sistem akan menguji semua model yang telah dilatih menggunakan dataset baru ini 
-        dan menampilkan perbandingan performa antar model secara langsung.
+        Upload dataset CSV baru.
+
+        Dataset ini TIDAK digunakan untuk training ulang.
+
+        Dataset hanya akan digunakan untuk
+        melakukan prediksi menggunakan model
+        yang sudah dilatih.
         """
     )
 
     uploaded_prediction = st.file_uploader(
+
         "Upload Dataset Baru",
+
         type=["csv"],
+
         key="dataset_prediction"
     )
 
     if uploaded_prediction is None:
-        st.warning("Silakan upload dataset CSV.")
+
+        st.warning(
+            "Silakan upload dataset CSV."
+        )
+
         st.stop()
 
-    new_data = pd.read_csv(uploaded_prediction)
+    new_data = pd.read_csv(
 
-    st.subheader("📄 Dataset yang Di-upload")
-    st.dataframe(new_data, use_container_width=True)
+        uploaded_prediction
+    )
+
+    st.subheader(
+        "📄 Dataset yang Di-upload"
+    )
+
+    st.dataframe(
+
+        new_data,
+
+        use_container_width=True
+    )
 
     required_files = [
+
         "Semua_Model.pkl",
+
         "Scaler.pkl",
+
         "Target_Encoder.pkl",
+
         "Feature_Encoders.pkl",
+
         "Feature_Columns.pkl"
+
     ]
 
-    if not all(os.path.exists(file) for file in required_files):
-        st.error("Model belum tersedia. Silakan jalankan menu 'Training' terlebih dahulu.")
+    if not all(
+
+        os.path.exists(
+            file
+        )
+
+        for file in required_files
+
+    ):
+
+        st.error(
+
+            "Model belum tersedia. "
+
+            "Silakan jalankan Training terlebih dahulu."
+        )
+
         st.stop()
 
-    # Load semua resource model
-    models = joblib.load("Semua_Model.pkl")
-    scaler = joblib.load("Scaler.pkl")
-    target_encoder = joblib.load("Target_Encoder.pkl")
-    feature_encoders = joblib.load("Feature_Encoders.pkl")
-    feature_columns = joblib.load("Feature_Columns.pkl")
+    models = joblib.load(
+        "Semua_Model.pkl"
+    )
 
-    # Validasi keberadaan kolom target untuk perbandingan
-    if "Addiction_Level" not in new_data.columns:
-        st.error("Gagal memproses perbandingan! Dataset yang di-upload harus memiliki kolom 'Addiction_Level' sebagai label aktual.")
-        st.stop()
+    scaler = joblib.load(
+        "Scaler.pkl"
+    )
 
-    actual_labels = new_data["Addiction_Level"].copy()
-    
-    # Preprocessing data baru
-    prediction_data = new_data.copy().drop(columns=["Addiction_Level"])
+    target_encoder = joblib.load(
+        "Target_Encoder.pkl"
+    )
 
-    # Hapus kolom yang tidak digunakan sewaktu training
-    drop_cols = ["Student_ID", "Addicted_Score", "Sleep_Addiction_Indicator", "Physical_Activity_Indicator"]
-    drop_cols = [col for col in drop_cols if col in prediction_data.columns]
-    prediction_data = prediction_data.drop(columns=drop_cols)
+    feature_encoders = joblib.load(
+        "Feature_Encoders.pkl"
+    )
 
-    # Cek kecocokan kolom fitur
-    missing_columns = [col for col in feature_columns if col not in prediction_data.columns]
+    feature_columns = joblib.load(
+        "Feature_Columns.pkl"
+    )
+
+    model_name = st.selectbox(
+
+        "Pilih Model untuk Prediksi",
+
+        list(
+            models.keys()
+        )
+    )
+
+    model = models[
+        model_name
+    ]
+
+    prediction_data = new_data.copy()
+
+    # Simpan label asli jika tersedia
+    actual_labels = None
+
+    if "Addiction_Level" in prediction_data.columns:
+
+        actual_labels = prediction_data[
+            "Addiction_Level"
+        ].copy()
+
+        prediction_data = prediction_data.drop(
+
+            columns=["Addiction_Level"]
+        )
+
+    # Hapus kolom yang tidak digunakan
+    drop_cols = [
+
+        "Student_ID",
+
+        "Addicted_Score",
+
+        "Sleep_Addiction_Indicator",
+
+        "Physical_Activity_Indicator"
+
+    ]
+
+    drop_cols = [
+
+        col
+
+        for col in drop_cols
+
+        if col in prediction_data.columns
+
+    ]
+
+    prediction_data = prediction_data.drop(
+
+        columns=drop_cols
+    )
+
+    # Cek kolom yang hilang
+    missing_columns = [
+
+        col
+
+        for col in feature_columns
+
+        if col not in prediction_data.columns
+
+    ]
+
     if missing_columns:
-        st.error("Kolom dataset upload tidak lengkap.")
-        st.write("Kolom yang hilang:", missing_columns)
+
+        st.error(
+            "Kolom dataset upload tidak lengkap."
+        )
+
+        st.write(
+            "Kolom yang hilang:"
+        )
+
+        st.write(
+            missing_columns
+        )
+
         st.stop()
 
-    # Pastikan urutan kolom sama dengan saat training
-    prediction_data = prediction_data[feature_columns]
+    # Ambil fitur sesuai training
+    prediction_data = prediction_data[
+        feature_columns
+    ]
 
-    # Encode kolom kategori menggunakan encoder lama
+    # Encode kategori
     for col, encoder in feature_encoders.items():
+
         try:
-            prediction_data[col] = encoder.transform(prediction_data[col].astype(str))
+
+            prediction_data[col] = encoder.transform(
+
+                prediction_data[col].astype(str)
+            )
+
         except:
-            st.error(f"Nilai pada kolom '{col}' tidak sesuai dengan kategori data training awal.")
+
+            st.error(
+
+                f"Nilai pada kolom '{col}' "
+                "tidak sesuai dengan dataset training."
+            )
+
             st.stop()
 
-    # Scaling fitur
-    prediction_scaled = scaler.transform(prediction_data)
+    # Scaling
+    prediction_scaled = scaler.transform(
+
+        prediction_data
+    )
+
+    # Prediksi
+    predictions = model.predict(
+
+        prediction_scaled
+    )
+
+    predicted_labels = target_encoder.inverse_transform(
+
+        predictions
+    )
+
+    # Hasil
+    result_data = new_data.copy()
+
+    result_data[
+        "Prediction"
+    ] = predicted_labels
+
+    st.success(
+        "Prediksi berhasil!"
+    )
+
+    st.subheader(
+        "📊 Hasil Prediksi"
+    )
+
+    st.dataframe(
+
+        result_data,
+
+        use_container_width=True
+    )
 
     # ======================================================
-    # PROSES PREDIKSI & PERBANDINGAN MULTI-MODEL
+    # PERBANDINGAN
     # ======================================================
-    st.subheader("📈 Hasil Evaluasi dan Perbandingan Performa Model")
-    
-    perbandingan_hasil = []
-    tabel_prediksi_all = new_data.copy()
 
-    # Lakukan prediksi untuk SETIAP model yang tersimpan
-    for name, model in models.items():
-        preds = model.predict(prediction_scaled)
-        pred_labels = target_encoder.inverse_transform(preds)
-        
-        # Simpan kolom prediksi masing-masing model ke dataframe utama
-        tabel_prediksi_all[f"Prediksi ({name})"] = pred_labels
-        
-        # Hitung metrik performa
-        acc = accuracy_score(actual_labels, pred_labels)
-        pre = precision_score(actual_labels, pred_labels, average="weighted", zero_division=0)
-        rec = recall_score(actual_labels, pred_labels, average="weighted", zero_division=0)
-        f1 = f1_score(actual_labels, pred_labels, average="weighted", zero_division=0)
-        
-        perbandingan_hasil.append([name, acc, pre, rec, f1])
+    if actual_labels is not None:
 
-    # Mengubah hasil perbandingan menjadi DataFrame
-    df_compare = pd.DataFrame(
-        perbandingan_hasil, 
-        columns=["Model", "Accuracy", "Precision", "Recall", "F1 Score"]
-    ).sort_values(by="Accuracy", ascending=False)
+        st.header(
+            "📈 Perbandingan Aktual vs Prediksi"
+        )
 
-    # Tampilkan tabel perbandingan metrik kinerja
-    st.dataframe(df_compare.style.format({
-        "Accuracy": "{:.2%}",
-        "Precision": "{:.2%}",
-        "Recall": "{:.2%}",
-        "F1 Score": "{:.2%}"
-    }), use_container_width=True)
+        comparison = pd.DataFrame({
 
-    # Visualisasi Grafik Perbandingan Akurasi
-    fig, ax = plt.subplots(figsize=(10, 4))
-    bars = ax.bar(df_compare["Model"], df_compare["Accuracy"], color='#4285F4')
-    ax.set_ylabel("Accuracy")
-    ax.set_title("Grafik Perbandingan Akurasi Model pada Dataset Baru")
-    plt.xticks(rotation=15)
-    
-    # Tambahkan teks persentase di atas grafik batang
-    for bar in bars:
-        yval = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width()/2, yval + 0.01, f"{yval*100:.1f}%", ha='center', va='bottom', fontsize=9)
-        
-    st.pyplot(fig)
+            "Aktual":
+                actual_labels.values,
 
-    # Tampilkan Data Lengkap Hasil Prediksi Semua Model
-    st.subheader("📋 Detail Hasil Prediksi Seluruh Model")
-    st.dataframe(tabel_prediksi_all, use_container_width=True)
+            "Prediksi":
+                predicted_labels
 
-    # Fitur Download Data Lengkap
-    csv = tabel_prediksi_all.to_csv(index=False).encode("utf-8")
+        })
+
+        st.dataframe(
+
+            comparison,
+
+            use_container_width=True
+        )
+
+        accuracy = accuracy_score(
+
+            actual_labels,
+
+            predicted_labels
+        )
+
+        precision = precision_score(
+
+            actual_labels,
+
+            predicted_labels,
+
+            average="weighted",
+
+            zero_division=0
+        )
+
+        recall = recall_score(
+
+            actual_labels,
+
+            predicted_labels,
+
+            average="weighted",
+
+            zero_division=0
+        )
+
+        f1 = f1_score(
+
+            actual_labels,
+
+            predicted_labels,
+
+            average="weighted",
+
+            zero_division=0
+        )
+
+        col1, col2, col3, col4 = st.columns(4)
+
+        col1.metric(
+            "Accuracy",
+            f"{accuracy * 100:.2f}%"
+        )
+
+        col2.metric(
+            "Precision",
+            f"{precision * 100:.2f}%"
+        )
+
+        col3.metric(
+            "Recall",
+            f"{recall * 100:.2f}%"
+        )
+
+        col4.metric(
+            "F1 Score",
+            f"{f1 * 100:.2f}%"
+        )
+
+        st.subheader(
+            "📊 Confusion Matrix"
+        )
+
+        labels = target_encoder.classes_
+
+        # Ubah label aktual dan prediksi menjadi angka
+        actual_encoded = target_encoder.transform(
+            actual_labels.astype(str)
+        )
+
+        predicted_encoded = target_encoder.transform(
+            predicted_labels.astype(str)
+        )
+
+        cm = confusion_matrix(
+
+            actual_encoded,
+
+            predicted_encoded,
+
+            labels=range(
+                len(labels)
+            )
+        )
+
+        fig, ax = plt.subplots(
+
+            figsize=(7, 5)
+        )
+
+        disp = ConfusionMatrixDisplay(
+
+            confusion_matrix=cm,
+
+            display_labels=labels
+        )
+
+        disp.plot(
+
+            ax=ax
+        )
+
+        st.pyplot(
+            fig
+        )
+
+    else:
+
+        st.info(
+
+            """
+            Dataset tidak memiliki kolom
+            Addiction_Level.
+
+            Sistem hanya melakukan prediksi.
+
+            Accuracy, Precision, Recall, dan F1 Score
+            tidak dapat dihitung karena tidak ada
+            label aktual.
+            """
+        )
+
+    # Download
+    csv = result_data.to_csv(
+
+        index=False
+    ).encode(
+        "utf-8"
+    )
+
     st.download_button(
-        "⬇️ Download Hasil Semua Prediksi (CSV)",
+
+        "⬇️ Download Hasil Prediksi CSV",
+
         data=csv,
-        file_name="perbandingan_prediksi_dataset_baru.csv",
+
+        file_name="hasil_prediksi.csv",
+
         mime="text/csv"
     )
