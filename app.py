@@ -315,9 +315,44 @@ elif menu == "Prediksi Manual":
     # ------------------------------------------------------
     # TAB 1: INPUT FORM MANDIRI
     # ------------------------------------------------------
+    # ------------------------------------------------------
+    # TAB 1: INPUT FORM MANDIRI
+    # ------------------------------------------------------
     with tab_form:
         st.subheader("Masukkan Data Pengguna Baru:")
         input_data = {}
+        
+        # Kamus translasi label untuk visual form (Bahasa Indonesia Akademis/Formal)
+        label_mapping = {
+            "Age": "Masukkan Usia / Umur",
+            "Gender": "Pilih Jenis Kelamin",
+            "Academic_Level": "Pilih Jenjang / Tingkat Pendidikan",
+            "Country": "Pilih Negara Asal",
+            "Avg_Daily_Usage_Hours": "Masukkan Rata-rata Durasi Penggunaan Harian (Jam)",
+            "Most_Used_Platform": "Pilih Platform yang Paling Sering Digunakan",
+            "Affects_Academic_Performance": "Apakah Memengaruhi Performa Akademik?",
+            "Sleep_Hours_Per_Night": "Masukkan Durasi Tidur per Malam (Jam)",
+            "Mental_Health_Score": "Masukkan Skor Kesehatan Mental",
+            "Physical_Activity": "Pilih Tingkat Aktivitas Fisik"
+        }
+
+        # Kamus translasi untuk opsi pilihan di dalam dropdown (Kategorikal)
+        option_mapping = {
+            "Male": "Laki-laki",
+            "Female": "Perempuan",
+            "Undergraduate": "Sarjana (S1)",
+            "Graduate": "Pascasarjana (S2/S3)",
+            "High School": "SMA / Sederajat",
+            "School": "Sekolah Dasar/Menengah",
+            "Yes": "Ya",
+            "No": "Tidak",
+            "Low": "Rendah",
+            "Medium": "Sedang",
+            "High": "Tinggi"
+        }
+
+        # Kebalikan dari option_mapping untuk mengembalikan nilai asli ke model machine learning
+        reverse_option_mapping = {v: k for k, v in option_mapping.items()}
         
         with st.form("form_prediksi_manual"):
             col1, col2 = st.columns(2)
@@ -325,61 +360,34 @@ elif menu == "Prediksi Manual":
             for idx, col_name in enumerate(feature_columns):
                 form_col = col1 if idx % 2 == 0 else col2
                 
-                # Mengubah nama kolom teks asli (misal: 'Age' atau 'Social_Media_Time') menjadi bahasa Indonesia untuk label
-                label_indonesia = col_name.replace('_', ' ')
-                if label_indonesia.lower() == 'age':
-                    label_indonesia = 'Usia / Umur'
-                elif label_indonesia.lower() == 'gender':
-                    label_indonesia = 'Jenis Kelamin'
+                # Mengambil label Indonesia formal yang sesuai, atau default ke nama kolom asli jika tidak ada di kamus
+                display_label = label_mapping.get(col_name, f"Masukkan {col_name.replace('_', ' ')}")
                 
                 if col_name in feature_encoders:
                     labels_kategori = list(feature_encoders[col_name].classes_)
-                    input_data[col_name] = form_col.selectbox(
-                        f"Pilih {label_indonesia}", 
-                        options=labels_kategori
+                    
+                    # Menerjemahkan opsi pilihan dropdown ke Bahasa Indonesia
+                    translated_options = [option_mapping.get(opt, opt) for opt in labels_kategori]
+                    
+                    selected_display = form_col.selectbox(
+                        display_label, 
+                        options=translated_options
                     )
+                    # Mengembalikan nilai pilihan ke teks asli (English) agar dipahami oleh encoder model
+                    input_data[col_name] = reverse_option_mapping.get(selected_display, selected_display)
                 else:
                     min_val = float(df[col_name].min()) if col_name in df.columns else 0.0
                     max_val = float(df[col_name].max()) if col_name in df.columns else 100.0
                     mean_val = float(df[col_name].mean()) if col_name in df.columns else 0.0
                     
                     input_data[col_name] = form_col.number_input(
-                        f"Masukkan {label_indonesia}", 
+                        display_label, 
                         min_value=min_val,
                         max_value=max_val,
                         value=mean_val
                     )
             
             submitted = st.form_submit_button("🔮 Lakukan Prediksi Form")
-
-        if submitted:
-            input_df = pd.DataFrame([input_data])
-            
-            for col, encoder in feature_encoders.items():
-                try:
-                    input_df[col] = encoder.transform(input_df[col].astype(str))
-                except Exception as e:
-                    st.error(f"Terjadi kesalahan saat encoding fitur '{col}': {e}")
-                    st.stop()
-            
-            input_df = input_df[feature_columns]
-            input_scaled = scaler.transform(input_df)
-            
-            prediksi_angka = model.predict(input_scaled)
-            hasil_label = target_encoder.inverse_transform(prediksi_angka)[0]
-            
-            st.write("---")
-            st.subheader("📊 Hasil Prediksi Form")
-            st.success(f"Berdasarkan model **{model_name}**, tingkat kecanduan pengguna ini adalah: **{hasil_label}**")
-            
-            if hasattr(model, "predict_proba"):
-                probabilitas = model.predict_proba(input_scaled)[0]
-                st.write("**Probabilitas Keyakinan Model:**")
-                prob_df = pd.DataFrame({
-                    "Tingkat Kecanduan": target_encoder.classes_,
-                    "Keyakinan (Persentase)": [f"{p*100:.2f}%" for p in probabilitas]
-                })
-                st.dataframe(prob_df, use_container_width=True)
 
     # ------------------------------------------------------
     # TAB 2: UPLOAD FILE CSV (ADAPTIF MENYESUAIKAN DATASET)
