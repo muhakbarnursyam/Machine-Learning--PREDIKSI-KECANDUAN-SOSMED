@@ -271,26 +271,114 @@ elif menu == "Training":
     st.pyplot(fig)
 
 # --- PREDIKSI MANUAL ---
+# ==========================================================
+# PREDIKSI MANUAL
+# ==========================================================
 elif menu == "Prediksi Manual":
     st.header("🔍 Prediksi Manual")
-    required_files = ["Semua_Model.pkl", "Scaler.pkl", "Target_Encoder.pkl", "Feature_Encoders.pkl", "Feature_Columns.pkl"]
     
-    if not all(os.path.exists(f) for f in required_files):
-        st.error("Silakan jalankan menu **Training** terlebih dahulu untuk menghasilkan model eksternal.")
+    required_files = [
+        "Semua_Model.pkl",
+        "Scaler.pkl",
+        "Target_Encoder.pkl",
+        "Feature_Encoders.pkl",
+        "Feature_Columns.pkl"
+    ]
+    
+    if not all(os.path.exists(file) for file in required_files):
+        st.error("Silakan jalankan menu **Training** terlebih dahulu agar model dan komponen siap digunakan.")
         st.stop()
 
+    # Load semua komponen model
     models = joblib.load("Semua_Model.pkl")
     scaler = joblib.load("Scaler.pkl")
     target_encoder = joblib.load("Target_Encoder.pkl")
     feature_encoders = joblib.load("Feature_Encoders.pkl")
     feature_columns = joblib.load("Feature_Columns.pkl")
 
-    model_name = st.selectbox("Pilih Model Evaluasi", list(models.keys()))
+    # Pilih Model
+    model_name = st.selectbox("Pilih Model untuk Prediksi", list(models.keys()))
     model = models[model_name]
 
-    st.info("Buat formulir input dinamis di bawah ini berdasarkan urutan kolom `feature_columns` Anda.")
-    # Catatan: Anda dapat melengkapinya dengan st.number_input / st.selectbox untuk input data user manual.
+    st.write("---")
+    st.subheader("Masukkan Data Pengguna Baru:")
 
+    # Membuat form input secara dinamis berdasarkan dataset asal
+    input_data = {}
+    
+    # Bungkus form ke dalam st.form agar halaman tidak selalu refresh saat mengisi data
+    with st.form("form_prediksi_manual"):
+        # Pisahkan form menjadi 2 kolom agar tampilan lebih rapi
+        col1, col2 = st.columns(2)
+        
+        for idx, col_name in enumerate(feature_columns):
+            # Tentukan inputan ditaruh di kolom kiri atau kanan secara bergantian
+            form_col = col1 if idx % 2 == 0 else col2
+            
+            # Jika kolom tersebut adalah kolom kategorikal (ada di feature_encoders)
+            if col_name in feature_encoders:
+                labels_kategori = list(feature_encoders[col_name].classes_)
+                input_data[col_name] = form_col.selectbox(
+                    f"Pilih {col_name.replace('_', ' ')}", 
+                    options=labels_kategori
+                )
+            # Jika kolom tersebut numerik (dilihat dari tipe data asli di df jika ada)
+            else:
+                # Cek default nilai dari dataframe training biar aman
+                min_val = float(df[col_name].min()) if col_name in df.columns else 0.0
+                max_val = float(df[col_name].max()) if col_name in df.columns else 100.0
+                mean_val = float(df[col_name].mean()) if col_name in df.columns else 0.0
+                
+                input_data[col_name] = form_col.number_input(
+                    f"Masukkan {col_name.replace('_', ' ')}", 
+                    min_value=min_val,
+                    max_value=max_val,
+                    value=mean_val
+                )
+        
+        # Tombol Submit Form
+        submitted = st.form_submit_button("🔮 Lakukan Prediksi")
+
+    # Proses Prediksi setelah tombol ditekan
+    if submitted:
+        # Ubah data inputan menjadi DataFrame 1 baris
+        input_df = pd.DataFrame([input_data])
+        
+        # Encode data kategorikal yang diinput manual
+        for col, encoder in feature_encoders.items():
+            try:
+                input_df[col] = encoder.transform(input_df[col].astype(str))
+            except Exception as e:
+                st.error(f"Terjadi kesalahan saat encoding fitur '{col}': {e}")
+                st.stop()
+        
+        # Pastikan urutan kolom sesuai dengan saat training
+        input_df = input_df[feature_columns]
+        
+        # Scaling data inputan
+        input_scaled = scaler.transform(input_df)
+        
+        # Lakukan prediksi tingkat kecanduan
+        prediksi_angka = model.predict(input_scaled)
+        hasil_label = target_encoder.inverse_transform(prediksi_angka)[0]
+        
+        # Tampilkan Hasil Ke User
+        st.write("---")
+        st.subheader("📊 Hasil Prediksi")
+        
+        # Berikan warna box berdasarkan model pilihan
+        st.success(f"Berdasarkan model **{model_name}**, tingkat kecanduan pengguna ini adalah: **{hasil_label}**")
+        
+        # Opsional: Jika model mendukung predict_proba, tampilkan probabilitas kemiripannya
+        if hasattr(model, "predict_proba"):
+            probabilitas = model.predict_proba(input_scaled)[0]
+            st.write("**Probabilitas Keyakinan Model:**")
+            
+            prob_df = pd.DataFrame({
+                "Tingkat Kecanduan": target_encoder.classes_,
+                "Keyakinan (Persentase)": [f"{p*100:.2f}%" for p in probabilitas]
+            })
+            st.dataframe(prob_df, use_container_width=True)
 # --- PREDIKSI DATASET UPLOAD ---
 elif menu == "Prediksi Dataset Upload":
     st.header("📁 Upload Dataset Baru & Analisis Model")
