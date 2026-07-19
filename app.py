@@ -455,4 +455,17 @@ elif menu == "Prediksi Manual":
                 data=csv_output,
                 file_name=f"hasil_prediksi_{model_name.lower().replace(' ', '_')}.csv",
                 mime="text/csv"
+                # Install: pip install streamlit-lottie
+import requests
+from streamlit_lottie import st_lottie
+
+def load_lottieurl(url):
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
+
+# Contoh animasi bertema teknologi/analisis
+lottie_coding = load_lottieurl("https://assets5.lottiefiles.com/packages/lf20_fcfjwiyb.json")
+st_lottie(lottie_coding, height=300, key="coding")
             )
