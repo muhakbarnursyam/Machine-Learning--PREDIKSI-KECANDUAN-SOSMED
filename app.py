@@ -37,9 +37,9 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("https://pelajarinfo.id/wp-content/uploads/2022/08/Universitas-Negeri-Makassar-Logo.png Prediksi Tingkat Kecanduan Media Sosial")
+st.title("Prediksi Tingkat Kecanduan Media Sosial")
 st.write("---")
-
+st._icon = "https://pelajarinfo.id/wp-content/uploads/2022/08/Universitas-Negeri-Makassar-Logo.png"
 # ==========================================================
 # SIDEBAR MENU
 # ==========================================================
