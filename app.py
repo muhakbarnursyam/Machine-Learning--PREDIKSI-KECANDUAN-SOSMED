@@ -380,13 +380,16 @@ elif menu == "Prediksi Manual":
             })
             st.dataframe(prob_df, use_container_width=True)
 # --- PREDIKSI DATASET UPLOAD ---
+# ==========================================================
+# PREDIKSI DATASET UPLOAD (ADAPTIF & DUKUNG SEMUA FORMAT)
+# ==========================================================
 elif menu == "Prediksi Dataset Upload":
     st.header("📁 Upload Dataset Baru & Analisis Model")
     st.info(
         """
-        Silakan upload dataset CSV baru. 
-        - Jika dataset memiliki kolom **'Addiction_Level'**, sistem akan menampilkan **Fitur Perbandingan Performa** antar model.
-        - Jika tidak ada, sistem akan langsung memberikan hasil prediksi untuk seluruh model.
+        ### 💡 Fitur Deteksi Kolom Otomatis Aktif
+        Anda dapat mengunggah file CSV dengan format kolom apa pun. Sistem akan otomatis menyelaraskan 
+        dan mengisi kolom yang kurang agar model tidak error dan prediksi tetap bisa berjalan!
         """
     )
 
@@ -396,53 +399,97 @@ elif menu == "Prediksi Dataset Upload":
         st.stop()
 
     new_data = pd.read_csv(uploaded_prediction)
-    st.subheader("📄 Dataset yang Di-upload")
+    st.subheader("📄 Dataset Asli yang Di-upload User")
     st.dataframe(new_data, use_container_width=True)
 
+    # Validasi keberadaan file model eksternal
     required_files = ["Semua_Model.pkl", "Scaler.pkl", "Target_Encoder.pkl", "Feature_Encoders.pkl", "Feature_Columns.pkl"]
     if not all(os.path.exists(file) for file in required_files):
         st.error("Model/Komponen scaler belum tersedia. Silakan jalankan menu Training terlebih dahulu.")
         st.stop()
 
+    # Load komponen training awal
     models = joblib.load("Semua_Model.pkl")
     scaler = joblib.load("Scaler.pkl")
     target_encoder = joblib.load("Target_Encoder.pkl")
     feature_encoders = joblib.load("Feature_Encoders.pkl")
     feature_columns = joblib.load("Feature_Columns.pkl")
 
-    has_target = "Addiction_Level" in new_data.columns
-    if has_target:
-        actual_labels = new_data["Addiction_Level"].copy()
-        prediction_data = new_data.copy().drop(columns=["Addiction_Level"])
-    else:
-        actual_labels = None
-        prediction_data = new_data.copy()
+    # Cek apakah target aktual ada di dataset baru (untuk mode evaluasi)
+    has_target = False
+    actual_labels = None
+    target_candidates = ["Addiction_Level", "addiction_level", "Addiction Level", "Tingkat Kecanduan", "tingkat kecanduan"]
+    
+    for candidate in target_candidates:
+        if candidate in new_data.columns:
+            has_target = True
+            actual_labels = new_data[candidate].copy()
+            break
 
-    # Bersihkan fitur drop
-    drop_cols = ["Student_ID", "Addicted_Score", "Sleep_Addiction_Indicator", "Physical_Activity_Indicator"]
-    drop_cols = [col for col in drop_cols if col in prediction_data.columns]
-    prediction_data = prediction_data.drop(columns=drop_cols)
+    # ======================================================
+    # PROSES PENYELARASAN DATA SECARA OTOMATIS (APAPUN FORMATNYA)
+    # ======================================================
+    prediction_data = pd.DataFrame(index=new_data.index)
 
-    # Validasi struktur kolom
-    missing_columns = [col for col in feature_columns if col not in prediction_data.columns]
-    if missing_columns:
-        st.error("Format kolom upload tidak sesuai dengan standar data training.")
-        st.write("Kolom hilang:", missing_columns)
-        st.stop()
+    for col in feature_columns:
+        # 1. Jika nama kolom COCOK PERSIS
+        if col in new_data.columns:
+            prediction_data[col] = new_data[col].copy()
+        
+        # 2. Jika nama mirip (tidak sensitif huruf besar/kecil atau spasi/underscore)
+        else:
+            matched_col = None
+            simplified_target = col.lower().replace("_", "").replace(" ", "")
+            for user_col in new_data.columns:
+                if user_col.lower().replace("_", "").replace(" ", "") == simplified_target:
+                    matched_col = user_col
+                    break
+            
+            if matched_col:
+                prediction_data[col] = new_data[matched_col].copy()
+            
+            # 3. Jika kolom benar-benar tidak ada di data user (Buat kolom tiruan otomatis)
+            else:
+                if col in feature_encoders:
+                    # Kolom kategori diisi dengan nilai modus (terbanyak) atau nilai pertama dari encoder
+                    default_cat = feature_encoders[col].classes_[0]
+                    prediction_data[col] = default_cat
+                else:
+                    # Kolom numerik diisi dengan angka 0 atau rata-rata dummy
+                    prediction_data[col] = 0.0
 
+    # Menangani missing value (NaN) jika data buatan user ada yang kosong
+    for col in feature_columns:
+        if prediction_data[col].isnull().any():
+            if col in feature_encoders:
+                prediction_data[col] = prediction_data[col].fillna(feature_encoders[col].classes_[0])
+            else:
+                prediction_data[col] = prediction_data[col].fillna(0.0)
+
+    # 4. Transformasi/Encoding Kategori (Aman dari data baru tak dikenal)
+    for col, encoder in feature_encoders.items():
+        # Dapatkan nilai dasar yang diketahui oleh encoder saat training
+        known_classes = set(encoder.classes_)
+        default_class = encoder.classes_[0]
+        
+        # Jika user memasukkan teks baru yang tidak ada saat training, ubah otomatis ke default_class
+        prediction_data[col] = prediction_data[col].astype(str).apply(
+            lambda x: x if x in known_classes else default_class
+        )
+        
+        # Jalankan Label Encoder
+        prediction_data[col] = encoder.transform(prediction_data[col])
+
+    # Pastikan urutan dan bentuk kolom 100% konsisten dengan training
     prediction_data = prediction_data[feature_columns]
 
-    # Transformasi Kategori
-    for col, encoder in feature_encoders.items():
-        try:
-            prediction_data[col] = encoder.transform(prediction_data[col].astype(str))
-        except Exception:
-            st.error(f"Nilai kategori baru terdeteksi pada kolom '{col}' yang tidak dikenali encoder.")
-            st.stop()
-
+    # Scaling
     prediction_scaled = scaler.transform(prediction_data)
     
-    # Proses Multi-Model
+    # ======================================================
+    # PROSES PREDIKSI MULTI-MODEL
+    # ======================================================
+    st.write("---")
     perbandingan_list = []
     result_data_all = new_data.copy()
 
@@ -452,13 +499,16 @@ elif menu == "Prediksi Dataset Upload":
         result_data_all[f"Prediksi ({name})"] = pred_labels
         
         if has_target:
-            acc = accuracy_score(actual_labels, pred_labels)
-            pre = precision_score(actual_labels, pred_labels, average="weighted", zero_division=0)
-            rec = recall_score(actual_labels, pred_labels, average="weighted", zero_division=0)
-            f1 = f1_score(actual_labels, pred_labels, average="weighted", zero_division=0)
+            # Pastikan label aktual di-string-kan agar cocok saat evaluasi skor
+            acc = accuracy_score(actual_labels.astype(str), pred_labels.astype(str))
+            pre = precision_score(actual_labels.astype(str), pred_labels.astype(str), average="weighted", zero_division=0)
+            rec = recall_score(actual_labels.astype(str), pred_labels.astype(str), average="weighted", zero_division=0)
+            f1 = f1_score(actual_labels.astype(str), pred_labels.astype(str), average="weighted", zero_division=0)
             perbandingan_list.append([name, acc, pre, rec, f1])
 
-    # Tampilkan output perbandingan
+    # ======================================================
+    # TAMPILKAN OUTPUT/EVALUASI
+    # ======================================================
     if has_target:
         st.subheader("📈 Perbandingan Performa Semua Model (Berdasarkan Nilai Aktual)")
         df_compare = pd.DataFrame(
@@ -481,7 +531,7 @@ elif menu == "Prediksi Dataset Upload":
         st.pyplot(fig)
     else:
         st.subheader("📊 Hasil Prediksi Massal Model")
-        st.info("Dataset tidak memiliki kolom target 'Addiction_Level'. Metrik evaluasi akurasi disembunyikan.")
+        st.info("Dataset eksternal berhasil diproses! Metrik akurasi/grafik komparasi tidak dimunculkan karena data tidak berisi kolom target aktual.")
 
     st.subheader("📋 Data Lengkap Hasil Prediksi Seluruh Model")
     st.dataframe(result_data_all, use_container_width=True)
