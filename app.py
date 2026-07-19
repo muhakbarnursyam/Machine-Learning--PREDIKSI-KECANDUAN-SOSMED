@@ -392,7 +392,6 @@ elif menu == "Prediksi Manual":
             submitted = st.form_submit_button("🔮 Lakukan Prediksi Form")
 
         # PROSES EKSEKUSI PREDIKSI SETELAH TOMBOL DIKLIK
-        # PROSES EKSEKUSI PREDIKSI SETELAH TOMBOL DIKLIK
         if submitted:
             # Pindahkan & konversi data dari UI ke dictionary input data asli
             for col_name in feature_columns:
@@ -452,6 +451,89 @@ elif menu == "Prediksi Manual":
                     "Keyakinan (Persentase)": [f"{p*100:.2f}%" for p in probabilitas]
                 })
                 st.dataframe(prob_df, use_container_width=True)
+    # ------------------------------------------------------
+    # TAB 2: UPLOAD FILE CSV (ADAPTIF MENYESUAIKAN DATASET)
+    # ------------------------------------------------------
+    with tab_upload:
+        st.subheader("Predict via CSV Upload")
+        st.info("Sistem akan otomatis mendeteksi, menyelaraskan, dan menyesuaikan kolom dataset yang Anda unggah.")
+        
+        uploaded_file = st.file_uploader("Upload Dataset CSV Anda", type=["csv"], key="manual_upload_csv")
+        
+        if uploaded_file is not None:
+            user_data = pd.read_csv(uploaded_file)
+            st.write("📄 **Preview Data yang Di-upload:**")
+            st.dataframe(user_data.head(), use_container_width=True)
+            
+            # Kerangka DataFrame baru untuk diselaraskan dengan dataset training
+            aligned_data = pd.DataFrame(index=user_data.index)
+
+            # Proses Penyelarasan Otomatis
+            for col in feature_columns:
+                # 1. Jika nama cocok persis
+                if col in user_data.columns:
+                    aligned_data[col] = user_data[col].copy()
+                # 2. Jika nama mirip (tidak sensitif huruf besar/kecil dan spasi)
+                else:
+                    matched_col = None
+                    simplified_target = col.lower().replace("_", "").replace(" ", "")
+                    for user_col in user_data.columns:
+                        if user_col.lower().replace("_", "").replace(" ", "") == simplified_target:
+                            matched_col = user_col
+                            break
+                    
+                    if matched_col:
+                        aligned_data[col] = user_data[matched_col].copy()
+                    # 3. Jika kolom tidak ada sama sekali, buat nilai default
+                    else:
+                        if col in feature_encoders:
+                            aligned_data[col] = feature_encoders[col].classes_[0]
+                        else:
+                            aligned_data[col] = float(df[col].mean()) if col in df.columns else 0.0
+
+            # Penanganan data kosong (NaN)
+            for col in feature_columns:
+                if aligned_data[col].isnull().any():
+                    if col in feature_encoders:
+                        aligned_data[col] = aligned_data[col].fillna(feature_encoders[col].classes_[0])
+                    else:
+                        aligned_data[col] = aligned_data[col].fillna(float(df[col].mean()) if col in df.columns else 0.0)
+
+            # Transformasi / Label Encoding untuk kolom kategorikal
+            for col, encoder in feature_encoders.items():
+                known_classes = set(encoder.classes_)
+                default_class = encoder.classes_[0]
+                
+                # Ubah teks baru yang tidak dikenal saat training ke kelas default
+                aligned_data[col] = aligned_data[col].astype(str).apply(
+                    lambda x: x if x in known_classes else default_class
+                )
+                aligned_data[col] = encoder.transform(aligned_data[col])
+
+            # Susun ulang urutan kolom agar identik dengan data training
+            aligned_data = aligned_data[feature_columns]
+
+            # Lakukan Scaling dan Prediksi menggunakan model terpilih
+            aligned_scaled = scaler.transform(aligned_data)
+            csv_preds = model.predict(aligned_scaled)
+            csv_labels = target_encoder.inverse_transform(csv_preds)
+
+            # Gabungkan hasil prediksi ke data asli user
+            final_result = user_data.copy()
+            final_result[f"Hasil Prediksi ({model_name})"] = csv_labels
+
+            st.write("---")
+            st.subheader("📊 Hasil Prediksi Dataset Upload")
+            st.dataframe(final_result, use_container_width=True)
+
+            # Tombol Download Hasil
+            csv_output = final_result.to_csv(index=False).encode("utf-8")
+            st.download_button(
+                label=f"⬇️ Download Hasil Prediksi {model_name} (CSV)",
+                data=csv_output,
+                file_name=f"hasil_prediksi_{model_name.lower().replace(' ', '_')}.csv",
+                mime="text/csv"
+            )
 # --- PREDIKSI DATASET UPLOAD ---
 # ==========================================================
 # PREDIKSI DATASET UPLOAD (ADAPTIF & DUKUNG SEMUA FORMAT)
