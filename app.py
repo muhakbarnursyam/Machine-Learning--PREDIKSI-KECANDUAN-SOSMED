@@ -33,11 +33,11 @@ except ImportError:
 # ==========================================================
 st.set_page_config(
     page_title="Prediksi Kecanduan Media Sosial",
-    page_icon="📱",
+    page_icon="https://dianisa.com/_next/image?url=https%3A%2F%2Fassets.dianisa.com%2Fmedia%2F2024%2F09%2FLogo-Universitas-Negeri-Makassar.webp&w=3840&q=75",
     layout="wide"
 )
 
-st.title("📱 Prediksi Tingkat Kecanduan Media Sosial")
+st.title(" Prediksi Tingkat Kecanduan Media Sosial")
 st.write("---")
 
 # ==========================================================
