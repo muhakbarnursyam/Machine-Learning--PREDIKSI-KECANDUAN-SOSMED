@@ -31,7 +31,7 @@ except ImportError:
 # ==========================================================
 st.set_page_config(
     page_title="Prediksi Kecanduan Media Sosial",
-    page_icon="https://i.pinimg.com/originals/13/a1/56/13a15667ed324c559ca73f6d2108392b.jpg",
+    page_icon="🤖",
     layout="wide"
 )
 
@@ -43,14 +43,7 @@ st.write("---")
 # ==========================================================
 menu = st.sidebar.selectbox(
     "Pilih Menu",
-    [
-        "Home",
-        "Dataset",
-        "EDA",
-        "Preprocessing",
-        "Training",
-        "Prediksi Manual"
-    ]
+    ["Home", "Dataset", "EDA", "Preprocessing", "Training", "Prediksi Manual"]
 )
 
 # ==========================================================
@@ -62,10 +55,11 @@ if not os.path.exists(TRAINING_DATASET):
     st.error(f"Dataset training '{TRAINING_DATASET}' tidak ditemukan.")
     st.stop()
 
+# Load data utama
 df = pd.read_csv(TRAINING_DATASET)
 
 def prepare_training_data(data):
-    """Membersihkan data, melakukan encoding, dan scaling."""
+    """Membersihkan data dan melakukan encoding awal."""
     data = data.copy().drop_duplicates()
 
     # Hapus kolom yang tidak digunakan
@@ -88,26 +82,31 @@ def prepare_training_data(data):
 
     # Encode Fitur Kategorikal
     feature_encoders = {}
-    categorical_columns = X.select_dtypes(include="object").columns
+    categorical_columns = X.select_dtypes(include=["object", "category"]).columns
     for col in categorical_columns:
         encoder = LabelEncoder()
         X[col] = encoder.fit_transform(X[col].astype(str))
         feature_encoders[col] = encoder
 
     feature_columns = list(X.columns)
+    
+    # Sediakan scaler kosongan untuk di-fit saat training
     scaler = StandardScaler()
     
     return X, y_encoded, target_encoder, feature_encoders, scaler, feature_columns
 
-def align_and_predict(user_data, feature_columns, feature_encoders, scaler, model, target_encoder, model_name):
-    """Fungsi pembantu untuk menyelaraskan kolom dataset baru dan melakukan prediksi."""
+# Inisialisasi pipeline preproses global berdasarkan dataset dasar
+X_prep, y_prep, target_encoder_prep, feature_encoders_prep, scaler_prep, feature_columns_prep = prepare_training_data(df)
+
+def align_and_predict(user_data, feature_columns, feature_encoders, scaler, model, target_encoder, global_df):
+    """Menyelaraskan kolom dataset baru (upload) dan melakukan prediksi."""
     aligned_data = pd.DataFrame(index=user_data.index)
 
     for col in feature_columns:
         if col in user_data.columns:
             aligned_data[col] = user_data[col].copy()
         else:
-            # Pengecekan nama kolom yang mirip (case-insensitive & space-insensitive)
+            # Pengecekan nama kolom alternatif (case & space insensitive)
             matched_col = None
             simplified_target = col.lower().replace("_", "").replace(" ", "")
             for user_col in user_data.columns:
@@ -121,7 +120,7 @@ def align_and_predict(user_data, feature_columns, feature_encoders, scaler, mode
                 if col in feature_encoders:
                     aligned_data[col] = feature_encoders[col].classes_[0]
                 else:
-                    aligned_data[col] = float(df[col].mean()) if col in df.columns else 0.0
+                    aligned_data[col] = float(global_df[col].mean()) if col in global_df.columns else 0.0
 
     # Penanganan Missing Value
     for col in feature_columns:
@@ -129,9 +128,9 @@ def align_and_predict(user_data, feature_columns, feature_encoders, scaler, mode
             if col in feature_encoders:
                 aligned_data[col] = aligned_data[col].fillna(feature_encoders[col].classes_[0])
             else:
-                aligned_data[col] = aligned_data[col].fillna(float(df[col].mean()) if col in df.columns else 0.0)
+                aligned_data[col] = aligned_data[col].fillna(float(global_df[col].mean()) if col in global_df.columns else 0.0)
 
-    # Transformasi Kategorikal
+    # Transformasi Kategorikal menggunakan encoder terstandarisasi
     for col, encoder in feature_encoders.items():
         known_classes = set(encoder.classes_)
         default_class = encoder.classes_[0]
@@ -140,6 +139,7 @@ def align_and_predict(user_data, feature_columns, feature_encoders, scaler, mode
         )
         aligned_data[col] = encoder.transform(aligned_data[col])
 
+    # Pastikan urutan kolom presisi
     aligned_data = aligned_data[feature_columns]
     aligned_scaled = scaler.transform(aligned_data)
     
@@ -147,88 +147,69 @@ def align_and_predict(user_data, feature_columns, feature_encoders, scaler, mode
     labels = target_encoder.inverse_transform(preds)
     return labels, aligned_scaled
 
-# Cache data preprocessing agar tidak running berulang kali pada menu statis
-X_prep, y_prep, target_encoder_prep, feature_encoders_prep, scaler_prep, feature_columns_prep = prepare_training_data(df)
-
 # ==========================================================
-# TAMPILAN MENU
+# TAMPILAN MENU VIA IF-ELIF
 # ==========================================================
 
 # --- HOME ---
 if menu == "Home":
-    st.header("Machine Learning Project")
-    st.image("https://i0.wp.com/metrum.co.id/kanal/uploads/2022/01/pict-19-kecanduan-medsos.jpg?w=800&ssl=1")
-    st.write(
-        """
-        ## Prediksi Tingkat Kecanduan Media Sosial
-        Aplikasi ini menggunakan Machine Learning untuk memprediksi tingkat kecanduan media sosial seseorang.
+    st.header("🏠 Machine Learning Project")
+    st.write("### Prediksi Tingkat Kecanduan Media Sosial")
+    st.write("Aplikasi ini menggunakan berbagai model Machine Learning untuk memprediksi tingkat kecanduan media sosial seseorang.")
+    
+    st.markdown("""
+    ### 🤖 Model yang Didukung:
+    * Logistic Regression | Decision Tree | Random Forest | KNN | Naive Bayes | SVM | XGBoost
 
-        ### Model yang Digunakan:
-        ✔ Logistic Regression | ✔ Decision Tree | ✔ Random Forest | ✔ KNN | ✔ Naive Bayes | ✔ SVM | ✔ XGBoost
-
-        ### Fitur Utama:
-        * 📊 **Dataset** - Melihat ringkasan data training.
-        * 📈 **EDA** - Exploratory Data Analysis & Visualisasi Korelasi.
-        * ⚙️ **Preprocessing** - Pembersihan data & pembagian dataset.
-        * 🤖 **Training Model** - Melatih data ke semua algoritma secara simultan.
-        * 🔍 **Prediksi Manual** - Input data mandiri via form input atau unggah CSV massal.
-        """
-    )
+    ### 📊 Fitur Utama:
+    1. **Dataset** - Ringkasan data mentah pelatihan.
+    2. **EDA** - Analisis visual dan matriks korelasi data.
+    3. **Preprocessing** - Pembersihan data otomatis dan splitting dataset.
+    4. **Training Model** - Melatih seluruh model secara simultan dan mencari model terbaik.
+    5. **Prediksi Manual** - Form isian interaktif & unggah file CSV untuk prediksi massal.
+    """)
 
 # --- DATASET ---
 elif menu == "Dataset":
     st.header("📊 Dataset Training")
-    st.info(f"Dataset training yang digunakan: {TRAINING_DATASET}")
+    st.info(f"Dataset aktif: `{TRAINING_DATASET}`")
     st.dataframe(df, use_container_width=True)
 
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Jumlah Baris", df.shape[0])
-    col2.metric("Jumlah Kolom", df.shape[1])
+    col1, col2 = st.columns(2)
+    col1.metric("Jumlah Baris Data", df.shape[0])
+    col2.metric("Jumlah Fitur/Kolom", df.shape[1])
     
-    st.subheader("Statistik Deskriptif")
-    st.write(df.describe(include="all"))
-
-    st.subheader("Tipe Data")
-    st.write(df.dtypes.astype(str))
+    st.subheader("📋 Statistik Deskriptif")
+    st.dataframe(df.describe(include="all"), use_container_width=True)
 
 # --- EDA ---
 elif menu == "EDA":
     st.header("📈 Exploratory Data Analysis")
-    st.subheader("5 Data Pertama")
-    st.dataframe(df.head())
-
-    st.subheader("Informasi Dataset")
-    info = pd.DataFrame({
-        "Kolom": df.columns,
+    
+    st.subheader("🔍 Informasi Kualitas Data")
+    info_df = pd.DataFrame({
         "Tipe Data": df.dtypes.astype(str),
         "Missing Value": df.isnull().sum(),
-        "Unique": df.nunique()
+        "Jumlah Unique": df.nunique()
     })
-    st.dataframe(info, use_container_width=True)
+    st.dataframe(info_df, use_container_width=True)
 
     if "Addiction_Level" in df.columns:
-        st.subheader("Distribusi Addiction Level")
-        fig, ax = plt.subplots(figsize=(6, 3))
+        st.subheader("🎯 Distribusi Kelas Target (Addiction Level)")
+        fig, ax = plt.subplots(figsize=(6, 3.5))
         df["Addiction_Level"].value_counts().plot(kind="bar", ax=ax, color='#1E88E5')
-        ax.set_xlabel("Tingkat Kecanduan")
-        ax.set_ylabel("Jumlah")
+        ax.set_ylabel("Jumlah Sampel")
+        plt.xticks(rotation=0)
         st.pyplot(fig)
 
-    numeric = df.select_dtypes(include=np.number)
-    if not numeric.empty:
-        st.subheader("Distribusi Variabel Numerik")
-        for col in numeric.columns:
-            fig, ax = plt.subplots(figsize=(5, 2.5))
-            ax.hist(numeric[col], bins=20, color='#4CAF50')
-            ax.set_title(f"Distribusi {col}")
-            st.pyplot(fig)
-
-        st.subheader("Correlation Matrix")
-        corr = numeric.corr()
-        fig, ax = plt.subplots(figsize=(8, 6))
+    numeric_cols = df.select_dtypes(include=np.number)
+    if not numeric_cols.empty:
+        st.subheader("🔥 Matriks Korelasi Fitur Numerik")
+        corr = numeric_cols.corr()
+        fig, ax = plt.subplots(figsize=(7, 5))
         im = ax.imshow(corr, cmap='coolwarm')
         ax.set_xticks(range(len(corr.columns)))
-        ax.set_xticklabels(corr.columns, rotation=90)
+        ax.set_xticklabels(corr.columns, rotation=45, ha='right')
         ax.set_yticks(range(len(corr.columns)))
         ax.set_yticklabels(corr.columns)
         plt.colorbar(im)
@@ -237,21 +218,28 @@ elif menu == "EDA":
 # --- PREPROCESSING ---
 elif menu == "Preprocessing":
     st.header("⚙️ Preprocessing Data")
-    st.write(f"Dataset awal: **{df.shape[0]} baris, {df.shape[1]} kolom**")
+    st.write(f"Ukuran awal dataset: **{df.shape[0]} baris, {df.shape[1]} kolom**")
 
-    X_train, X_test, y_train, y_test = train_test_split(X_prep, y_prep, test_size=0.2, random_state=42, stratify=y_prep)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X_prep, y_prep, test_size=0.2, random_state=42, stratify=y_prep
+    )
 
-    st.success("Preprocessing berhasil dilakukan!")
-    st.write(f"✔ Jumlah Data Training: {X_train.shape[0]} sampel")
-    st.write(f"✔ Jumlah Data Testing: {X_test.shape[0]} sampel")
-    st.write("Target Classes:", list(target_encoder_prep.classes_))
+    st.success("Preprocessing & Data Splitting Selesai dilakukan!")
+    st.markdown(f"""
+    * **Jumlah Data Training (80%):** {X_train.shape[0]} sampel
+    * **Jumlah Data Testing (20%):** {X_test.shape[0]} sampel
+    * **Daftar Target Output:** {list(target_encoder_prep.classes_)}
+    """)
 
 # --- TRAINING ---
 elif menu == "Training":
     st.header("🤖 Training Model")
     
-    X_train, X_test, y_train, y_test = train_test_split(X_prep, y_prep, test_size=0.2, random_state=42, stratify=y_prep)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X_prep, y_prep, test_size=0.2, random_state=42, stratify=y_prep
+    )
 
+    # Validasi & Fitting Scaler secara konsisten
     X_train_scaled = scaler_prep.fit_transform(X_train)
     X_test_scaled = scaler_prep.transform(X_test)
 
@@ -261,88 +249,80 @@ elif menu == "Training":
         "Random Forest": RandomForestClassifier(n_estimators=200, random_state=42),
         "KNN": KNeighborsClassifier(),
         "Naive Bayes": GaussianNB(),
-        "SVM": SVC(probability=True)
+        "SVM": SVC(probability=True, random_state=42)
     }
     if xgb:
         models["XGBoost"] = XGBClassifier(eval_metric="mlogloss", random_state=42)
 
     hasil = []
     trained_models = {}
-    progress = st.progress(0)
-    total = len(models)
-
-    for i, (nama, model) in enumerate(models.items()):
+    
+    progress_bar = st.progress(0)
+    for idx, (name, model) in enumerate(models.items()):
         model.fit(X_train_scaled, y_train)
-        pred = model.predict(X_test_scaled)
+        preds = model.predict(X_test_scaled)
         
-        acc = accuracy_score(y_test, pred)
-        pre = precision_score(y_test, pred, average="weighted", zero_division=0)
-        rec = recall_score(y_test, pred, average="weighted", zero_division=0)
-        f1 = f1_score(y_test, pred, average="weighted", zero_division=0)
+        acc = accuracy_score(y_test, preds)
+        prec = precision_score(y_test, preds, average="weighted", zero_division=0)
+        rec = recall_score(y_test, preds, average="weighted", zero_division=0)
+        f1 = f1_score(y_test, preds, average="weighted", zero_division=0)
         
-        hasil.append([nama, acc, pre, rec, f1])
-        trained_models[nama] = model
-        progress.progress((i + 1) / total)
+        hasil.append([name, acc, prec, rec, f1])
+        trained_models[name] = model
+        progress_bar.progress((idx + 1) / len(models))
 
     hasil_df = pd.DataFrame(hasil, columns=["Model", "Accuracy", "Precision", "Recall", "F1 Score"])
-    hasil_df = hasil_df.sort_values(by="Accuracy", ascending=False)
+    hasil_df = hasil_df.sort_values(by="Accuracy", ascending=False).reset_index(drop=True)
 
-    st.success("Training selesai!")
+    st.success("Proses Training Berhasil Terlaksana!")
     st.dataframe(hasil_df.style.format({
         "Accuracy": "{:.2%}", "Precision": "{:.2%}", "Recall": "{:.2%}", "F1 Score": "{:.2%}"
     }), use_container_width=True)
 
     best_model_name = hasil_df.iloc[0]["Model"]
-    st.subheader(f"🏆 Model Terbaik: {best_model_name}")
+    st.subheader(f"🏆 Model Terbaik saat ini: {best_model_name}")
 
-    # Simpan Artefak Model
+    # Simpan Seluruh Objek Model & Pipeline Ekstraksi
     joblib.dump(trained_models, "Semua_Model.pkl")
     joblib.dump(scaler_prep, "Scaler.pkl")
     joblib.dump(target_encoder_prep, "Target_Encoder.pkl")
     joblib.dump(feature_encoders_prep, "Feature_Encoders.pkl")
     joblib.dump(feature_columns_prep, "Feature_Columns.pkl")
-    st.success("Semua model dan encoder berhasil diekspor!")
-
-    fig, ax = plt.subplots(figsize=(8, 4))
-    ax.bar(hasil_df["Model"], hasil_df["Accuracy"], color='#26A69A')
-    ax.set_ylabel("Accuracy Score")
-    plt.xticks(rotation=15)
-    st.pyplot(fig)
+    st.info("Artefak model dan preprocessing scaler berhasil disimpan lokal.")
 
 # --- PREDIKSI MANUAL ---
 elif menu == "Prediksi Manual":
     st.header("🔍 Prediksi Manual & Unggah Data")
     
     required_files = ["Semua_Model.pkl", "Scaler.pkl", "Target_Encoder.pkl", "Feature_Encoders.pkl", "Feature_Columns.pkl"]
-    if not all(os.path.exists(file) for file in required_files):
-        st.error("Silakan jalankan menu **Training** terlebih dahulu agar model dan komponen siap digunakan.")
+    if not all(os.path.exists(f) for f in required_files):
+        st.warning("⚠️ Komponen Model Belum Siap. Silakan masuk ke menu **Training** terlebih dahulu untuk melatih model.")
         st.stop()
 
-    # Load semua komponen model
+    # Load Komponen dari Storage lokal
     models = joblib.load("Semua_Model.pkl")
     scaler = joblib.load("Scaler.pkl")
     target_encoder = joblib.load("Target_Encoder.pkl")
     feature_encoders = joblib.load("Feature_Encoders.pkl")
     feature_columns = joblib.load("Feature_Columns.pkl")
 
-    model_name = st.selectbox("Pilih Model untuk Prediksi", list(models.keys()))
+    model_name = st.selectbox("Pilih Model untuk Menjalankan Prediksi", list(models.keys()))
     model = models[model_name]
-    st.write("---")
     
     tab_form, tab_upload = st.tabs(["📝 Input Form Mandiri", "📁 Upload File CSV"])
 
-    # TAB 1: INPUT FORM MANDIRI
+    # TAB 1: FORM MANDIRI
     with tab_form:
-        st.subheader("Masukkan Data Pengguna Baru:")
+        st.subheader("Karakteristik Pengguna Baru:")
         
         label_mapping = {
-            "Age": "Masukkan Usia / Umur", "Gender": "Pilih Jenis Kelamin",
-            "Academic_Level": "Pilih Jenjang / Tingkat Pendidikan", "Country": "Pilih Negara Asal",
-            "Avg_Daily_Usage_Hours": "Masukkan Rata-rata Durasi Penggunaan Harian (Jam)",
-            "Most_Used_Platform": "Pilih Platform yang Paling Sering Digunakan",
+            "Age": "Usia / Umur", "Gender": "Jenis Kelamin",
+            "Academic_Level": "Jenjang / Tingkat Pendidikan", "Country": "Negara Asal",
+            "Avg_Daily_Usage_Hours": "Rata-rata Durasi Penggunaan Harian (Jam)",
+            "Most_Used_Platform": "Platform Paling Sering Digunakan",
             "Affects_Academic_Performance": "Apakah Memengaruhi Performa Akademik?",
-            "Sleep_Hours_Per_Night": "Masukkan Durasi Tidur per Malam (Jam)",
-            "Mental_Health_Score": "Masukkan Skor Kesehatan Mental", "Physical_Activity": "Pilih Tingkat Aktivitas Fisik"
+            "Sleep_Hours_Per_Night": "Durasi Tidur per Malam (Jam)",
+            "Mental_Health_Score": "Skor Kesehatan Mental", "Physical_Activity": "Tingkat Aktivitas Fisik"
         }
 
         option_mapping = {
@@ -359,7 +339,7 @@ elif menu == "Prediksi Manual":
             
             for idx, col_name in enumerate(feature_columns):
                 form_col = col1 if idx % 2 == 0 else col2
-                display_label = label_mapping.get(col_name, f"Masukkan {col_name.replace('_', ' ')}")
+                display_label = label_mapping.get(col_name, f"Input {col_name}")
                 
                 if col_name in feature_encoders:
                     labels_kategori = list(feature_encoders[col_name].classes_)
@@ -371,7 +351,7 @@ elif menu == "Prediksi Manual":
                     mean_val = float(df[col_name].mean()) if col_name in df.columns else 0.0
                     ui_inputs[col_name] = form_col.number_input(display_label, min_value=min_val, max_value=max_val, value=mean_val, key=f"ui_{col_name}")
             
-            submitted = st.form_submit_button("🔮 Lakukan Prediksi Form")
+            submitted = st.form_submit_button("🔮 Hitung Prediksi")
 
         if submitted:
             input_data = {}
@@ -381,14 +361,11 @@ elif menu == "Prediksi Manual":
 
             input_df = pd.DataFrame([input_data])
             
+            # Ubah data kategorikal menggunakan encoder
             for col, encoder in feature_encoders.items():
-                try:
-                    val_str = str(input_df.at[0, col]).strip()
-                    matched_class = next((c for c in encoder.classes_ if str(c).lower() == val_str.lower()), encoder.classes_[0])
-                    input_df[col] = encoder.transform([matched_class])
-                except Exception as e:
-                    st.error(f"Terjadi kesalahan saat encoding fitur '{col}': {e}")
-                    st.stop()
+                val_str = str(input_df.at[0, col]).strip()
+                matched_class = next((c for c in encoder.classes_ if str(c).lower() == val_str.lower()), encoder.classes_[0])
+                input_df[col] = encoder.transform([matched_class])
             
             input_df = input_df[feature_columns]
             input_scaled = scaler.transform(input_df)
@@ -396,90 +373,46 @@ elif menu == "Prediksi Manual":
             prediksi_angka = model.predict(input_scaled)
             hasil_label = target_encoder.inverse_transform(prediksi_angka)[0]
             
-            st.write("---")
-            st.subheader("📊 Hasil Prediksi Form")
-            st.success(f"Berdasarkan model **{model_name}**, tingkat kecanduan pengguna ini adalah: **{hasil_label}**")
+            st.success(f"Hasil Klasifikasi Model ({model_name}): **{hasil_label}**")
             
             if hasattr(model, "predict_proba"):
                 probabilitas = model.predict_proba(input_scaled)[0]
-                st.write("**Probabilitas Keyakinan Model:**")
                 prob_df = pd.DataFrame({
                     "Tingkat Kecanduan": target_encoder.classes_,
-                    "Keyakinan (Persentase)": [f"{p*100:.2f}%" for p in probabilitas]
+                    "Confidence Rate": [f"{p*100:.2f}%" for p in probabilitas]
                 })
                 st.dataframe(prob_df, use_container_width=True)
 
-    # TAB 2: UPLOAD FILE CSV
+    # TAB 2: UPLOAD CSV
     with tab_upload:
-        st.subheader("Predict via CSV Upload")
-        st.info("Sistem akan otomatis mendeteksi, menyelaraskan, dan menyesuaikan kolom dataset yang Anda unggah.")
-        
-        uploaded_file = st.file_uploader("Upload Dataset CSV Anda", type=["csv"], key="manual_upload_csv")
+        st.subheader("Bulk Predict dengan CSV")
+        uploaded_file = st.file_uploader("Pilih file CSV", type=["csv"], key="file_pred_csv")
         
         if uploaded_file is not None:
             user_data = pd.read_csv(uploaded_file)
-            st.write("📄 **Preview Data yang Di-upload:**")
+            st.write("📂 **Pratinjau Data:**")
             st.dataframe(user_data.head(), use_container_width=True)
             
-            csv_labels, aligned_scaled = align_and_predict(user_data, feature_columns, feature_encoders, scaler, model, target_encoder, model_name)
-
-            final_result = user_data.copy()
-            final_result[f"Hasil Prediksi ({model_name})"] = csv_labels
-
-            # Mengecek apakah data memiliki kolom target untuk memunculkan evaluasi kinerja otomatis
-            has_target = False
-            target_candidates = ["Addiction_Level", "addiction_level", "Addiction Level", "Tingkat Kecanduan"]
-            for candidate in target_candidates:
-                if candidate in user_data.columns:
-                    has_target = True
-                    actual_labels = user_data[candidate].copy()
-                    break
-
-            st.write("---")
-            if has_target:
-                st.subheader("📈 Metrik Performa Hasil Upload")
-                acc = accuracy_score(actual_labels.astype(str), csv_labels.astype(str))
-                pre = precision_score(actual_labels.astype(str), csv_labels.astype(str), average="weighted", zero_division=0)
-                rec = recall_score(actual_labels.astype(str), csv_labels.astype(str), average="weighted", zero_division=0)
-                f1 = f1_score(actual_labels.astype(str), csv_labels.astype(str), average="weighted", zero_division=0)
-                
-                metrics_df = pd.DataFrame([[model_name, acc, pre, rec, f1]], columns=["Model", "Accuracy", "Precision", "Recall", "F1 Score"])
-                st.dataframe(metrics_df.style.format({"Accuracy": "{:.2%}", "Precision": "{:.2%}", "Recall": "{:.2%}", "F1 Score": "{:.2%}"}), use_container_width=True)
-
-            st.subheader("📊 Hasil Prediksi Dataset Upload")
-            st.dataframe(final_result, use_container_width=True)
-
-            csv_output = final_result.to_csv(index=False).encode("utf-8")
-            st.download_button(
-                label=f"⬇️ Download Hasil Prediksi {model_name} (CSV)",
-                data=csv_output,
-                file_name=f"hasil_prediksi_{model_name.lower().replace(' ', '_')}.csv",
-                mime="text/csv"
+            csv_labels, aligned_scaled = align_and_predict(
+                user_data, feature_columns, feature_encoders, scaler, model, target_encoder, df
             )
 
-# Optional Lottie animation support
-try:
-    import requests
-    import importlib
-    streamlit_lottie = importlib.import_module("streamlit_lottie")
-    st_lottie = getattr(streamlit_lottie, "st_lottie", None)
-except (ImportError, ModuleNotFoundError):
-    requests = None
-    st_lottie = None
+            final_result = user_data.copy()
+            final_result[f"Prediksi_{model_name}"] = csv_labels
 
+            # Validasi evaluasi jika terdapat kolom target asli
+            has_target = False
+            for target_cand in ["Addiction_Level", "addiction_level"]:
+                if target_cand in user_data.columns:
+                    has_target = True
+                    actual_labels = user_data[target_cand].astype(str)
+                    break
 
-def load_lottieurl(url):
-    if requests is None:
-        return None
-    try:
-        r = requests.get(url)
-        if r.status_code != 200:
-            return None
-        return r.json()
-    except Exception:
-        return None
+            if has_target:
+                st.subheader("📊 Metrik Akurasi File Upload")
+                acc = accuracy_score(actual_labels, csv_labels.astype(str))
+                metrics_df = pd.DataFrame([[model_name, acc]], columns=["Model", "Accuracy"])
+                st.dataframe(metrics_df.style.format({"Accuracy": "{:.2%}"}))
 
-# Contoh animasi bertema teknologi/analisis
-lottie_coding = load_lottieurl("https://assets5.lottiefiles.com/packages/lf20_fcfjwiyb.json")
-if st_lottie is not None and lottie_coding is not None:
-    st_lottie(lottie_coding, height=300, key="coding")
+            st.subheader("📋 Hasil Akhir Tabel Prediksi")
+            st.dataframe(final_result, use_container_width=True)
