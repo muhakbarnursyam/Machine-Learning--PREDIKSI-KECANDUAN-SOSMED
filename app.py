@@ -7,9 +7,7 @@ import streamlit as st
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
-    ConfusionMatrixDisplay,
     accuracy_score,
-    confusion_matrix,
     f1_score,
     precision_score,
     recall_score,
@@ -39,6 +37,7 @@ st.set_page_config(
 
 st.title("Prediksi Tingkat Kecanduan Media Sosial")
 st.write("---")
+
 # ==========================================================
 # SIDEBAR MENU
 # ==========================================================
@@ -269,11 +268,6 @@ elif menu == "Training":
     plt.xticks(rotation=15)
     st.pyplot(fig)
 
-# --- PREDIKSI MANUAL ---
-# ==========================================================
-# PREDIKSI MANUAL
-# ==========================================================
-# --- PREDIKSI MANUAL ---
 # ==========================================================
 # PREDIKSI MANUAL (MENDUKUNG INPUT FORM & UPLOAD CSV)
 # ==========================================================
@@ -305,18 +299,8 @@ elif menu == "Prediksi Manual":
 
     st.write("---")
     
-    # Navigasi Metode Input menggunakan Tabs
     tab_form, tab_upload = st.tabs(["📝 Input Form Mandiri", "📁 Upload File CSV"])
 
-    # ------------------------------------------------------
-    # TAB 1: INPUT FORM MANDIRI
-    # ------------------------------------------------------
-    # ------------------------------------------------------
-    # TAB 1: INPUT FORM MANDIRI
-    # ------------------------------------------------------
-    # ------------------------------------------------------
-    # TAB 1: INPUT FORM MANDIRI
-    # ------------------------------------------------------
     # ------------------------------------------------------
     # TAB 1: INPUT FORM MANDIRI
     # ------------------------------------------------------
@@ -324,17 +308,17 @@ elif menu == "Prediksi Manual":
         st.subheader("Masukkan Data Pengguna Baru:")
         input_data = {}
         
-        # 1. Kamus translasi label visual (Bahasa Indonesia Akademis)
+        # 1. Kamus translasi label visual (Judul Dityesuikan)
         label_mapping = {
             "Age": "Masukkan Usia / Umur",
             "Gender": "Pilih Jenis Kelamin",
             "Academic_Level": "Pilih Jenjang / Tingkat Pendidikan",
             "Country": "Pilih Negara Asal",
-            "Avg_Daily_Usage_Hours": "Masukkan Rata-rata Durasi Penggunaan Harian (Jam)",
+            "Avg_Daily_Usage_Hours": "Masukkan rata-rata penggunaan handphone",
             "Most_Used_Platform": "Pilih Platform yang Paling Sering Digunakan",
             "Affects_Academic_Performance": "Apakah Memengaruhi Performa Akademik?",
             "Sleep_Hours_Per_Night": "Masukkan Durasi Tidur per Malam (Jam)",
-            "Mental_Health_Score": "Masukkan Skor Kesehatan Mental",
+            "Mental_Health_Score": "Masukkan Skor Kesehatan Mental (1-5 rendah, 6-10 tinggi)",
             "Physical_Activity": "Pilih Tingkat Aktivitas Fisik"
         }
 
@@ -358,14 +342,16 @@ elif menu == "Prediksi Manual":
         
         with st.form("form_prediksi_manual"):
             col1, col2 = st.columns(2)
-            
-            # Simpan referensi objek input UI agar nilainya bisa dibaca saat submit
             ui_inputs = {}
+            
+            # Pilihan Opsi Angka 1 s.d 10 (Tanpa Koma)
+            scale_options = list(range(1, 11))
             
             for idx, col_name in enumerate(feature_columns):
                 form_col = col1 if idx % 2 == 0 else col2
                 display_label = label_mapping.get(col_name, f"Masukkan {col_name.replace('_', ' ')}")
                 
+                # Input untuk Fitur Kategorikal
                 if col_name in feature_encoders:
                     labels_kategori = list(feature_encoders[col_name].classes_)
                     translated_options = [option_mapping.get(opt, opt) for opt in labels_kategori]
@@ -375,16 +361,26 @@ elif menu == "Prediksi Manual":
                         options=translated_options,
                         key=f"ui_{col_name}"
                     )
+                # Input khusus angka/skala 1 - 10 (bebas koma)
+                elif col_name in ["Avg_Daily_Usage_Hours", "Mental_Health_Score", "Sleep_Hours_Per_Night"]:
+                    ui_inputs[col_name] = form_col.selectbox(
+                        display_label,
+                        options=scale_options,
+                        index=4, # default angka 5
+                        key=f"ui_{col_name}"
+                    )
+                # Input numerik umum (misal Usia/Umur)
                 else:
-                    min_val = float(df[col_name].min()) if col_name in df.columns else 0.0
-                    max_val = float(df[col_name].max()) if col_name in df.columns else 100.0
-                    mean_val = float(df[col_name].mean()) if col_name in df.columns else 0.0
+                    min_val = int(df[col_name].min()) if col_name in df.columns else 1
+                    max_val = int(df[col_name].max()) if col_name in df.columns else 100
+                    mean_val = int(df[col_name].mean()) if col_name in df.columns else 18
                     
                     ui_inputs[col_name] = form_col.number_input(
                         display_label, 
                         min_value=min_val,
                         max_value=max_val,
                         value=mean_val,
+                        step=1,
                         key=f"ui_{col_name}"
                     )
             
@@ -392,14 +388,13 @@ elif menu == "Prediksi Manual":
 
         # PROSES EKSEKUSI PREDIKSI SETELAH TOMBOL DIKLIK
         if submitted:
-            # Pindahkan & konversi data dari UI ke dictionary input data asli
             for col_name in feature_columns:
                 val = ui_inputs[col_name]
-                # Jika nilainya ada di kamus Indonesia, kembalikan ke teks English aslinya
                 if col_name in feature_encoders:
                     input_data[col_name] = reverse_option_mapping.get(val, val)
                 else:
-                    input_data[col_name] = val
+                    # Konversi angka pilihan ke float agar bisa dibaca algoritma
+                    input_data[col_name] = float(val)
 
             # Ubah ke DataFrame
             input_df = pd.DataFrame([input_data])
@@ -407,10 +402,7 @@ elif menu == "Prediksi Manual":
             # Lakukan Encoding menggunakan encoder bawaan model
             for col, encoder in feature_encoders.items():
                 try:
-                    # Normalisasi teks ke string biasa
                     val_str = str(input_df.at[0, col]).strip()
-                    
-                    # Cek pencocokan string secara fleksibel (tidak sensitif huruf besar/kecil)
                     known_classes = list(encoder.classes_)
                     matched_class = None
                     
@@ -419,7 +411,6 @@ elif menu == "Prediksi Manual":
                             matched_class = c
                             break
                     
-                    # Jika cocok, pakai label asli hasil training, jika tidak, pakai default kelas pertama
                     if matched_class is not None:
                         input_df[col] = encoder.transform([matched_class])
                     else:
@@ -450,8 +441,9 @@ elif menu == "Prediksi Manual":
                     "Keyakinan (Persentase)": [f"{p*100:.2f}%" for p in probabilitas]
                 })
                 st.dataframe(prob_df, use_container_width=True)
+
     # ------------------------------------------------------
-    # TAB 2: UPLOAD FILE CSV (ADAPTIF MENYESUAIKAN DATASET)
+    # TAB 2: UPLOAD FILE CSV
     # ------------------------------------------------------
     with tab_upload:
         st.subheader("Predict via CSV Upload")
@@ -464,15 +456,11 @@ elif menu == "Prediksi Manual":
             st.write("📄 **Preview Data yang Di-upload:**")
             st.dataframe(user_data.head(), use_container_width=True)
             
-            # Kerangka DataFrame baru untuk diselaraskan dengan dataset training
             aligned_data = pd.DataFrame(index=user_data.index)
 
-            # Proses Penyelarasan Otomatis
             for col in feature_columns:
-                # 1. Jika nama cocok persis
                 if col in user_data.columns:
                     aligned_data[col] = user_data[col].copy()
-                # 2. Jika nama mirip (tidak sensitif huruf besar/kecil dan spasi)
                 else:
                     matched_col = None
                     simplified_target = col.lower().replace("_", "").replace(" ", "")
@@ -483,14 +471,12 @@ elif menu == "Prediksi Manual":
                     
                     if matched_col:
                         aligned_data[col] = user_data[matched_col].copy()
-                    # 3. Jika kolom tidak ada sama sekali, buat nilai default
                     else:
                         if col in feature_encoders:
                             aligned_data[col] = feature_encoders[col].classes_[0]
                         else:
                             aligned_data[col] = float(df[col].mean()) if col in df.columns else 0.0
 
-            # Penanganan data kosong (NaN)
             for col in feature_columns:
                 if aligned_data[col].isnull().any():
                     if col in feature_encoders:
@@ -498,26 +484,20 @@ elif menu == "Prediksi Manual":
                     else:
                         aligned_data[col] = aligned_data[col].fillna(float(df[col].mean()) if col in df.columns else 0.0)
 
-            # Transformasi / Label Encoding untuk kolom kategorikal
             for col, encoder in feature_encoders.items():
                 known_classes = set(encoder.classes_)
                 default_class = encoder.classes_[0]
                 
-                # Ubah teks baru yang tidak dikenal saat training ke kelas default
                 aligned_data[col] = aligned_data[col].astype(str).apply(
                     lambda x: x if x in known_classes else default_class
                 )
                 aligned_data[col] = encoder.transform(aligned_data[col])
 
-            # Susun ulang urutan kolom agar identik dengan data training
             aligned_data = aligned_data[feature_columns]
-
-            # Lakukan Scaling dan Prediksi menggunakan model terpilih
             aligned_scaled = scaler.transform(aligned_data)
             csv_preds = model.predict(aligned_scaled)
             csv_labels = target_encoder.inverse_transform(csv_preds)
 
-            # Gabungkan hasil prediksi ke data asli user
             final_result = user_data.copy()
             final_result[f"Hasil Prediksi ({model_name})"] = csv_labels
 
@@ -525,7 +505,6 @@ elif menu == "Prediksi Manual":
             st.subheader("📊 Hasil Prediksi Dataset Upload")
             st.dataframe(final_result, use_container_width=True)
 
-            # Tombol Download Hasil
             csv_output = final_result.to_csv(index=False).encode("utf-8")
             st.download_button(
                 label=f"⬇️ Download Hasil Prediksi {model_name} (CSV)",
@@ -533,9 +512,9 @@ elif menu == "Prediksi Manual":
                 file_name=f"hasil_prediksi_{model_name.lower().replace(' ', '_')}.csv",
                 mime="text/csv"
             )
-# --- PREDIKSI DATASET UPLOAD ---
+
 # ==========================================================
-# PREDIKSI DATASET UPLOAD (ADAPTIF & DUKUNG SEMUA FORMAT)
+# PREDIKSI DATASET UPLOAD
 # ==========================================================
 elif menu == "Prediksi Dataset Upload":
     st.header("📁 Upload Dataset Baru & Analisis Model")
@@ -556,20 +535,17 @@ elif menu == "Prediksi Dataset Upload":
     st.subheader("📄 Dataset Asli yang Di-upload User")
     st.dataframe(new_data, use_container_width=True)
 
-    # Validasi keberadaan file model eksternal
     required_files = ["Semua_Model.pkl", "Scaler.pkl", "Target_Encoder.pkl", "Feature_Encoders.pkl", "Feature_Columns.pkl"]
     if not all(os.path.exists(file) for file in required_files):
         st.error("Model/Komponen scaler belum tersedia. Silakan jalankan menu Training terlebih dahulu.")
         st.stop()
 
-    # Load komponen training awal
     models = joblib.load("Semua_Model.pkl")
     scaler = joblib.load("Scaler.pkl")
     target_encoder = joblib.load("Target_Encoder.pkl")
     feature_encoders = joblib.load("Feature_Encoders.pkl")
     feature_columns = joblib.load("Feature_Columns.pkl")
 
-    # Cek apakah target aktual ada di dataset baru (untuk mode evaluasi)
     has_target = False
     actual_labels = None
     target_candidates = ["Addiction_Level", "addiction_level", "Addiction Level", "Tingkat Kecanduan", "tingkat kecanduan"]
@@ -580,17 +556,11 @@ elif menu == "Prediksi Dataset Upload":
             actual_labels = new_data[candidate].copy()
             break
 
-    # ======================================================
-    # PROSES PENYELARASAN DATA SECARA OTOMATIS (APAPUN FORMATNYA)
-    # ======================================================
     prediction_data = pd.DataFrame(index=new_data.index)
 
     for col in feature_columns:
-        # 1. Jika nama kolom COCOK PERSIS
         if col in new_data.columns:
             prediction_data[col] = new_data[col].copy()
-        
-        # 2. Jika nama mirip (tidak sensitif huruf besar/kecil atau spasi/underscore)
         else:
             matched_col = None
             simplified_target = col.lower().replace("_", "").replace(" ", "")
@@ -601,18 +571,13 @@ elif menu == "Prediksi Dataset Upload":
             
             if matched_col:
                 prediction_data[col] = new_data[matched_col].copy()
-            
-            # 3. Jika kolom benar-benar tidak ada di data user (Buat kolom tiruan otomatis)
             else:
                 if col in feature_encoders:
-                    # Kolom kategori diisi dengan nilai modus (terbanyak) atau nilai pertama dari encoder
                     default_cat = feature_encoders[col].classes_[0]
                     prediction_data[col] = default_cat
                 else:
-                    # Kolom numerik diisi dengan angka 0 atau rata-rata dummy
                     prediction_data[col] = 0.0
 
-    # Menangani missing value (NaN) jika data buatan user ada yang kosong
     for col in feature_columns:
         if prediction_data[col].isnull().any():
             if col in feature_encoders:
@@ -620,29 +585,18 @@ elif menu == "Prediksi Dataset Upload":
             else:
                 prediction_data[col] = prediction_data[col].fillna(0.0)
 
-    # 4. Transformasi/Encoding Kategori (Aman dari data baru tak dikenal)
     for col, encoder in feature_encoders.items():
-        # Dapatkan nilai dasar yang diketahui oleh encoder saat training
         known_classes = set(encoder.classes_)
         default_class = encoder.classes_[0]
         
-        # Jika user memasukkan teks baru yang tidak ada saat training, ubah otomatis ke default_class
         prediction_data[col] = prediction_data[col].astype(str).apply(
             lambda x: x if x in known_classes else default_class
         )
-        
-        # Jalankan Label Encoder
         prediction_data[col] = encoder.transform(prediction_data[col])
 
-    # Pastikan urutan dan bentuk kolom 100% konsisten dengan training
     prediction_data = prediction_data[feature_columns]
-
-    # Scaling
     prediction_scaled = scaler.transform(prediction_data)
     
-    # ======================================================
-    # PROSES PREDIKSI MULTI-MODEL
-    # ======================================================
     st.write("---")
     perbandingan_list = []
     result_data_all = new_data.copy()
@@ -653,16 +607,12 @@ elif menu == "Prediksi Dataset Upload":
         result_data_all[f"Prediksi ({name})"] = pred_labels
         
         if has_target:
-            # Pastikan label aktual di-string-kan agar cocok saat evaluasi skor
             acc = accuracy_score(actual_labels.astype(str), pred_labels.astype(str))
             pre = precision_score(actual_labels.astype(str), pred_labels.astype(str), average="weighted", zero_division=0)
             rec = recall_score(actual_labels.astype(str), pred_labels.astype(str), average="weighted", zero_division=0)
             f1 = f1_score(actual_labels.astype(str), pred_labels.astype(str), average="weighted", zero_division=0)
             perbandingan_list.append([name, acc, pre, rec, f1])
 
-    # ======================================================
-    # TAMPILKAN OUTPUT/EVALUASI
-    # ======================================================
     if has_target:
         st.subheader("📈 Perbandingan Performa Semua Model (Berdasarkan Nilai Aktual)")
         df_compare = pd.DataFrame(
