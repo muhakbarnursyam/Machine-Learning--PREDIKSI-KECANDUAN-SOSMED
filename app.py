@@ -36,156 +36,183 @@ st.set_page_config(
 )
 
 # ==========================================================
-# TEMA / CSS KUSTOM — "Chibi Kartun Ceria" (nuansa TV kartun anak,
-# warna-warni pelangi, font bulat lucu). Tidak memakai logo/IP siapapun.
+# TEMA / CSS KUSTOM — "Editorial Portfolio Gelap"
+# Terinspirasi nuansa: latar teal gelap, aksen olive/khaki,
+# tipografi tebal huruf kapital, tombol outline minimalis.
 # ==========================================================
 CUSTOM_CSS = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap');
 
 html, body, [class*="css"] {
-    font-family: 'Fredoka', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
-/* Latar belakang playful dengan pola bintang & warna cerah */
+/* Latar belakang utama: teal gelap ala editorial portfolio */
 .stApp {
-    background:
-        radial-gradient(circle at 8% 15%, rgba(255,221,89,0.35) 0, transparent 12%),
-        radial-gradient(circle at 92% 25%, rgba(255,110,199,0.30) 0, transparent 14%),
-        radial-gradient(circle at 15% 85%, rgba(94,211,255,0.30) 0, transparent 14%),
-        radial-gradient(circle at 88% 90%, rgba(140,225,140,0.30) 0, transparent 14%),
-        linear-gradient(160deg, #FFFDF5 0%, #FFF6FB 50%, #F1FAFF 100%);
+    background: #0C3236;
+    color: #EDEAD9;
 }
 
 header[data-testid="stHeader"] {
     background: transparent;
 }
 
-/* ==================== HERO / JUDUL - PITA PELANGI ==================== */
+/* ==================== HERO / JUDUL ==================== */
 .hero-box {
-    background: linear-gradient(100deg,
-        #FF5E7A 0%, #FF5E7A 16%,
-        #FFB74D 16%, #FFB74D 32%,
-        #FFE066 32%, #FFE066 48%,
-        #7FDD86 48%, #7FDD86 64%,
-        #5ED3FF 64%, #5ED3FF 80%,
-        #C58BFF 80%, #C58BFF 100%);
-    padding: 2.3rem 2.5rem;
-    border-radius: 32px;
-    box-shadow: 0 14px 0px 0px rgba(0,0,0,0.08), 0 14px 28px -8px rgba(120,90,180,0.4);
+    background: linear-gradient(180deg, #12474D 0%, #0C3236 100%);
+    padding: 3rem 2.8rem 2.4rem 2.8rem;
+    border-radius: 4px;
     margin-bottom: 1.8rem;
+    border: 1px solid rgba(201, 203, 126, 0.25);
     position: relative;
-    overflow: hidden;
-    border: 5px solid #FFFFFF;
 }
-.hero-box::before {
-    content: "⭐"; position: absolute; top: 10px; left: 20px; font-size: 1.6rem; opacity: 0.85;
-}
-.hero-box::after {
-    content: "✨"; position: absolute; bottom: 10px; right: 24px; font-size: 1.8rem; opacity: 0.9;
+.hero-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1.6rem;
+    margin-bottom: 1.8rem;
+    border-bottom: 1px solid rgba(237,234,217,0.15);
+    font-family: 'Archivo', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #C9CB7E;
+    font-size: 0.8rem;
+    text-transform: uppercase;
 }
 .hero-box h1 {
-    font-family: 'Baloo 2', cursive;
-    color: #FFFFFF;
-    font-weight: 800;
-    font-size: 2.3rem;
+    font-family: 'Archivo', sans-serif;
+    color: #C9CB7E;
+    font-weight: 900;
+    font-size: 2.6rem;
     margin: 0;
-    -webkit-text-stroke: 1.5px #6C4AB6;
-    text-shadow: 3px 3px 0px rgba(108,74,182,0.35);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    line-height: 1.15;
 }
 .hero-box p {
-    color: #3F3355;
-    background: rgba(255,255,255,0.85);
-    display: inline-block;
-    padding: 0.35rem 0.9rem;
-    border-radius: 999px;
+    color: #B9C4C2;
     font-size: 1rem;
-    margin-top: 0.7rem;
+    margin-top: 0.9rem;
+    font-weight: 300;
+    max-width: 640px;
+}
+.hero-btn {
+    display: inline-block;
+    margin-top: 1.6rem;
+    padding: 0.65rem 1.6rem;
+    border: 1px solid #C9CB7E;
+    border-radius: 999px;
+    color: #C9CB7E;
+    font-family: 'Archivo', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
     font-weight: 600;
 }
 
-/* ==================== SIDEBAR - GAYA KARTUN ==================== */
+/* ==================== SIDEBAR - GAYA NAVBAR OLIVE ==================== */
 section[data-testid="stSidebar"] {
-    background: linear-gradient(200deg, #5ED3FF 0%, #C58BFF 55%, #FF8FC4 100%);
-    border-right: 5px solid #FFFFFF;
+    background: #A9A87C;
+    border-right: 1px solid rgba(0,0,0,0.15);
 }
 section[data-testid="stSidebar"] * {
-    color: #FFFFFF !important;
-    font-family: 'Baloo 2', cursive !important;
+    color: #17312F !important;
+    font-family: 'Archivo', sans-serif !important;
 }
 section[data-testid="stSidebar"] .stSelectbox label {
     font-weight: 700 !important;
-    font-size: 1.05rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 section[data-testid="stSidebar"] div[data-baseweb="select"] > div {
-    background-color: rgba(255,255,255,0.25) !important;
-    border-radius: 16px !important;
-    border: 2px dashed rgba(255,255,255,0.7) !important;
+    background-color: rgba(255,255,255,0.35) !important;
+    border-radius: 4px !important;
+    border: 1px solid rgba(23,49,47,0.4) !important;
 }
 
 /* ==================== KARTU KONTEN ==================== */
 .card {
-    background: #FFFFFF;
-    border-radius: 26px;
+    background: #12474D;
+    border-radius: 4px;
     padding: 1.6rem 1.8rem;
-    box-shadow: 0 8px 0px 0px rgba(0,0,0,0.05), 0 10px 22px -10px rgba(120,90,180,0.28);
     margin-bottom: 1.3rem;
-    border: 3px solid #FFE9F2;
+    border: 1px solid rgba(201, 203, 126, 0.25);
+    color: #EDEAD9;
+}
+
+/* ==================== TEKS UMUM ==================== */
+p, li, span, div, label {
+    color: #EDEAD9;
+}
+.stMarkdown, .stMarkdown p {
+    color: #EDEAD9 !important;
 }
 
 /* ==================== HEADER / SUBHEADER ==================== */
 h1, h2, h3 {
-    font-family: 'Baloo 2', cursive;
-    font-weight: 700;
-    color: #4A3F72;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    color: #EDEAD9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
-h2 { color: #C0389C; }
-h3 { color: #2E9AB0; }
+h2 { color: #C9CB7E; }
+h3 { color: #9FD0C8; }
 
-/* ==================== TOMBOL - BULAT GEMES ==================== */
+/* ==================== TOMBOL - OUTLINE MINIMALIS ==================== */
 .stButton > button, .stFormSubmitButton > button, .stDownloadButton > button {
-    background: linear-gradient(120deg, #FF8FC4, #FFB74D);
-    color: #4A3F72;
-    border: 3px solid #FFFFFF;
+    background: transparent;
+    color: #C9CB7E;
+    border: 1px solid #C9CB7E;
     border-radius: 999px;
-    padding: 0.6rem 1.7rem;
-    font-family: 'Baloo 2', cursive;
-    font-weight: 700;
-    box-shadow: 0 6px 0px 0px rgba(0,0,0,0.08);
-    transition: transform 0.15s ease;
+    padding: 0.55rem 1.6rem;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    transition: all 0.15s ease;
 }
 .stButton > button:hover, .stFormSubmitButton > button:hover, .stDownloadButton > button:hover {
-    transform: translateY(-3px) rotate(-1deg);
-    color: #4A3F72;
+    background: #C9CB7E;
+    color: #0C3236;
 }
 
 /* ==================== METRIC ==================== */
 div[data-testid="stMetric"] {
-    background: linear-gradient(135deg, #FFFDF5, #FFE9F2);
-    border-radius: 20px;
+    background: #12474D;
+    border-radius: 4px;
     padding: 1rem 1.2rem;
-    border: 3px solid #FFD1E6;
+    border: 1px solid rgba(201, 203, 126, 0.25);
+}
+div[data-testid="stMetric"] label, div[data-testid="stMetric"] div {
+    color: #EDEAD9 !important;
 }
 
 /* ==================== TABS ==================== */
 button[data-baseweb="tab"] {
-    border-radius: 16px 16px 0 0 !important;
-    font-family: 'Baloo 2', cursive !important;
+    font-family: 'Archivo', sans-serif !important;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #B9C4C2 !important;
 }
 div[data-baseweb="tab-highlight"] {
-    background-color: #FF8FC4 !important;
+    background-color: #C9CB7E !important;
 }
 
 /* ==================== ALERT & DATAFRAME ==================== */
 div[data-testid="stAlert"] {
-    border-radius: 18px;
-    border: 2px dashed rgba(0,0,0,0.08);
+    border-radius: 4px;
+    background: #12474D !important;
 }
 div[data-testid="stDataFrame"] {
-    border-radius: 18px;
+    border-radius: 4px;
     overflow: hidden;
-    border: 3px solid #F1E4FF;
+    border: 1px solid rgba(201, 203, 126, 0.25);
 }
 
 /* ==================== FITUR GRID (Home) ==================== */
@@ -196,24 +223,31 @@ div[data-testid="stDataFrame"] {
     margin-top: 1rem;
 }
 .feature-item {
-    background: #FFFFFF;
-    border-radius: 20px;
+    background: #12474D;
+    border-radius: 4px;
     padding: 1.1rem 1.2rem;
-    border: 3px solid #FFE9F2;
-    border-left: 8px solid #5ED3FF;
-    box-shadow: 0 6px 0px 0px rgba(0,0,0,0.04);
-    font-family: 'Fredoka', sans-serif;
+    border-left: 3px solid #C9CB7E;
+    font-family: 'Poppins', sans-serif;
+    color: #EDEAD9;
 }
-.feature-item b { color: #C0389C; font-family: 'Baloo 2', cursive; }
+.feature-item b {
+    color: #C9CB7E;
+    font-family: 'Archivo', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 
 /* ==================== BADGE MODEL (Home) ==================== */
 .badge-row { display:flex; flex-wrap:wrap; gap:0.5rem; margin: 0.8rem 0 1.2rem 0; }
 .badge {
-    background: linear-gradient(120deg,#5ED3FF,#C58BFF);
-    color:#FFFFFF; font-weight:700; font-size:0.85rem;
-    font-family: 'Baloo 2', cursive;
+    background: transparent;
+    color: #C9CB7E;
+    font-weight:600; font-size:0.75rem;
+    font-family: 'Archivo', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     padding: 0.4rem 1rem; border-radius: 999px;
-    border: 2px solid #FFFFFF;
+    border: 1px solid #C9CB7E;
 }
 </style>
 """
@@ -222,8 +256,13 @@ st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 st.markdown(
     """
     <div class="hero-box">
-        <h1>🧠 Prediksi Tingkat Kecanduan Media Sosial</h1>
-        <p>🌈 Yuk main sambil belajar data — eksplorasi, latih model, dan prediksi dengan gaya ceria! ✨</p>
+        <div class="hero-nav">
+            <span>P. &nbsp; Home &nbsp; Editorial &nbsp; About</span>
+            <span>Contact</span>
+        </div>
+        <h1>Prediksi Tingkat<br>Kecanduan Media Sosial</h1>
+        <p>Aplikasi Machine Learning untuk menganalisis, melatih model, dan memprediksi tingkat kecanduan media sosial berdasarkan data & kebiasaan penggunanya.</p>
+        <span class="hero-btn">Lihat Semua Fitur ↗</span>
     </div>
     """,
     unsafe_allow_html=True
@@ -315,7 +354,7 @@ if menu == "Home":
             """
             <div class="card">
                 <h3 style="margin-top:0;">👋 Selamat Datang!</h3>
-                <p style="font-family:'Quicksand', sans-serif; font-size:1.02rem; color:#4A4358;">
+                <p style="font-family:'Poppins', sans-serif; font-size:1.02rem; color:#EDEAD9; font-weight:300;">
                     Aplikasi ini memakai <b>Machine Learning</b> untuk membantu memprediksi tingkat
                     kecanduan media sosial seseorang berdasarkan kebiasaan sehari-hari, kondisi
                     akademik, hingga kesehatan mental. Yuk eksplor datanya! 🚀
