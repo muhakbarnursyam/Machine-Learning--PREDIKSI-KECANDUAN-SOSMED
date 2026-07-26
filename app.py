@@ -697,19 +697,17 @@ elif menu == "Prediksi Dataset Upload":
         file_name="hasil_prediksi_massal.csv",
         mime="text/csv"
     )
-    import streamlit as st
+ import streamlit as st
 
-def local_css(file_name):
-    """Fungsi untuk membaca dan menerapkan file CSS lokal"""
-    with open(file_name) as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+# Inject Tailwind CSS via CDN
+st.markdown('<script src="https://cdn.tailwindcss.com"></script>', unsafe_allow_html=True)
 
-# Panggil fungsi CSS di awal script
-local_css("style.css")
-
-# Konten Streamlit seperti biasa
-st.title("Aplikasi Streamlit dengan Custom CSS")
-st.write("Tampilan halaman ini sudah disesuaikan menggunakan file `style.css` eksternal.")
-
-if st.button("Klik Saya"):
-    st.success("Tombol berhasil diklik!")
+# Contoh Elemen HTML dengan Tailwind
+st.markdown("""
+<div class="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg flex items-center space-x-4 border border-gray-100">
+  <div>
+    <div class="text-xl font-medium text-black">Card Custom Tailwind</div>
+    <p class="text-slate-500">Ini dibuat menggunakan styling Tailwind CSS secara langsung!</p>
+  </div>
+</div>
+""", unsafe_allow_html=True)
