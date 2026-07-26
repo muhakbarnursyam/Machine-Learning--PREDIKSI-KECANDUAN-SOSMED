@@ -308,7 +308,7 @@ elif menu == "Prediksi Manual":
         st.subheader("Masukkan Data Pengguna Baru:")
         input_data = {}
         
-        # 1. Kamus translasi label visual (Judul Dityesuikan)
+        # 1. Kamus translasi label visual (Judul Disesuaikan)
         label_mapping = {
             "Age": "Masukkan Usia / Umur",
             "Gender": "Pilih Jenis Kelamin",
@@ -344,9 +344,6 @@ elif menu == "Prediksi Manual":
             col1, col2 = st.columns(2)
             ui_inputs = {}
             
-            # Pilihan Opsi Angka 1 s.d 10 (Tanpa Koma)
-            scale_options = list(range(1, 11))
-            
             for idx, col_name in enumerate(feature_columns):
                 form_col = col1 if idx % 2 == 0 else col2
                 display_label = label_mapping.get(col_name, f"Masukkan {col_name.replace('_', ' ')}")
@@ -361,25 +358,14 @@ elif menu == "Prediksi Manual":
                         options=translated_options,
                         key=f"ui_{col_name}"
                     )
-                # Input khusus angka/skala 1 - 10 (bebas koma)
-                elif col_name in ["Avg_Daily_Usage_Hours", "Mental_Health_Score", "Sleep_Hours_Per_Night"]:
-                    ui_inputs[col_name] = form_col.selectbox(
-                        display_label,
-                        options=scale_options,
-                        index=4, # default angka 5
-                        key=f"ui_{col_name}"
-                    )
-                # Input numerik umum (misal Usia/Umur)
+                # Input Numerik Bebas (Tanpa Batasan Min/Max dan Bebas Koma)
                 else:
-                    min_val = int(df[col_name].min()) if col_name in df.columns else 1
-                    max_val = int(df[col_name].max()) if col_name in df.columns else 100
-                    mean_val = int(df[col_name].mean()) if col_name in df.columns else 18
+                    # Menghitung default value sesuai rata-rata data training jika ada
+                    default_val = int(df[col_name].mean()) if col_name in df.columns else 0
                     
                     ui_inputs[col_name] = form_col.number_input(
                         display_label, 
-                        min_value=min_val,
-                        max_value=max_val,
-                        value=mean_val,
+                        value=default_val,
                         step=1,
                         key=f"ui_{col_name}"
                     )
@@ -393,7 +379,7 @@ elif menu == "Prediksi Manual":
                 if col_name in feature_encoders:
                     input_data[col_name] = reverse_option_mapping.get(val, val)
                 else:
-                    # Konversi angka pilihan ke float agar bisa dibaca algoritma
+                    # Konversi angka berapapun ke float agar algoritma dapat memprosesnya
                     input_data[col_name] = float(val)
 
             # Ubah ke DataFrame
