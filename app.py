@@ -36,90 +36,124 @@ st.set_page_config(
 )
 
 # ==========================================================
-# TEMA / CSS KUSTOM — "Editorial Portfolio Gelap"
-# Terinspirasi nuansa: latar teal gelap, aksen olive/khaki,
-# tipografi tebal huruf kapital, tombol outline minimalis.
+# TEMA / CSS KUSTOM — "Biru-Putih Profesional" (modern, tidak kaku)
 # ==========================================================
 CUSTOM_CSS = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
 
 html, body, [class*="css"] {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
-/* Latar belakang utama: teal gelap ala editorial portfolio */
+/* Latar belakang utama: putih kebiruan lembut dengan aksen bulat */
 .stApp {
-    background: #0C3236;
-    color: #EDEAD9;
+    background:
+        radial-gradient(circle at 6% 8%, rgba(30,136,229,0.08) 0, transparent 22%),
+        radial-gradient(circle at 96% 18%, rgba(66,165,245,0.08) 0, transparent 24%),
+        radial-gradient(circle at 90% 92%, rgba(21,101,192,0.06) 0, transparent 24%),
+        #F5F8FC;
+    color: #1E2A3A;
 }
 
 header[data-testid="stHeader"] {
     background: transparent;
 }
 
-/* ==================== HERO / JUDUL ==================== */
-.hero-box {
-    background: linear-gradient(180deg, #12474D 0%, #0C3236 100%);
-    padding: 3rem 2.8rem 2.4rem 2.8rem;
-    border-radius: 4px;
-    margin-bottom: 1.8rem;
-    border: 1px solid rgba(201, 203, 126, 0.25);
-    position: relative;
+/* ==================== PERBAIKAN IKON COLLAPSE SIDEBAR ====================
+   Membuat ikon buka/tutup sidebar selalu terlihat jelas baik saat tema
+   Streamlit disetel Light maupun Dark. */
+[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"],
+button[data-testid="baseButton-headerNoPadding"] {
+    background: #1565C0 !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 10px -2px rgba(21,101,192,0.5);
 }
-.hero-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 1.6rem;
-    margin-bottom: 1.8rem;
-    border-bottom: 1px solid rgba(237,234,217,0.15);
-    font-family: 'Archivo', sans-serif;
-    font-weight: 600;
-    letter-spacing: 1px;
-    color: #C9CB7E;
-    font-size: 0.8rem;
-    text-transform: uppercase;
+[data-testid="collapsedControl"] svg,
+[data-testid="stSidebarCollapsedControl"] svg,
+button[data-testid="baseButton-headerNoPadding"] svg {
+    fill: #FFFFFF !important;
+    color: #FFFFFF !important;
 }
-.hero-box h1 {
-    font-family: 'Archivo', sans-serif;
-    color: #C9CB7E;
-    font-weight: 900;
-    font-size: 2.6rem;
-    margin: 0;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    line-height: 1.15;
+[data-testid="collapsedControl"] span,
+[data-testid="stSidebarCollapsedControl"] span {
+    color: #FFFFFF !important;
+    font-size: 1.3rem !important;
 }
-.hero-box p {
-    color: #B9C4C2;
-    font-size: 1rem;
-    margin-top: 0.9rem;
-    font-weight: 300;
-    max-width: 640px;
+[data-testid="stSidebarCollapseButton"] button,
+[data-testid="stSidebarCollapseButton"] svg {
+    color: #FFFFFF !important;
+    fill: #FFFFFF !important;
 }
-.hero-btn {
-    display: inline-block;
-    margin-top: 1.6rem;
-    padding: 0.65rem 1.6rem;
-    border: 1px solid #C9CB7E;
-    border-radius: 999px;
-    color: #C9CB7E;
-    font-family: 'Archivo', sans-serif;
-    font-size: 0.78rem;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    font-weight: 600;
+[data-testid="stSidebarCollapseButton"] button {
+    background: rgba(255,255,255,0.18) !important;
+    border-radius: 8px !important;
 }
 
-/* ==================== SIDEBAR - GAYA NAVBAR OLIVE ==================== */
+/* ==================== HERO / JUDUL ==================== */
+.hero-box {
+    background: linear-gradient(120deg, #0D47A1 0%, #1565C0 45%, #42A5F5 100%);
+    padding: 2.6rem 2.8rem;
+    border-radius: 24px;
+    margin-bottom: 1.6rem;
+    box-shadow: 0 18px 38px -14px rgba(13,71,161,0.45);
+    position: relative;
+    overflow: hidden;
+}
+.hero-box::after {
+    content: "";
+    position: absolute;
+    top: -70px; right: -70px;
+    width: 220px; height: 220px;
+    background: rgba(255,255,255,0.10);
+    border-radius: 50%;
+}
+.hero-box::before {
+    content: "";
+    position: absolute;
+    bottom: -90px; left: -40px;
+    width: 240px; height: 240px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 50%;
+}
+.hero-box h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 2.3rem;
+    margin: 0;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+}
+.hero-box p {
+    color: rgba(255,255,255,0.92);
+    font-size: 1rem;
+    margin-top: 0.8rem;
+    font-weight: 400;
+    max-width: 640px;
+}
+.hero-btn-wrap { margin-top: 1.4rem; }
+.hero-btn-wrap .stButton > button {
+    background: #FFFFFF !important;
+    color: #0D47A1 !important;
+    border: none !important;
+    font-weight: 700 !important;
+    box-shadow: 0 8px 18px -6px rgba(0,0,0,0.25) !important;
+}
+.hero-btn-wrap .stButton > button:hover {
+    background: #E3F2FD !important;
+    color: #0D47A1 !important;
+}
+
+/* ==================== SIDEBAR ==================== */
 section[data-testid="stSidebar"] {
-    background: #A9A87C;
-    border-right: 1px solid rgba(0,0,0,0.15);
+    background: linear-gradient(180deg, #0D47A1 0%, #1565C0 100%);
+    border-right: 1px solid rgba(0,0,0,0.06);
 }
 section[data-testid="stSidebar"] * {
-    color: #17312F !important;
-    font-family: 'Archivo', sans-serif !important;
+    color: #FFFFFF !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
 }
 section[data-testid="stSidebar"] .stSelectbox label {
     font-weight: 700 !important;
@@ -128,91 +162,76 @@ section[data-testid="stSidebar"] .stSelectbox label {
     letter-spacing: 1px;
 }
 section[data-testid="stSidebar"] div[data-baseweb="select"] > div {
-    background-color: rgba(255,255,255,0.35) !important;
-    border-radius: 4px !important;
-    border: 1px solid rgba(23,49,47,0.4) !important;
+    background-color: rgba(255,255,255,0.16) !important;
+    border-radius: 12px !important;
+    border: 1.5px solid rgba(255,255,255,0.35) !important;
 }
 
 /* ==================== KARTU KONTEN ==================== */
 .card {
-    background: #12474D;
-    border-radius: 4px;
+    background: #FFFFFF;
+    border-radius: 20px;
     padding: 1.6rem 1.8rem;
     margin-bottom: 1.3rem;
-    border: 1px solid rgba(201, 203, 126, 0.25);
-    color: #EDEAD9;
-}
-
-/* ==================== TEKS UMUM ==================== */
-p, li, span, div, label {
-    color: #EDEAD9;
-}
-.stMarkdown, .stMarkdown p {
-    color: #EDEAD9 !important;
+    box-shadow: 0 10px 26px -14px rgba(21,101,192,0.22);
+    border: 1px solid rgba(21,101,192,0.08);
+    color: #1E2A3A;
 }
 
 /* ==================== HEADER / SUBHEADER ==================== */
 h1, h2, h3 {
-    font-family: 'Archivo', sans-serif;
-    font-weight: 800;
-    color: #EDEAD9;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    color: #14213D;
 }
-h2 { color: #C9CB7E; }
-h3 { color: #9FD0C8; }
+h2 { color: #1565C0; }
+h3 { color: #0D47A1; }
 
-/* ==================== TOMBOL - OUTLINE MINIMALIS ==================== */
+/* ==================== TOMBOL ==================== */
 .stButton > button, .stFormSubmitButton > button, .stDownloadButton > button {
-    background: transparent;
-    color: #C9CB7E;
-    border: 1px solid #C9CB7E;
+    background: linear-gradient(120deg, #1565C0, #42A5F5);
+    color: #FFFFFF;
+    border: none;
     border-radius: 999px;
-    padding: 0.55rem 1.6rem;
-    font-family: 'Archivo', sans-serif;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    transition: all 0.15s ease;
+    padding: 0.6rem 1.7rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    box-shadow: 0 8px 18px -6px rgba(21,101,192,0.45);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .stButton > button:hover, .stFormSubmitButton > button:hover, .stDownloadButton > button:hover {
-    background: #C9CB7E;
-    color: #0C3236;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 22px -6px rgba(21,101,192,0.55);
+    color: #FFFFFF;
 }
 
 /* ==================== METRIC ==================== */
 div[data-testid="stMetric"] {
-    background: #12474D;
-    border-radius: 4px;
+    background: linear-gradient(135deg, #FFFFFF, #EAF3FC);
+    border-radius: 16px;
     padding: 1rem 1.2rem;
-    border: 1px solid rgba(201, 203, 126, 0.25);
-}
-div[data-testid="stMetric"] label, div[data-testid="stMetric"] div {
-    color: #EDEAD9 !important;
+    border: 1px solid rgba(21,101,192,0.15);
+    box-shadow: 0 8px 18px -12px rgba(21,101,192,0.25);
 }
 
 /* ==================== TABS ==================== */
 button[data-baseweb="tab"] {
-    font-family: 'Archivo', sans-serif !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #B9C4C2 !important;
+    border-radius: 12px 12px 0 0 !important;
 }
 div[data-baseweb="tab-highlight"] {
-    background-color: #C9CB7E !important;
+    background-color: #1565C0 !important;
 }
 
 /* ==================== ALERT & DATAFRAME ==================== */
 div[data-testid="stAlert"] {
-    border-radius: 4px;
-    background: #12474D !important;
+    border-radius: 14px;
 }
 div[data-testid="stDataFrame"] {
-    border-radius: 4px;
+    border-radius: 14px;
     overflow: hidden;
-    border: 1px solid rgba(201, 203, 126, 0.25);
+    border: 1px solid rgba(21,101,192,0.12);
 }
 
 /* ==================== FITUR GRID (Home) ==================== */
@@ -223,31 +242,39 @@ div[data-testid="stDataFrame"] {
     margin-top: 1rem;
 }
 .feature-item {
-    background: #12474D;
-    border-radius: 4px;
+    background: #FFFFFF;
+    border-radius: 16px;
     padding: 1.1rem 1.2rem;
-    border-left: 3px solid #C9CB7E;
-    font-family: 'Poppins', sans-serif;
-    color: #EDEAD9;
+    border-left: 5px solid #1565C0;
+    box-shadow: 0 8px 18px -14px rgba(21,101,192,0.3);
+    font-family: 'Inter', sans-serif;
+    color: #1E2A3A;
 }
 .feature-item b {
-    color: #C9CB7E;
-    font-family: 'Archivo', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    color: #0D47A1;
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 /* ==================== BADGE MODEL (Home) ==================== */
 .badge-row { display:flex; flex-wrap:wrap; gap:0.5rem; margin: 0.8rem 0 1.2rem 0; }
 .badge {
-    background: transparent;
-    color: #C9CB7E;
-    font-weight:600; font-size:0.75rem;
-    font-family: 'Archivo', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    background: linear-gradient(120deg, #1565C0, #42A5F5);
+    color: #FFFFFF;
+    font-weight: 600; font-size: 0.82rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     padding: 0.4rem 1rem; border-radius: 999px;
-    border: 1px solid #C9CB7E;
+}
+
+/* ==================== MENU SIDEBAR DENGAN IKON ==================== */
+.sidebar-menu-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: 1.05rem;
+    color: #FFFFFF;
+    margin-bottom: 0.6rem;
 }
 </style>
 """
@@ -256,33 +283,63 @@ st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 st.markdown(
     """
     <div class="hero-box">
-        <div class="hero-nav">
-            <span>P. &nbsp; Home &nbsp; Editorial &nbsp; About</span>
-            <span>Contact</span>
-        </div>
-        <h1>Prediksi Tingkat<br>Kecanduan Media Sosial</h1>
+        <h1>🧠 Prediksi Tingkat Kecanduan Media Sosial</h1>
         <p>Aplikasi Machine Learning untuk menganalisis, melatih model, dan memprediksi tingkat kecanduan media sosial berdasarkan data & kebiasaan penggunanya.</p>
-        <span class="hero-btn">Lihat Semua Fitur ↗</span>
     </div>
     """,
     unsafe_allow_html=True
 )
 
+# Tombol "Lihat Semua Fitur" — nyata & bisa diklik (bukan sekadar hiasan),
+# menampilkan/menyembunyikan ringkasan fitur di halaman manapun.
+if "show_fitur" not in st.session_state:
+    st.session_state.show_fitur = False
+
+st.markdown('<div class="hero-btn-wrap">', unsafe_allow_html=True)
+if st.button("✨ Lihat Semua Fitur ↗", key="btn_lihat_fitur"):
+    st.session_state.show_fitur = not st.session_state.show_fitur
+st.markdown('</div>', unsafe_allow_html=True)
+
+if st.session_state.show_fitur:
+    st.markdown(
+        """
+        <div class="feature-grid">
+            <div class="feature-item">📊 <b>Dataset</b><br>Melihat ringkasan data training.</div>
+            <div class="feature-item">📈 <b>EDA</b><br>Exploratory Data Analysis & visualisasi korelasi.</div>
+            <div class="feature-item">⚙️ <b>Preprocessing</b><br>Pembersihan data & pembagian dataset.</div>
+            <div class="feature-item">🤖 <b>Training Model</b><br>Melatih data ke semua algoritma sekaligus.</div>
+            <div class="feature-item">🔍 <b>Prediksi Manual</b><br>Input data mandiri via form.</div>
+            <div class="feature-item">📁 <b>Prediksi Dataset Upload</b><br>Upload CSV untuk prediksi massal.</div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
 # ==========================================================
 # SIDEBAR MENU
 # ==========================================================
-menu = st.sidebar.selectbox(
-    "Pilih Menu",
-    [
-        "Home",
-        "Dataset",
-        "EDA",
-        "Preprocessing",
-        "Training",
-        "Prediksi Manual",
-        "Prediksi Dataset Upload"
-    ]
+st.sidebar.markdown(
+    '<div class="sidebar-menu-title">🧭 Navigasi Aplikasi</div>',
+    unsafe_allow_html=True
 )
+
+MENU_ICONS = {
+    "Home": "🏠",
+    "Dataset": "📊",
+    "EDA": "📈",
+    "Preprocessing": "⚙️",
+    "Training": "🤖",
+    "Prediksi Manual": "🔍",
+    "Prediksi Dataset Upload": "📁",
+}
+menu_labels = list(MENU_ICONS.keys())
+display_to_menu = {f"{icon}  {label}": label for label, icon in MENU_ICONS.items()}
+
+selected_display = st.sidebar.selectbox(
+    "Pilih Menu",
+    list(display_to_menu.keys())
+)
+menu = display_to_menu[selected_display]
 
 # ==========================================================
 # DATASET TRAINING
@@ -354,7 +411,7 @@ if menu == "Home":
             """
             <div class="card">
                 <h3 style="margin-top:0;">👋 Selamat Datang!</h3>
-                <p style="font-family:'Poppins', sans-serif; font-size:1.02rem; color:#EDEAD9; font-weight:300;">
+                <p style="font-family:'Inter', sans-serif; font-size:1.02rem; color:#3A4657; font-weight:400;">
                     Aplikasi ini memakai <b>Machine Learning</b> untuk membantu memprediksi tingkat
                     kecanduan media sosial seseorang berdasarkan kebiasaan sehari-hari, kondisi
                     akademik, hingga kesehatan mental. Yuk eksplor datanya! 🚀
