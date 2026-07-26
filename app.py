@@ -20,19 +20,6 @@ try:
     xgb = True
 except:
     xgb = False
-import streamlit as st
-
-def local_css(file_name):
-    """Fungsi untuk membaca dan menerapkan file CSS lokal"""
-    with open(file_name) as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-
-# Panggil fungsi CSS di awal script
-local_css("style.css")
-
-# Konten Streamlit seperti biasa
-st.title("Aplikasi Streamlit dengan Custom CSS")
-st.write("Tampilan halaman ini sudah disesuaikan menggunakan file `style.css` eksternal.")
 
 # Konfigurasi Halaman (Hanya satu di paling atas)
 st.set_page_config(
@@ -41,8 +28,31 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("📱 Prediksi Tingkat Kecanduan Media Sosial")
-st.write("---")
+# MASUKKAN CSS LANGSUNG DI SINI:
+st.markdown("""
+<style>
+    /* Mengubah background utama */
+    .stApp {
+        background-color: #f8fafc;
+    }
+    
+    # Custom styling tombol
+    .stButton>button {
+        background-color: #2563eb;
+        color: white;
+        border-radius: 8px;
+        border: none;
+        padding: 0.5rem 1rem;
+        font-weight: 600;
+        width: 100%;
+    }
+    
+    .stButton>button:hover {
+        background-color: #1d4ed8;
+        color: white;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # Sidebar Menu
 menu = st.sidebar.selectbox(
@@ -113,7 +123,7 @@ elif menu == "EDA":
     target = "Addiction_Level"
     if target in df.columns:
         fig, ax = plt.subplots(figsize=(6, 4))
-        df[target].value_counts().plot(kind="bar", ax=ax)
+        df[target].value_counts().plot(kind="bar", ax=ax, color='#2563EB')
         ax.set_xlabel("Level")
         ax.set_ylabel("Jumlah")
         ax.set_title("Distribusi Addiction Level")
@@ -125,7 +135,7 @@ elif menu == "EDA":
     numeric = df.select_dtypes(include=np.number)
     for col in numeric.columns:
         fig, ax = plt.subplots(figsize=(6, 3))
-        ax.hist(numeric[col], bins=20)
+        ax.hist(numeric[col], bins=20, color='#3B82F6', edgecolor='#1D4ED8')
         ax.set_title(col)
         st.pyplot(fig)
 
@@ -140,7 +150,7 @@ elif menu == "EDA":
     if not numeric.empty:
         corr = numeric.corr()
         fig, ax = plt.subplots(figsize=(10, 8))
-        im = ax.imshow(corr)
+        im = ax.imshow(corr, cmap='Blues')
         ax.set_xticks(range(len(corr.columns)))
         ax.set_xticklabels(corr.columns, rotation=90)
         ax.set_yticks(range(len(corr.columns)))
@@ -260,7 +270,7 @@ elif menu == "Training":
 
     st.subheader("Grafik Accuracy")
     fig, ax = plt.subplots(figsize=(10, 5))
-    ax.bar(hasil_df["Model"], hasil_df["Accuracy"])
+    ax.bar(hasil_df["Model"], hasil_df["Accuracy"], color='#2563EB')
     plt.xticks(rotation=20)
     st.pyplot(fig)
 
@@ -359,7 +369,7 @@ elif menu == "Prediksi":
 
             # Grafik Probabilitas
             fig, ax = plt.subplots(figsize=(6, 4))
-            ax.bar(hasil_prob["Kategori"], hasil_prob["Probabilitas (%)"], color=['green', 'orange', 'red'])
+            ax.bar(hasil_prob["Kategori"], hasil_prob["Probabilitas (%)"], color=['#22C55E', '#F59E0B', '#EF4444'])
             ax.set_ylabel("Persentase (%)")
             ax.set_title("Grafik Persentase Tingkat Kecanduan")
             st.pyplot(fig)
