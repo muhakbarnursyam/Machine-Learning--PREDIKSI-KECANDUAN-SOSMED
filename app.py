@@ -135,6 +135,12 @@ if menu == "Home":
 elif menu == "Dataset":
     st.header("📊 Dataset Training")
     st.info(f"Dataset training yang digunakan: {TRAINING_DATASET}")
+    
+    st.markdown("""
+    Halaman ini menampilkan seluruh isi dataset mentah yang digunakan sebagai dasar pembuatan model *Machine Learning*. 
+    Tabel di bawah memuat seluruh atribut responden mulai dari informasi demografis, kebiasaan penggunaan perangkat, hingga label tingkat kecanduan media sosial (*Addiction Level*).
+    """)
+
     st.dataframe(df, use_container_width=True)
 
     col1, col2, col3 = st.columns(3)
@@ -142,18 +148,30 @@ elif menu == "Dataset":
     col2.metric("Jumlah Kolom", df.shape[1])
     
     st.subheader("Statistik Deskriptif")
+    st.markdown("""
+    Tabel ringkasan statistik berikut menyajikan nilai-nilai parameter numerik (seperti *mean*, *std*, *min*, dan *max*) serta sebaran frekuensi untuk variabel kategorikal dari data responden.
+    """)
     st.write(df.describe(include="all"))
 
     st.subheader("Tipe Data")
+    st.markdown("Berikut adalah daftar variabel/kolom yang ada dalam dataset beserta tipe datanya masing-masing:")
     st.write(df.dtypes.astype(str))
 
 # --- EDA ---
 elif menu == "EDA":
     st.header("📈 Exploratory Data Analysis")
+    
+    st.markdown("""
+    Menu Exploratory Data Analysis (EDA) bertujuan untuk menganalisis karakteristik data melalui eksplorasi visual dan ringkasan struktur. 
+    Langkah ini membantu dalam memahami pola, mengecek keberadaan data yang hilang (*missing values*), serta melihat korelasi antar variabel.
+    """)
+
     st.subheader("5 Data Pertama")
+    st.write("Berikut adalah sampel 5 baris pertama dari dataset untuk memberikan gambaran cepat struktur data:")
     st.dataframe(df.head())
 
     st.subheader("Informasi Dataset")
+    st.write("Tabel ringkasan struktur kolom, jenis tipe data, jumlah *missing value*, serta jumlah nilai unik (*unique values*) dari dataset:")
     info = pd.DataFrame({
         "Kolom": df.columns,
         "Tipe Data": df.dtypes.astype(str),
@@ -164,6 +182,7 @@ elif menu == "EDA":
 
     if "Addiction_Level" in df.columns:
         st.subheader("Distribusi Addiction Level")
+        st.write("Grafik batang di bawah menunjukkan sebaran frekuensi label tingkat kecanduan (*Addiction Level*) yang menjadi variabel target dalam model prediksi:")
         fig, ax = plt.subplots(figsize=(6, 3))
         df["Addiction_Level"].value_counts().plot(kind="bar", ax=ax, color='#1E88E5')
         ax.set_xlabel("Tingkat Kecanduan")
@@ -173,6 +192,7 @@ elif menu == "EDA":
     numeric = df.select_dtypes(include=np.number)
     if not numeric.empty:
         st.subheader("Distribusi Variabel Numerik")
+        st.write("Visualisasi histogram untuk melihat bagaimana sebaran data pada tiap-tiap kolom numerik:")
         for col in numeric.columns:
             fig, ax = plt.subplots(figsize=(5, 2.5))
             ax.hist(numeric[col], bins=20, color='#4CAF50')
@@ -180,6 +200,7 @@ elif menu == "EDA":
             st.pyplot(fig)
 
         st.subheader("Correlation Matrix")
+        st.write("Matriks korelasi untuk mengukur derajat hubungan linier antar variabel numerik. Nilai mendekati 1 atau -1 menunjukkan korelasi yang semakin kuat:")
         corr = numeric.corr()
         fig, ax = plt.subplots(figsize=(8, 6))
         im = ax.imshow(corr, cmap='coolwarm')
@@ -193,12 +214,25 @@ elif menu == "EDA":
 # --- PREPROCESSING ---
 elif menu == "Preprocessing":
     st.header("⚙️ Preprocessing Data")
+    
+    st.markdown("""
+    Pada tahap *preprocessing*, data mentah dibersihkan dan ditransformasi agar siap diproses oleh algoritma *Machine Learning*. 
+    Proses ini mencakup penghapusan data duplikat, eliminasi kolom yang tidak relevan (seperti *Student_ID*), serta encoding pada variabel kategorikal.
+    """)
+
     st.write(f"Dataset awal: **{df.shape[0]} baris, {df.shape[1]} kolom**")
 
     X, y, target_encoder, feature_encoders, scaler, feature_columns = prepare_training_data(df)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
     st.success("Preprocessing berhasil dilakukan!")
+
+    st.markdown("""
+    Data telah dibagi menjadi 2 bagian utama menggunakan teknik *Stratified Train-Test Split* (rasio 80:20):
+    * **Data Training (80%)**: Digunakan untuk melatih algoritma *Machine Learning*.
+    * **Data Testing (20%)**: Digunakan untuk menguji dan mengevaluasi akurasi model yang telah dilatih.
+    """)
+
     st.write(f"✔ Jumlah Data Training: {X_train.shape[0]} sampel")
     st.write(f"✔ Jumlah Data Testing: {X_test.shape[0]} sampel")
     st.write("Target Classes:", list(target_encoder.classes_))
@@ -207,6 +241,11 @@ elif menu == "Preprocessing":
 elif menu == "Training":
     st.header("🤖 Training Model")
     
+    st.markdown("""
+    Halaman ini melakukan pelatihan (*training*) secara bersamaan pada beberapa algoritma *Machine Learning* menggunakan data yang telah di-*preprocessing*. 
+    Performa tiap algoritma kemudian dievaluasi menggunakan data testing berdasarkan metrik **Accuracy**, **Precision**, **Recall**, dan **F1 Score**.
+    """)
+
     X, y, target_encoder, feature_encoders, scaler, feature_columns = prepare_training_data(df)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
@@ -246,6 +285,11 @@ elif menu == "Training":
     hasil_df = hasil_df.sort_values(by="Accuracy", ascending=False)
 
     st.success("Training selesai!")
+
+    st.subheader("📊 Tabel Perbandingan Performa Model")
+    st.markdown("""
+    Tabel di bawah mengurutkan algoritma berdasarkan tingkat **Accuracy** tertinggi. Model dengan performa terbaik disiapkan secara otomatis sebagai model rujukan utama.
+    """)
     st.dataframe(hasil_df.style.format({
         "Accuracy": "{:.2%}", "Precision": "{:.2%}", "Recall": "{:.2%}", "F1 Score": "{:.2%}"
     }), use_container_width=True)
@@ -262,6 +306,8 @@ elif menu == "Training":
     st.success("Semua model dan encoder berhasil diekspor!")
 
     # Visualisasi
+    st.subheader("📈 Grafik Akurasi Model")
+    st.markdown("Perbandingan performa tingkat akurasi antar algoritma dalam bentuk grafik batang:")
     fig, ax = plt.subplots(figsize=(8, 4))
     ax.bar(hasil_df["Model"], hasil_df["Accuracy"], color='#26A69A')
     ax.set_ylabel("Accuracy Score")
