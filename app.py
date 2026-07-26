@@ -91,6 +91,42 @@ button[data-testid="baseButton-headerNoPadding"] svg {
     border-radius: 8px !important;
 }
 
+/* Jika font ikon Material Symbols gagal dimuat, browser menampilkan nama
+   ikonnya sebagai teks mentah (mis. "keyboard_double_arrow_left"). Sembunyikan
+   teks tersebut dan gantikan dengan tanda panah sederhana agar tombol tetap
+   jelas menandakan kontrol buka/tutup sidebar. */
+[data-testid="collapsedControl"] [data-testid="stIconMaterial"],
+[data-testid="stSidebarCollapsedControl"] [data-testid="stIconMaterial"],
+[data-testid="stSidebarCollapseButton"] [data-testid="stIconMaterial"] {
+    font-size: 0 !important;
+    color: transparent !important;
+    position: relative;
+    display: inline-block;
+    width: 1.3rem;
+    height: 1.3rem;
+}
+[data-testid="collapsedControl"] [data-testid="stIconMaterial"]::after,
+[data-testid="stSidebarCollapsedControl"] [data-testid="stIconMaterial"]::after {
+    content: "»";
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -55%);
+    font-size: 1.4rem !important;
+    line-height: 1;
+    color: #FFFFFF !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+[data-testid="stSidebarCollapseButton"] [data-testid="stIconMaterial"]::after {
+    content: "«";
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -55%);
+    font-size: 1.4rem !important;
+    line-height: 1;
+    color: #FFFFFF !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
 /* ==================== HERO / JUDUL ==================== */
 .hero-box {
     background: linear-gradient(120deg, #0D47A1 0%, #1565C0 45%, #42A5F5 100%);
@@ -286,7 +322,6 @@ st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 # ==========================================================
 MENU_ICONS = {
     "Home": "🏠",
-    "Self-Check Cepat": "🧪",
     "Dataset": "📊",
     "EDA": "📈",
     "Preprocessing": "⚙️",
@@ -295,7 +330,6 @@ MENU_ICONS = {
     "Prediksi Dataset Upload": "📁",
 }
 MENU_DESC = {
-    "Self-Check Cepat": "Tes singkat mandiri untuk mengecek potensi risiko kecanduanmu.",
     "Dataset": "Melihat ringkasan data training.",
     "EDA": "Exploratory Data Analysis & visualisasi korelasi.",
     "Preprocessing": "Pembersihan data & pembagian dataset.",
@@ -372,6 +406,63 @@ if not os.path.exists(TRAINING_DATASET):
     st.stop()
 
 df = pd.read_csv(TRAINING_DATASET)
+
+# ==========================================================
+# FOOTER SIDEBAR — pengisi bagian bawah agar tampilan lebih ramai
+# ==========================================================
+st.sidebar.markdown(
+    "<hr style='border: none; border-top: 1px solid rgba(255,255,255,0.25); margin: 1.5rem 0 1.1rem 0;'>",
+    unsafe_allow_html=True
+)
+
+st.sidebar.markdown(
+    '<div class="sidebar-menu-title" style="font-size:0.92rem;">📊 Ringkasan Dataset</div>',
+    unsafe_allow_html=True
+)
+st.sidebar.markdown(
+    f"""
+    <div style="display:flex; gap:0.6rem; margin-bottom:1rem;">
+        <div style="flex:1; background: rgba(255,255,255,0.14); border: 1.5px solid rgba(255,255,255,0.3);
+                    border-radius: 14px; padding: 0.7rem 0.5rem; text-align:center;">
+            <div style="font-size:1.25rem; font-weight:800; line-height:1.2;">{df.shape[0]:,}</div>
+            <div style="font-size:0.68rem; opacity:0.85; text-transform:uppercase; letter-spacing:0.5px;">Baris Data</div>
+        </div>
+        <div style="flex:1; background: rgba(255,255,255,0.14); border: 1.5px solid rgba(255,255,255,0.3);
+                    border-radius: 14px; padding: 0.7rem 0.5rem; text-align:center;">
+            <div style="font-size:1.25rem; font-weight:800; line-height:1.2;">{df.shape[1]}</div>
+            <div style="font-size:0.68rem; opacity:0.85; text-transform:uppercase; letter-spacing:0.5px;">Kolom</div>
+        </div>
+        <div style="flex:1; background: rgba(255,255,255,0.14); border: 1.5px solid rgba(255,255,255,0.3);
+                    border-radius: 14px; padding: 0.7rem 0.5rem; text-align:center;">
+            <div style="font-size:1.25rem; font-weight:800; line-height:1.2;">7</div>
+            <div style="font-size:0.68rem; opacity:0.85; text-transform:uppercase; letter-spacing:0.5px;">Model ML</div>
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+st.sidebar.markdown(
+    """
+    <div style="background: rgba(255,255,255,0.14); border: 1.5px solid rgba(255,255,255,0.3);
+                border-radius: 14px; padding: 0.9rem 1rem; margin-bottom: 1.1rem; font-size: 0.83rem; line-height:1.55;">
+        💡 <b>Mau cek dirimu sendiri?</b><br>
+        Buka menu <b>🔍 Prediksi Manual</b> untuk mengisi form singkat dan lihat estimasi tingkat kecanduan media sosialmu.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+st.sidebar.markdown(
+    """
+    <div style="text-align:center; padding-top:0.8rem; border-top:1px solid rgba(255,255,255,0.2);
+                font-size:0.76rem; opacity:0.85; line-height:1.6;">
+        🧠 Dibuat dengan <span style="color:#FF6B81;">❤️</span> memakai Streamlit<br>
+        Versi 1.0.0 • © 2026
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # ==========================================================
 # FUNGSI PREPROCESSING & TRAINING
