@@ -144,7 +144,7 @@ st.markdown("""
         border-top: 4px dashed #00ffcc !important;
     }
     </style>
-""", unsafe_allow_dict_style=True)
+""", unsafe_allow_html=True)
 
 # Header Utama
 st.title("PREDIKSI KECANDUAN MEDIA SOSIAL")
