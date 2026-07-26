@@ -280,6 +280,36 @@ div[data-testid="stDataFrame"] {
 """
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
+# ==========================================================
+# DATA MENU (didefinisikan lebih awal agar bisa dipakai bersama
+# oleh kartu fitur "Lihat Semua Fitur" dan sidebar navigasi)
+# ==========================================================
+MENU_ICONS = {
+    "Home": "🏠",
+    "Self-Check Cepat": "🧪",
+    "Dataset": "📊",
+    "EDA": "📈",
+    "Preprocessing": "⚙️",
+    "Training": "🤖",
+    "Prediksi Manual": "🔍",
+    "Prediksi Dataset Upload": "📁",
+}
+MENU_DESC = {
+    "Self-Check Cepat": "Tes singkat mandiri untuk mengecek potensi risiko kecanduanmu.",
+    "Dataset": "Melihat ringkasan data training.",
+    "EDA": "Exploratory Data Analysis & visualisasi korelasi.",
+    "Preprocessing": "Pembersihan data & pembagian dataset.",
+    "Training": "Melatih data ke semua algoritma sekaligus.",
+    "Prediksi Manual": "Input data mandiri via form.",
+    "Prediksi Dataset Upload": "Upload CSV untuk prediksi massal.",
+}
+display_to_menu = {f"{icon}  {label}": label for label, icon in MENU_ICONS.items()}
+menu_to_display = {label: disp for disp, label in display_to_menu.items()}
+
+SELECTBOX_KEY = "sb_menu_display"
+if SELECTBOX_KEY not in st.session_state:
+    st.session_state[SELECTBOX_KEY] = menu_to_display["Home"]
+
 st.markdown(
     """
     <div class="hero-box">
@@ -291,7 +321,8 @@ st.markdown(
 )
 
 # Tombol "Lihat Semua Fitur" — nyata & bisa diklik (bukan sekadar hiasan),
-# menampilkan/menyembunyikan ringkasan fitur di halaman manapun.
+# menampilkan ringkasan fitur di halaman manapun. Setiap kartu di bawahnya
+# juga bisa langsung diklik untuk berpindah ke menu tersebut.
 if "show_fitur" not in st.session_state:
     st.session_state.show_fitur = False
 
@@ -301,19 +332,20 @@ if st.button("✨ Lihat Semua Fitur ↗", key="btn_lihat_fitur"):
 st.markdown('</div>', unsafe_allow_html=True)
 
 if st.session_state.show_fitur:
-    st.markdown(
-        """
-        <div class="feature-grid">
-            <div class="feature-item">📊 <b>Dataset</b><br>Melihat ringkasan data training.</div>
-            <div class="feature-item">📈 <b>EDA</b><br>Exploratory Data Analysis & visualisasi korelasi.</div>
-            <div class="feature-item">⚙️ <b>Preprocessing</b><br>Pembersihan data & pembagian dataset.</div>
-            <div class="feature-item">🤖 <b>Training Model</b><br>Melatih data ke semua algoritma sekaligus.</div>
-            <div class="feature-item">🔍 <b>Prediksi Manual</b><br>Input data mandiri via form.</div>
-            <div class="feature-item">📁 <b>Prediksi Dataset Upload</b><br>Upload CSV untuk prediksi massal.</div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    fitur_list = [label for label in MENU_ICONS if label != "Home"]
+    kolom_per_baris = 3
+    for i in range(0, len(fitur_list), kolom_per_baris):
+        baris_items = fitur_list[i:i + kolom_per_baris]
+        cols = st.columns(len(baris_items))
+        for col, label in zip(cols, baris_items):
+            with col:
+                with st.container(border=True):
+                    st.markdown(f"**{MENU_ICONS[label]} {label}**")
+                    st.caption(MENU_DESC[label])
+                    if st.button("Buka →", key=f"card_buka_{label}", use_container_width=True):
+                        st.session_state[SELECTBOX_KEY] = menu_to_display[label]
+                        st.session_state.show_fitur = False
+                        st.rerun()
 
 # ==========================================================
 # SIDEBAR MENU
@@ -323,21 +355,10 @@ st.sidebar.markdown(
     unsafe_allow_html=True
 )
 
-MENU_ICONS = {
-    "Home": "🏠",
-    "Dataset": "📊",
-    "EDA": "📈",
-    "Preprocessing": "⚙️",
-    "Training": "🤖",
-    "Prediksi Manual": "🔍",
-    "Prediksi Dataset Upload": "📁",
-}
-menu_labels = list(MENU_ICONS.keys())
-display_to_menu = {f"{icon}  {label}": label for label, icon in MENU_ICONS.items()}
-
 selected_display = st.sidebar.selectbox(
     "Pilih Menu",
-    list(display_to_menu.keys())
+    list(display_to_menu.keys()),
+    key=SELECTBOX_KEY
 )
 menu = display_to_menu[selected_display]
 
@@ -437,20 +458,7 @@ if menu == "Home":
             unsafe_allow_html=True
         )
 
-    st.markdown("### ✨ Fitur Utama")
-    st.markdown(
-        """
-        <div class="feature-grid">
-            <div class="feature-item">📊 <b>Dataset</b><br>Melihat ringkasan data training.</div>
-            <div class="feature-item">📈 <b>EDA</b><br>Exploratory Data Analysis & visualisasi korelasi.</div>
-            <div class="feature-item">⚙️ <b>Preprocessing</b><br>Pembersihan data & pembagian dataset.</div>
-            <div class="feature-item">🤖 <b>Training Model</b><br>Melatih data ke semua algoritma sekaligus.</div>
-            <div class="feature-item">🔍 <b>Prediksi Manual</b><br>Input data mandiri via form.</div>
-            <div class="feature-item">📁 <b>Prediksi Dataset Upload</b><br>Upload CSV untuk prediksi massal.</div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    st.info("💡 Ingin lihat semua fitur? Klik tombol **✨ Lihat Semua Fitur ↗** di bagian atas halaman — setiap kartu bisa langsung diklik untuk berpindah menu.")
 
 # --- DATASET ---
 elif menu == "Dataset":
