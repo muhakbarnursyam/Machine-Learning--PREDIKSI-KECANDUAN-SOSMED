@@ -7,7 +7,9 @@ import streamlit as st
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
+    ConfusionMatrixDisplay,
     accuracy_score,
+    confusion_matrix,
     f1_score,
     precision_score,
     recall_score,
@@ -27,220 +29,19 @@ except ImportError:
     xgb = False
 
 # ==========================================================
-# 1. KONFIGURASI HALAMAN & INJECT THEME TOY STORY (COKLAT VINTAGE)
+# KONFIGURASI HALAMAN
 # ==========================================================
 st.set_page_config(
     page_title="Prediksi Kecanduan Media Sosial",
-    page_icon="🤠",
+    page_icon="https://i.pinimg.com/originals/13/a1/56/13a15667ed324c559ca73f6d2108392b.jpg",
     layout="wide"
 )
 
-# Inject Custom CSS untuk Tema Toy Story & Gantungan Karakter
-st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-
-    /* Font Global */
-    html, body, [class*="css"] {
-        font-family: 'Plus Jakarta Sans', sans-serif !important;
-    }
-
-    /* Background Utama Warna Coklat Kayu Vintage */
-    .stApp {
-        background: linear-gradient(180deg, #2c1a0e 0%, #1a0f08 100%) !important;
-        color: #fdf6e3 !important;
-    }
-
-    /* Animasi Gantungan Karakter (Swinging Effect) */
-    @keyframes swing {
-        0% { transform: rotate(3deg); }
-        50% { transform: rotate(-3deg); }
-        100% { transform: rotate(3deg); }
-    }
-
-    .toy-hanger-container {
-        display: flex;
-        justify-content: space-around;
-        align-items: flex-start;
-        padding-top: 0px;
-        margin-bottom: 25px;
-        border-bottom: 2px dashed #8d5b34;
-        padding-bottom: 15px;
-    }
-
-    .toy-charm {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        transform-origin: top center;
-        animation: swing 3.5s ease-in-out infinite;
-    }
-
-    .toy-charm:nth-child(even) {
-        animation-duration: 4s;
-        animation-delay: 0.5s;
-    }
-
-    .string {
-        width: 2px;
-        height: 35px;
-        background: linear-gradient(to bottom, #ffffff, #d7ccc8);
-        box-shadow: 0 0 4px rgba(255,255,255,0.6);
-    }
-
-    .charm-badge {
-        background: rgba(255, 255, 255, 0.92);
-        border: 2px solid #8d5b34;
-        border-radius: 16px;
-        padding: 6px 14px;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.4), inset 0 0 6px rgba(255,255,255,0.8);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-weight: 700;
-        font-size: 13px;
-        color: #3e2723;
-        backdrop-filter: blur(4px);
-    }
-
-    /* Judul & Header Woody Western Style */
-    h1 {
-        font-family: 'Fredoka One', cursive !important;
-        font-weight: 400 !important;
-        letter-spacing: 1px;
-        color: #f5e6ca !important;
-        text-shadow: 3px 3px 0px #8d5b34, 5px 5px 0px #3e2723;
-        padding-bottom: 5px;
-    }
-
-    h2, h3 {
-        font-family: 'Fredoka One', cursive !important;
-        color: #e0a96d !important;
-        letter-spacing: 0.5px;
-    }
-
-    /* Sidebar Kustom Warna Coklat Tua */
-    [data-testid="stSidebar"] {
-        background-color: #23140a !important;
-        border-right: 2px solid #4a2c17 !important;
-    }
-
-    [data-testid="stSidebar"] * {
-        color: #f5e6ca !important;
-    }
-
-    /* Card & Container Rame & Estetik */
-    div[data-testid="stMetric"], 
-    div[data-testid="stForm"],
-    div[data-testid="stExpander"],
-    .stTable, .stDataFrame {
-        background: rgba(43, 26, 14, 0.85) !important;
-        border: 2px solid #8d5b34 !important;
-        border-radius: 20px !important;
-        padding: 22px !important;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 0 15px rgba(141, 91, 52, 0.2) !important;
-        transition: all 0.3s ease;
-    }
-
-    div[data-testid="stMetric"]:hover {
-        border-color: #e0a96d !important;
-        transform: translateY(-3px) rotate(0.5deg);
-    }
-
-    /* Tombol Utama (Warna Coklat Gold & Cream) */
-    .stButton > button, div[data-testid="stFormSubmitButton"] > button {
-        width: 100%;
-        background: linear-gradient(135deg, #8d5b34 0%, #5c3a21 100%) !important;
-        color: #fff8e7 !important;
-        border: 2px solid #e0a96d !important;
-        border-radius: 14px !important;
-        padding: 12px 24px !important;
-        font-weight: 700 !important;
-        font-size: 15px !important;
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4) !important;
-        transition: all 0.2s ease-in-out !important;
-    }
-
-    .stButton > button:hover, div[data-testid="stFormSubmitButton"] > button:hover {
-        background: linear-gradient(135deg, #a0683c 0%, #704729 100%) !important;
-        border-color: #f5e6ca !important;
-        box-shadow: 0 8px 22px rgba(224, 169, 109, 0.4) !important;
-        transform: translateY(-2px);
-    }
-
-    /* Input Field Styling Coklat Gelap */
-    div[data-baseweb="input"], 
-    div[data-baseweb="select"] > div {
-        background-color: #1a0f08 !important;
-        border: 1px solid #8d5b34 !important;
-        border-radius: 12px !important;
-        color: #fdf6e3 !important;
-    }
-
-    div[data-baseweb="input"]:focus-within,
-    div[data-baseweb="select"]:focus-within {
-        border-color: #e0a96d !important;
-        box-shadow: 0 0 0 2px rgba(224, 169, 109, 0.3) !important;
-    }
-
-    /* Tab Navigasi Kustom */
-    button[data-baseweb="tab"] {
-        background-color: transparent !important;
-        color: #a0826c !important;
-        border-radius: 10px !important;
-        font-weight: 700 !important;
-    }
-
-    button[aria-selected="true"] {
-        color: #f5e6ca !important;
-        background-color: #3e2723 !important;
-        border-bottom: 3px solid #e0a96d !important;
-    }
-
-    /* Clean Up Header & Footer */
-    header[data-testid="stHeader"] {
-        background-color: transparent !important;
-    }
-    footer {
-        visibility: hidden;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# ==========================================================
-# 2. ISI APLIKASI & LOGIKA APLIKASI
-# ==========================================================
-
-# GANTUNGAN KARAKTER TOY STORY ESTETIK PUTIH
-st.markdown("""
-<div class="toy-hanger-container">
-    <div class="toy-charm">
-        <div class="string"></div>
-        <div class="charm-badge">🤠 <span>Woody</span></div>
-    </div>
-    <div class="toy-charm">
-        <div class="string"></div>
-        <div class="charm-badge">🚀 <span>Buzz Lightyear</span></div>
-    </div>
-    <div class="toy-charm">
-        <div class="string"></div>
-        <div class="charm-badge">👩‍🌾 <span>Jessie</span></div>
-    </div>
-    <div class="toy-charm">
-        <div class="string"></div>
-        <div class="charm-badge">👾 <span>Alien</span></div>
-    </div>
-    <div class="toy-charm">
-        <div class="string"></div>
-        <div class="charm-badge">🐷 <span>Hamm</span></div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
 st.title("Prediksi Tingkat Kecanduan Media Sosial")
 st.write("---")
-
+# ==========================================================
 # SIDEBAR MENU
+# ==========================================================
 menu = st.sidebar.selectbox(
     "Pilih Menu",
     [
@@ -254,7 +55,9 @@ menu = st.sidebar.selectbox(
     ]
 )
 
+# ==========================================================
 # DATASET TRAINING
+# ==========================================================
 TRAINING_DATASET = "Dataset_Revisi_Indikator_Kecanduan.csv"
 
 if not os.path.exists(TRAINING_DATASET):
@@ -263,15 +66,19 @@ if not os.path.exists(TRAINING_DATASET):
 
 df = pd.read_csv(TRAINING_DATASET)
 
+# ==========================================================
 # FUNGSI PREPROCESSING & TRAINING
+# ==========================================================
 def prepare_training_data(data):
     """Membersihkan data, melakukan encoding, dan scaling."""
     data = data.copy().drop_duplicates()
 
+    # Hapus kolom yang tidak digunakan
     drop_cols = ["Student_ID", "Addicted_Score", "Sleep_Addiction_Indicator", "Physical_Activity_Indicator"]
     drop_cols = [col for col in drop_cols if col in data.columns]
     data = data.drop(columns=drop_cols)
 
+    # Validasi target
     target = "Addiction_Level"
     if target not in data.columns:
         st.error("Kolom 'Addiction_Level' tidak ditemukan pada dataset training.")
@@ -280,9 +87,11 @@ def prepare_training_data(data):
     X = data.drop(columns=[target])
     y = data[target]
 
+    # Encode Target
     target_encoder = LabelEncoder()
     y_encoded = target_encoder.fit_transform(y.astype(str))
 
+    # Encode Fitur Kategorikal
     feature_encoders = {}
     categorical_columns = X.select_dtypes(include="object").columns
     for col in categorical_columns:
@@ -291,24 +100,20 @@ def prepare_training_data(data):
         feature_encoders[col] = encoder
 
     feature_columns = list(X.columns)
+    
+    # Inisialisasi Scaler
     scaler = StandardScaler()
     
     return X, y_encoded, target_encoder, feature_encoders, scaler, feature_columns
 
+# ==========================================================
+# TAMPILAN MENU
+# ==========================================================
+
 # --- HOME ---
 if menu == "Home":
-    st.header("🤠 Machine Learning Project - Toy Story Edition")
+    st.header("Machine Learning Project")
     st.image("https://i0.wp.com/metrum.co.id/kanal/uploads/2022/01/pict-19-kecanduan-medsos.jpg?w=800&ssl=1")
-    
-    # Ornamen Rame Halaman Depan
-    col_a, col_b, col_c = st.columns(3)
-    with col_a:
-        st.info("⭐ **You've Got a Friend in ML**\nSistem AI siap membantu memprediksi statistik kecanduan.")
-    with col_b:
-        st.warning("🚀 **To Infinity & Beyond**\nEvaluasi multi-model akurat sampai 7 algoritma.")
-    with col_c:
-        st.success("🌵 **Sheriff's Choice**\nForm input mudah & mendukung unggah file CSV.")
-
     st.write(
         """
         ## Prediksi Tingkat Kecanduan Media Sosial
@@ -361,7 +166,7 @@ elif menu == "EDA":
     if "Addiction_Level" in df.columns:
         st.subheader("Distribusi Addiction Level")
         fig, ax = plt.subplots(figsize=(6, 3))
-        df["Addiction_Level"].value_counts().plot(kind="bar", ax=ax, color='#8d5b34')
+        df["Addiction_Level"].value_counts().plot(kind="bar", ax=ax, color='#1E88E5')
         ax.set_xlabel("Tingkat Kecanduan")
         ax.set_ylabel("Jumlah")
         st.pyplot(fig)
@@ -371,14 +176,14 @@ elif menu == "EDA":
         st.subheader("Distribusi Variabel Numerik")
         for col in numeric.columns:
             fig, ax = plt.subplots(figsize=(5, 2.5))
-            ax.hist(numeric[col], bins=20, color='#e0a96d')
+            ax.hist(numeric[col], bins=20, color='#4CAF50')
             ax.set_title(f"Distribusi {col}")
             st.pyplot(fig)
 
         st.subheader("Correlation Matrix")
         corr = numeric.corr()
         fig, ax = plt.subplots(figsize=(8, 6))
-        im = ax.imshow(corr, cmap='YlOrBr')
+        im = ax.imshow(corr, cmap='coolwarm')
         ax.set_xticks(range(len(corr.columns)))
         ax.set_xticklabels(corr.columns, rotation=90)
         ax.set_yticks(range(len(corr.columns)))
@@ -449,6 +254,7 @@ elif menu == "Training":
     best_model_name = hasil_df.iloc[0]["Model"]
     st.subheader(f"🏆 Model Terbaik: {best_model_name}")
 
+    # Simpan Artefak Model
     joblib.dump(trained_models, "Semua_Model.pkl")
     joblib.dump(scaler, "Scaler.pkl")
     joblib.dump(target_encoder, "Target_Encoder.pkl")
@@ -456,13 +262,21 @@ elif menu == "Training":
     joblib.dump(feature_columns, "Feature_Columns.pkl")
     st.success("Semua model dan encoder berhasil diekspor!")
 
+    # Visualisasi
     fig, ax = plt.subplots(figsize=(8, 4))
-    ax.bar(hasil_df["Model"], hasil_df["Accuracy"], color='#8d5b34')
+    ax.bar(hasil_df["Model"], hasil_df["Accuracy"], color='#26A69A')
     ax.set_ylabel("Accuracy Score")
     plt.xticks(rotation=15)
     st.pyplot(fig)
 
 # --- PREDIKSI MANUAL ---
+# ==========================================================
+# PREDIKSI MANUAL
+# ==========================================================
+# --- PREDIKSI MANUAL ---
+# ==========================================================
+# PREDIKSI MANUAL (MENDUKUNG INPUT FORM & UPLOAD CSV)
+# ==========================================================
 elif menu == "Prediksi Manual":
     st.header("🔍 Prediksi Manual & Unggah Data")
     
@@ -478,23 +292,39 @@ elif menu == "Prediksi Manual":
         st.error("Silakan jalankan menu **Training** terlebih dahulu agar model dan komponen siap digunakan.")
         st.stop()
 
+    # Load semua komponen model
     models = joblib.load("Semua_Model.pkl")
     scaler = joblib.load("Scaler.pkl")
     target_encoder = joblib.load("Target_Encoder.pkl")
     feature_encoders = joblib.load("Feature_Encoders.pkl")
     feature_columns = joblib.load("Feature_Columns.pkl")
 
+    # Pilih Model
     model_name = st.selectbox("Pilih Model untuk Prediksi", list(models.keys()))
     model = models[model_name]
 
     st.write("---")
     
+    # Navigasi Metode Input menggunakan Tabs
     tab_form, tab_upload = st.tabs(["📝 Input Form Mandiri", "📁 Upload File CSV"])
 
+    # ------------------------------------------------------
+    # TAB 1: INPUT FORM MANDIRI
+    # ------------------------------------------------------
+    # ------------------------------------------------------
+    # TAB 1: INPUT FORM MANDIRI
+    # ------------------------------------------------------
+    # ------------------------------------------------------
+    # TAB 1: INPUT FORM MANDIRI
+    # ------------------------------------------------------
+    # ------------------------------------------------------
+    # TAB 1: INPUT FORM MANDIRI
+    # ------------------------------------------------------
     with tab_form:
         st.subheader("Masukkan Data Pengguna Baru:")
         input_data = {}
         
+        # 1. Kamus translasi label visual (Bahasa Indonesia Akademis)
         label_mapping = {
             "Age": "Masukkan Usia / Umur",
             "Gender": "Pilih Jenis Kelamin",
@@ -508,6 +338,7 @@ elif menu == "Prediksi Manual":
             "Physical_Activity": "Pilih Tingkat Aktivitas Fisik"
         }
 
+        # 2. Kamus translasi opsi dropdown ke Bahasa Indonesia
         option_mapping = {
             "Male": "Laki-laki",
             "Female": "Perempuan",
@@ -522,10 +353,13 @@ elif menu == "Prediksi Manual":
             "High": "Tinggi"
         }
 
+        # Kebalikan mapping untuk mengembalikan nilai asli ke Model ML
         reverse_option_mapping = {v: k for k, v in option_mapping.items()}
         
         with st.form("form_prediksi_manual"):
             col1, col2 = st.columns(2)
+            
+            # Simpan referensi objek input UI agar nilainya bisa dibaca saat submit
             ui_inputs = {}
             
             for idx, col_name in enumerate(feature_columns):
@@ -556,19 +390,27 @@ elif menu == "Prediksi Manual":
             
             submitted = st.form_submit_button("🔮 Lakukan Prediksi Form")
 
+        # PROSES EKSEKUSI PREDIKSI SETELAH TOMBOL DIKLIK
         if submitted:
+            # Pindahkan & konversi data dari UI ke dictionary input data asli
             for col_name in feature_columns:
                 val = ui_inputs[col_name]
+                # Jika nilainya ada di kamus Indonesia, kembalikan ke teks English aslinya
                 if col_name in feature_encoders:
                     input_data[col_name] = reverse_option_mapping.get(val, val)
                 else:
                     input_data[col_name] = val
 
+            # Ubah ke DataFrame
             input_df = pd.DataFrame([input_data])
             
+            # Lakukan Encoding menggunakan encoder bawaan model
             for col, encoder in feature_encoders.items():
                 try:
+                    # Normalisasi teks ke string biasa
                     val_str = str(input_df.at[0, col]).strip()
+                    
+                    # Cek pencocokan string secara fleksibel (tidak sensitif huruf besar/kecil)
                     known_classes = list(encoder.classes_)
                     matched_class = None
                     
@@ -577,6 +419,7 @@ elif menu == "Prediksi Manual":
                             matched_class = c
                             break
                     
+                    # Jika cocok, pakai label asli hasil training, jika tidak, pakai default kelas pertama
                     if matched_class is not None:
                         input_df[col] = encoder.transform([matched_class])
                     else:
@@ -586,12 +429,15 @@ elif menu == "Prediksi Manual":
                     st.error(f"Terjadi kesalahan saat encoding fitur '{col}': {e}")
                     st.stop()
             
+            # Selaraskan urutan kolom dan scaling
             input_df = input_df[feature_columns]
             input_scaled = scaler.transform(input_df)
             
+            # Prediksi
             prediksi_angka = model.predict(input_scaled)
             hasil_label = target_encoder.inverse_transform(prediksi_angka)[0]
             
+            # TAMPILKAN HASILNYA DI BAWAH FORM
             st.write("---")
             st.subheader("📊 Hasil Prediksi Form")
             st.success(f"Berdasarkan model **{model_name}**, tingkat kecanduan pengguna ini adalah: **{hasil_label}**")
@@ -604,7 +450,9 @@ elif menu == "Prediksi Manual":
                     "Keyakinan (Persentase)": [f"{p*100:.2f}%" for p in probabilitas]
                 })
                 st.dataframe(prob_df, use_container_width=True)
-
+    # ------------------------------------------------------
+    # TAB 2: UPLOAD FILE CSV (ADAPTIF MENYESUAIKAN DATASET)
+    # ------------------------------------------------------
     with tab_upload:
         st.subheader("Predict via CSV Upload")
         st.info("Sistem akan otomatis mendeteksi, menyelaraskan, dan menyesuaikan kolom dataset yang Anda unggah.")
@@ -616,11 +464,15 @@ elif menu == "Prediksi Manual":
             st.write("📄 **Preview Data yang Di-upload:**")
             st.dataframe(user_data.head(), use_container_width=True)
             
+            # Kerangka DataFrame baru untuk diselaraskan dengan dataset training
             aligned_data = pd.DataFrame(index=user_data.index)
 
+            # Proses Penyelarasan Otomatis
             for col in feature_columns:
+                # 1. Jika nama cocok persis
                 if col in user_data.columns:
                     aligned_data[col] = user_data[col].copy()
+                # 2. Jika nama mirip (tidak sensitif huruf besar/kecil dan spasi)
                 else:
                     matched_col = None
                     simplified_target = col.lower().replace("_", "").replace(" ", "")
@@ -631,12 +483,14 @@ elif menu == "Prediksi Manual":
                     
                     if matched_col:
                         aligned_data[col] = user_data[matched_col].copy()
+                    # 3. Jika kolom tidak ada sama sekali, buat nilai default
                     else:
                         if col in feature_encoders:
                             aligned_data[col] = feature_encoders[col].classes_[0]
                         else:
                             aligned_data[col] = float(df[col].mean()) if col in df.columns else 0.0
 
+            # Penanganan data kosong (NaN)
             for col in feature_columns:
                 if aligned_data[col].isnull().any():
                     if col in feature_encoders:
@@ -644,21 +498,26 @@ elif menu == "Prediksi Manual":
                     else:
                         aligned_data[col] = aligned_data[col].fillna(float(df[col].mean()) if col in df.columns else 0.0)
 
+            # Transformasi / Label Encoding untuk kolom kategorikal
             for col, encoder in feature_encoders.items():
                 known_classes = set(encoder.classes_)
                 default_class = encoder.classes_[0]
                 
+                # Ubah teks baru yang tidak dikenal saat training ke kelas default
                 aligned_data[col] = aligned_data[col].astype(str).apply(
                     lambda x: x if x in known_classes else default_class
                 )
                 aligned_data[col] = encoder.transform(aligned_data[col])
 
+            # Susun ulang urutan kolom agar identik dengan data training
             aligned_data = aligned_data[feature_columns]
 
+            # Lakukan Scaling dan Prediksi menggunakan model terpilih
             aligned_scaled = scaler.transform(aligned_data)
             csv_preds = model.predict(aligned_scaled)
             csv_labels = target_encoder.inverse_transform(csv_preds)
 
+            # Gabungkan hasil prediksi ke data asli user
             final_result = user_data.copy()
             final_result[f"Hasil Prediksi ({model_name})"] = csv_labels
 
@@ -666,6 +525,7 @@ elif menu == "Prediksi Manual":
             st.subheader("📊 Hasil Prediksi Dataset Upload")
             st.dataframe(final_result, use_container_width=True)
 
+            # Tombol Download Hasil
             csv_output = final_result.to_csv(index=False).encode("utf-8")
             st.download_button(
                 label=f"⬇️ Download Hasil Prediksi {model_name} (CSV)",
@@ -673,8 +533,10 @@ elif menu == "Prediksi Manual":
                 file_name=f"hasil_prediksi_{model_name.lower().replace(' ', '_')}.csv",
                 mime="text/csv"
             )
-
 # --- PREDIKSI DATASET UPLOAD ---
+# ==========================================================
+# PREDIKSI DATASET UPLOAD (ADAPTIF & DUKUNG SEMUA FORMAT)
+# ==========================================================
 elif menu == "Prediksi Dataset Upload":
     st.header("📁 Upload Dataset Baru & Analisis Model")
     st.info(
@@ -694,17 +556,20 @@ elif menu == "Prediksi Dataset Upload":
     st.subheader("📄 Dataset Asli yang Di-upload User")
     st.dataframe(new_data, use_container_width=True)
 
+    # Validasi keberadaan file model eksternal
     required_files = ["Semua_Model.pkl", "Scaler.pkl", "Target_Encoder.pkl", "Feature_Encoders.pkl", "Feature_Columns.pkl"]
     if not all(os.path.exists(file) for file in required_files):
         st.error("Model/Komponen scaler belum tersedia. Silakan jalankan menu Training terlebih dahulu.")
         st.stop()
 
+    # Load komponen training awal
     models = joblib.load("Semua_Model.pkl")
     scaler = joblib.load("Scaler.pkl")
     target_encoder = joblib.load("Target_Encoder.pkl")
     feature_encoders = joblib.load("Feature_Encoders.pkl")
     feature_columns = joblib.load("Feature_Columns.pkl")
 
+    # Cek apakah target aktual ada di dataset baru (untuk mode evaluasi)
     has_target = False
     actual_labels = None
     target_candidates = ["Addiction_Level", "addiction_level", "Addiction Level", "Tingkat Kecanduan", "tingkat kecanduan"]
@@ -715,11 +580,17 @@ elif menu == "Prediksi Dataset Upload":
             actual_labels = new_data[candidate].copy()
             break
 
+    # ======================================================
+    # PROSES PENYELARASAN DATA SECARA OTOMATIS (APAPUN FORMATNYA)
+    # ======================================================
     prediction_data = pd.DataFrame(index=new_data.index)
 
     for col in feature_columns:
+        # 1. Jika nama kolom COCOK PERSIS
         if col in new_data.columns:
             prediction_data[col] = new_data[col].copy()
+        
+        # 2. Jika nama mirip (tidak sensitif huruf besar/kecil atau spasi/underscore)
         else:
             matched_col = None
             simplified_target = col.lower().replace("_", "").replace(" ", "")
@@ -730,13 +601,18 @@ elif menu == "Prediksi Dataset Upload":
             
             if matched_col:
                 prediction_data[col] = new_data[matched_col].copy()
+            
+            # 3. Jika kolom benar-benar tidak ada di data user (Buat kolom tiruan otomatis)
             else:
                 if col in feature_encoders:
+                    # Kolom kategori diisi dengan nilai modus (terbanyak) atau nilai pertama dari encoder
                     default_cat = feature_encoders[col].classes_[0]
                     prediction_data[col] = default_cat
                 else:
+                    # Kolom numerik diisi dengan angka 0 atau rata-rata dummy
                     prediction_data[col] = 0.0
 
+    # Menangani missing value (NaN) jika data buatan user ada yang kosong
     for col in feature_columns:
         if prediction_data[col].isnull().any():
             if col in feature_encoders:
@@ -744,18 +620,29 @@ elif menu == "Prediksi Dataset Upload":
             else:
                 prediction_data[col] = prediction_data[col].fillna(0.0)
 
+    # 4. Transformasi/Encoding Kategori (Aman dari data baru tak dikenal)
     for col, encoder in feature_encoders.items():
+        # Dapatkan nilai dasar yang diketahui oleh encoder saat training
         known_classes = set(encoder.classes_)
         default_class = encoder.classes_[0]
         
+        # Jika user memasukkan teks baru yang tidak ada saat training, ubah otomatis ke default_class
         prediction_data[col] = prediction_data[col].astype(str).apply(
             lambda x: x if x in known_classes else default_class
         )
+        
+        # Jalankan Label Encoder
         prediction_data[col] = encoder.transform(prediction_data[col])
 
+    # Pastikan urutan dan bentuk kolom 100% konsisten dengan training
     prediction_data = prediction_data[feature_columns]
+
+    # Scaling
     prediction_scaled = scaler.transform(prediction_data)
     
+    # ======================================================
+    # PROSES PREDIKSI MULTI-MODEL
+    # ======================================================
     st.write("---")
     perbandingan_list = []
     result_data_all = new_data.copy()
@@ -766,12 +653,16 @@ elif menu == "Prediksi Dataset Upload":
         result_data_all[f"Prediksi ({name})"] = pred_labels
         
         if has_target:
+            # Pastikan label aktual di-string-kan agar cocok saat evaluasi skor
             acc = accuracy_score(actual_labels.astype(str), pred_labels.astype(str))
             pre = precision_score(actual_labels.astype(str), pred_labels.astype(str), average="weighted", zero_division=0)
             rec = recall_score(actual_labels.astype(str), pred_labels.astype(str), average="weighted", zero_division=0)
             f1 = f1_score(actual_labels.astype(str), pred_labels.astype(str), average="weighted", zero_division=0)
             perbandingan_list.append([name, acc, pre, rec, f1])
 
+    # ======================================================
+    # TAMPILKAN OUTPUT/EVALUASI
+    # ======================================================
     if has_target:
         st.subheader("📈 Perbandingan Performa Semua Model (Berdasarkan Nilai Aktual)")
         df_compare = pd.DataFrame(
@@ -784,7 +675,7 @@ elif menu == "Prediksi Dataset Upload":
         }), use_container_width=True)
 
         fig, ax = plt.subplots(figsize=(10, 4))
-        bars = ax.bar(df_compare["Model"], df_compare["Accuracy"], color='#8d5b34')
+        bars = ax.bar(df_compare["Model"], df_compare["Accuracy"], color='#1E88E5')
         ax.set_ylabel("Accuracy Score")
         plt.xticks(rotation=15)
         
