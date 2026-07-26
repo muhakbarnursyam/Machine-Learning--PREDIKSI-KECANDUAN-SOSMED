@@ -36,6 +36,7 @@ st.set_page_config(
 )
 
 # Custom CSS Inject untuk Tema Pixel Space Cartoon
+# (PERBAIKAN: unsafe_allow_dict_style telah dihapus agar tidak TypeError)
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
@@ -144,7 +145,7 @@ st.markdown("""
         border-top: 4px dashed #00ffcc !important;
     }
     </style>
-""", unsafe_allow_dict_style=True)
+""", unsafe_allow_html=True)
 
 # Header Utama
 st.title("PREDIKSI KECANDUAN MEDIA SOSIAL")
@@ -640,7 +641,7 @@ elif menu == "Prediksi Dataset Upload":
 
     required_files = ["Semua_Model.pkl", "Scaler.pkl", "Target_Encoder.pkl", "Feature_Encoders.pkl", "Feature_Columns.pkl"]
     if not all(os.path.exists(file) for file in required_files):
-        st.error("Model durung disiapkan. Jalankan menu Training terlebih dahulu.")
+        st.error("Model belum disiapkan. Jalankan menu Training terlebih dahulu.")
         st.stop()
 
     models = joblib.load("Semua_Model.pkl")
@@ -745,197 +746,3 @@ elif menu == "Prediksi Dataset Upload":
         file_name="hasil_prediksi_massal.csv",
         mime="text/csv"
     )
-    import io
-import numpy as np
-import streamlit as st
-from PIL import Image
-
-# ==========================================
-# KONFIGURASI HALAMAN STREAMLIT
-# ==========================================
-st.set_page_config(
-    page_title="Pixel Chibi World Cup Generator",
-    page_icon="⚽",
-    layout="centered",
-)
-
-st.title("⚽ Pixel Chibi World Cup Generator")
-st.write(
-    "Buat dan kustomisasi karakter chibi berpiksel bertema Piala Dunia milikmu!"
-)
-
-
-# ==========================================
-# PALET WARNA (HEX / RGB)
-# ==========================================
-COLOR_TRANSPARENT = (0, 0, 0, 0)
-COLOR_OUTLINE = (20, 20, 20, 255)
-
-SKIN_COLORS = {
-    "Cerah": (255, 220, 177, 255),
-    "Sawo Matang": (224, 172, 105, 255),
-    "Gelap": (141, 85, 36, 255),
-}
-
-HAIR_COLORS = {
-    "Hitam": (30, 30, 30, 255),
-    "Cokelat": (101, 67, 33, 255),
-    "Pirang": (240, 200, 80, 255),
-    "Merah": (184, 51, 42, 255),
-}
-
-JERSEY_TEAMS = {
-    "Indonesia 🇮🇩": {"base": (200, 16, 46, 255), "shorts": (255, 255, 255, 255)},
-    "Jepang 🇯🇵": {"base": (0, 43, 127, 255), "shorts": (255, 255, 255, 255)},
-    "Brasil 🇧🇷": {"base": (254, 221, 0, 255), "shorts": (1, 33, 105, 255)},
-    "Argentina 🇦🇷": {"base": (117, 170, 219, 255), "shorts": (0, 0, 0, 255)},
-    "Jerman 🇩🇪": {"base": (240, 240, 240, 255), "shorts": (20, 20, 20, 255)},
-    "Prancis 🇫🇷": {"base": (5, 16, 75, 255), "shorts": (255, 255, 255, 255)},
-}
-
-
-# ==========================================
-# FUNGSI MENGGAMBAR PIXEL ART (CANVAS 16x16)
-# ==========================================
-def draw_pixel_chibi(skin_tone, hair_style, hair_color, team_name):
-    # Buat grid 16x16 transparan (RGBA)
-    grid = np.zeros((16, 16, 4), dtype=np.uint8)
-
-    skin_rgb = SKIN_COLORS[skin_tone]
-    hair_rgb = HAIR_COLORS[hair_color]
-    jersey_rgb = JERSEY_TEAMS[team_name]["base"]
-    shorts_rgb = JERSEY_TEAMS[team_name]["shorts"]
-
-    # Helper untuk mewarnai piksel
-    def set_p(x, y, color):
-        if 0 <= x < 16 and 0 <= y < 16:
-            grid[y, x] = color
-
-    # --- 1. KEPALA & WAJAH (Piksel Chibi Besar) ---
-    # Bentuk Kepala
-    for x in range(4, 12):
-        for y in range(2, 9):
-            set_p(x, y, skin_rgb)
-
-    # Mata Chibi (Hitam dengan kilau putih)
-    set_p(5, 5, (0, 0, 0, 255))
-    set_p(5, 6, (0, 0, 0, 255))
-    set_p(10, 5, (0, 0, 0, 255))
-    set_p(10, 6, (0, 0, 0, 255))
-
-    # Pipi Merah (Blush)
-    set_p(4, 7, (255, 150, 150, 255))
-    set_p(11, 7, (255, 150, 150, 255))
-
-    # --- 2. RAMBUT ---
-    if hair_style == "Pendek Standard":
-        for x in range(4, 12):
-            set_p(x, 1, hair_rgb)
-            set_p(x, 2, hair_rgb)
-        set_p(3, 2, hair_rgb)
-        set_p(3, 3, hair_rgb)
-        set_p(12, 2, hair_rgb)
-        set_p(12, 3, hair_rgb)
-        # Poni
-        set_p(6, 3, hair_rgb)
-        set_p(9, 3, hair_rgb)
-
-    elif hair_style == "Spiky / Jabrik":
-        for x in range(4, 12):
-            set_p(x, 2, hair_rgb)
-        set_p(4, 0, hair_rgb)
-        set_p(6, 0, hair_rgb)
-        set_p(8, 0, hair_rgb)
-        set_p(10, 0, hair_rgb)
-        set_p(5, 1, hair_rgb)
-        set_p(7, 1, hair_rgb)
-        set_p(9, 1, hair_rgb)
-        set_p(11, 1, hair_rgb)
-
-    elif hair_style == "Gondrong":
-        for x in range(4, 12):
-            set_p(x, 1, hair_rgb)
-            set_p(x, 2, hair_rgb)
-        for y in range(2, 9):
-            set_p(3, y, hair_rgb)
-            set_p(12, y, hair_rgb)
-
-    # --- 3. BADAN & JERSEY ---
-    # Baju Jersey
-    for x in range(5, 11):
-        for y in range(9, 12):
-            set_p(x, y, jersey_rgb)
-
-    # Lengan Baju
-    set_p(4, 9, jersey_rgb)
-    set_p(4, 10, skin_rgb)  # Tangan
-    set_p(11, 9, jersey_rgb)
-    set_p(11, 10, skin_rgb)  # Tangan
-
-    # Celana
-    for x in range(5, 11):
-        set_p(x, 12, shorts_rgb)
-
-    # Kaki & Sepatu
-    set_p(6, 13, skin_rgb)
-    set_p(9, 13, skin_rgb)
-    set_p(6, 14, (30, 30, 30, 255))  # Sepatu Hitam
-    set_p(5, 14, (30, 30, 30, 255))
-    set_p(9, 14, (30, 30, 30, 255))
-    set_p(10, 14, (30, 30, 30, 255))
-
-    # --- 4. BOLA SEPATU PIXEL DI SEBALAH KARAKTER ---
-    ball_white = (240, 240, 240, 255)
-    ball_black = (20, 20, 20, 255)
-    for bx in range(12, 15):
-        for by in range(13, 16):
-            set_p(bx, by, ball_white)
-    set_p(13, 14, ball_black)
-
-    # Convert array ke PIL Image dan perbesar (Scale Up) tanpa blur (NEAREST)
-    img = Image.fromarray(grid, mode="RGBA")
-    img = img.resize((320, 320), resample=Image.NEAREST)
-    return img
-
-
-# ==========================================
-# INTERFACE KONTROL / SIDEBAR
-# ==========================================
-st.sidebar.header("🎨 Kustomisasi Karakter")
-
-selected_team = st.sidebar.selectbox("Tim / Negara Jersey", list(JERSEY_TEAMS.keys()))
-selected_skin = st.sidebar.selectbox("Warna Kulit", list(SKIN_COLORS.keys()))
-selected_hair_style = st.sidebar.selectbox(
-    "Gaya Rambut", ["Pendek Standard", "Spiky / Jabrik", "Gondrong"]
-)
-selected_hair_color = st.sidebar.selectbox(
-    "Warna Rambut", list(HAIR_COLORS.keys())
-)
-
-# Render Karakter
-chibi_image = draw_pixel_chibi(
-    selected_skin, selected_hair_style, selected_hair_color, selected_team
-)
-
-# Tampilkan Gambar
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
-    st.image(
-        chibi_image,
-        caption=f"Pixel Chibi - {selected_team}",
-        use_container_width=True,
-    )
-
-# ==========================================
-# FITUR UNDUH GAMBAR
-# ==========================================
-buf = io.BytesIO()
-chibi_image.save(buf, format="PNG")
-byte_im = buf.getvalue()
-
-st.download_button(
-    label="📥 Download Avatar Pixel Chibi (PNG)",
-    data=byte_im,
-    file_name=f"chibi_worldcup_{selected_team.split()[0].lower()}.png",
-    mime="image/png",
-)
