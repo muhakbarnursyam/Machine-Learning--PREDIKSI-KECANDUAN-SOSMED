@@ -27,120 +27,174 @@ except ImportError:
     xgb = False
 
 # ==========================================================
-# 1. KONFIGURASI HALAMAN & INJECT CUSTOM UI/UX CSS
+# 1. KONFIGURASI HALAMAN & INJECT THEME TOY STORY (COKLAT VINTAGE)
 # ==========================================================
 st.set_page_config(
     page_title="Prediksi Kecanduan Media Sosial",
-    page_icon="https://i.pinimg.com/originals/13/a1/56/13a15667ed324c559ca73f6d2108392b.jpg",
+    page_icon="🤠",
     layout="wide"
 )
 
-# Inject CSS langsung ke dalam Streamlit untuk overhaul UI/UX
+# Inject Custom CSS untuk Tema Toy Story & Gantungan Karakter
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
 
     /* Font Global */
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
-    /* Background Utama */
+    /* Background Utama Warna Coklat Kayu Vintage */
     .stApp {
-        background: #0f172a !important; /* Slate 900 */
-        color: #f8fafc !important;
+        background: linear-gradient(180deg, #2c1a0e 0%, #1a0f08 100%) !important;
+        color: #fdf6e3 !important;
     }
 
-    /* Custom Header / Judul */
+    /* Animasi Gantungan Karakter (Swinging Effect) */
+    @keyframes swing {
+        0% { transform: rotate(3deg); }
+        50% { transform: rotate(-3deg); }
+        100% { transform: rotate(3deg); }
+    }
+
+    .toy-hanger-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+        padding-top: 0px;
+        margin-bottom: 25px;
+        border-bottom: 2px dashed #8d5b34;
+        padding-bottom: 15px;
+    }
+
+    .toy-charm {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transform-origin: top center;
+        animation: swing 3.5s ease-in-out infinite;
+    }
+
+    .toy-charm:nth-child(even) {
+        animation-duration: 4s;
+        animation-delay: 0.5s;
+    }
+
+    .string {
+        width: 2px;
+        height: 35px;
+        background: linear-gradient(to bottom, #ffffff, #d7ccc8);
+        box-shadow: 0 0 4px rgba(255,255,255,0.6);
+    }
+
+    .charm-badge {
+        background: rgba(255, 255, 255, 0.92);
+        border: 2px solid #8d5b34;
+        border-radius: 16px;
+        padding: 6px 14px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.4), inset 0 0 6px rgba(255,255,255,0.8);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 700;
+        font-size: 13px;
+        color: #3e2723;
+        backdrop-filter: blur(4px);
+    }
+
+    /* Judul & Header Woody Western Style */
     h1 {
-        font-weight: 800 !important;
-        letter-spacing: -0.5px;
-        background: linear-gradient(90deg, #38bdf8, #818cf8) !important;
-        -webkit-background-clip: text !important;
-        -webkit-text-fill-color: transparent !important;
-        padding-bottom: 10px;
+        font-family: 'Fredoka One', cursive !important;
+        font-weight: 400 !important;
+        letter-spacing: 1px;
+        color: #f5e6ca !important;
+        text-shadow: 3px 3px 0px #8d5b34, 5px 5px 0px #3e2723;
+        padding-bottom: 5px;
     }
 
     h2, h3 {
-        color: #f1f5f9 !important;
-        font-weight: 700 !important;
+        font-family: 'Fredoka One', cursive !important;
+        color: #e0a96d !important;
+        letter-spacing: 0.5px;
     }
 
-    /* Kustomisasi Sidebar */
+    /* Sidebar Kustom Warna Coklat Tua */
     [data-testid="stSidebar"] {
-        background-color: #1e293b !important; /* Slate 800 */
-        border-right: 1px solid #334155 !important;
+        background-color: #23140a !important;
+        border-right: 2px solid #4a2c17 !important;
     }
 
     [data-testid="stSidebar"] * {
-        color: #e2e8f0 !important;
+        color: #f5e6ca !important;
     }
 
-    /* Card & Container (Form, Metric, Expander) */
+    /* Card & Container Rame & Estetik */
     div[data-testid="stMetric"], 
     div[data-testid="stForm"],
     div[data-testid="stExpander"],
     .stTable, .stDataFrame {
-        background: #1e293b !important;
-        border: 1px solid #334155 !important;
-        border-radius: 16px !important;
-        padding: 20px !important;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3) !important;
+        background: rgba(43, 26, 14, 0.85) !important;
+        border: 2px solid #8d5b34 !important;
+        border-radius: 20px !important;
+        padding: 22px !important;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 0 15px rgba(141, 91, 52, 0.2) !important;
         transition: all 0.3s ease;
     }
 
     div[data-testid="stMetric"]:hover {
-        border-color: #6366f1 !important;
-        transform: translateY(-2px);
+        border-color: #e0a96d !important;
+        transform: translateY(-3px) rotate(0.5deg);
     }
 
-    /* Tombol Utama (st.button & st.form_submit_button) */
+    /* Tombol Utama (Warna Coklat Gold & Cream) */
     .stButton > button, div[data-testid="stFormSubmitButton"] > button {
         width: 100%;
-        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
-        color: #ffffff !important;
-        border: none !important;
-        border-radius: 12px !important;
+        background: linear-gradient(135deg, #8d5b34 0%, #5c3a21 100%) !important;
+        color: #fff8e7 !important;
+        border: 2px solid #e0a96d !important;
+        border-radius: 14px !important;
         padding: 12px 24px !important;
-        font-weight: 600 !important;
+        font-weight: 700 !important;
         font-size: 15px !important;
-        box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.39) !important;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4) !important;
         transition: all 0.2s ease-in-out !important;
     }
 
     .stButton > button:hover, div[data-testid="stFormSubmitButton"] > button:hover {
-        background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important;
-        box-shadow: 0 6px 20px 0 rgba(99, 102, 241, 0.55) !important;
-        transform: translateY(-1px);
+        background: linear-gradient(135deg, #a0683c 0%, #704729 100%) !important;
+        border-color: #f5e6ca !important;
+        box-shadow: 0 8px 22px rgba(224, 169, 109, 0.4) !important;
+        transform: translateY(-2px);
     }
 
-    /* Input Fields (Selectbox, Number Input, Text Input) */
+    /* Input Field Styling Coklat Gelap */
     div[data-baseweb="input"], 
     div[data-baseweb="select"] > div {
-        background-color: #0f172a !important;
-        border: 1px solid #334155 !important;
-        border-radius: 10px !important;
-        color: #ffffff !important;
+        background-color: #1a0f08 !important;
+        border: 1px solid #8d5b34 !important;
+        border-radius: 12px !important;
+        color: #fdf6e3 !important;
     }
 
     div[data-baseweb="input"]:focus-within,
     div[data-baseweb="select"]:focus-within {
-        border-color: #6366f1 !important;
-        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
+        border-color: #e0a96d !important;
+        box-shadow: 0 0 0 2px rgba(224, 169, 109, 0.3) !important;
     }
 
-    /* Tabs Styling */
+    /* Tab Navigasi Kustom */
     button[data-baseweb="tab"] {
         background-color: transparent !important;
-        color: #94a3b8 !important;
-        border-radius: 8px !important;
-        font-weight: 600 !important;
+        color: #a0826c !important;
+        border-radius: 10px !important;
+        font-weight: 700 !important;
     }
 
     button[aria-selected="true"] {
-        color: #38bdf8 !important;
-        background-color: #1e293b !important;
-        border-bottom: 2px solid #38bdf8 !important;
+        color: #f5e6ca !important;
+        background-color: #3e2723 !important;
+        border-bottom: 3px solid #e0a96d !important;
     }
 
     /* Clean Up Header & Footer */
@@ -156,6 +210,32 @@ st.markdown("""
 # ==========================================================
 # 2. ISI APLIKASI & LOGIKA APLIKASI
 # ==========================================================
+
+# GANTUNGAN KARAKTER TOY STORY ESTETIK PUTIH
+st.markdown("""
+<div class="toy-hanger-container">
+    <div class="toy-charm">
+        <div class="string"></div>
+        <div class="charm-badge">🤠 <span>Woody</span></div>
+    </div>
+    <div class="toy-charm">
+        <div class="string"></div>
+        <div class="charm-badge">🚀 <span>Buzz Lightyear</span></div>
+    </div>
+    <div class="toy-charm">
+        <div class="string"></div>
+        <div class="charm-badge">👩‍🌾 <span>Jessie</span></div>
+    </div>
+    <div class="toy-charm">
+        <div class="string"></div>
+        <div class="charm-badge">👾 <span>Alien</span></div>
+    </div>
+    <div class="toy-charm">
+        <div class="string"></div>
+        <div class="charm-badge">🐷 <span>Hamm</span></div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 st.title("Prediksi Tingkat Kecanduan Media Sosial")
 st.write("---")
@@ -217,8 +297,18 @@ def prepare_training_data(data):
 
 # --- HOME ---
 if menu == "Home":
-    st.header("Machine Learning Project")
+    st.header("🤠 Machine Learning Project - Toy Story Edition")
     st.image("https://i0.wp.com/metrum.co.id/kanal/uploads/2022/01/pict-19-kecanduan-medsos.jpg?w=800&ssl=1")
+    
+    # Ornamen Rame Halaman Depan
+    col_a, col_b, col_c = st.columns(3)
+    with col_a:
+        st.info("⭐ **You've Got a Friend in ML**\nSistem AI siap membantu memprediksi statistik kecanduan.")
+    with col_b:
+        st.warning("🚀 **To Infinity & Beyond**\nEvaluasi multi-model akurat sampai 7 algoritma.")
+    with col_c:
+        st.success("🌵 **Sheriff's Choice**\nForm input mudah & mendukung unggah file CSV.")
+
     st.write(
         """
         ## Prediksi Tingkat Kecanduan Media Sosial
@@ -271,7 +361,7 @@ elif menu == "EDA":
     if "Addiction_Level" in df.columns:
         st.subheader("Distribusi Addiction Level")
         fig, ax = plt.subplots(figsize=(6, 3))
-        df["Addiction_Level"].value_counts().plot(kind="bar", ax=ax, color='#1E88E5')
+        df["Addiction_Level"].value_counts().plot(kind="bar", ax=ax, color='#8d5b34')
         ax.set_xlabel("Tingkat Kecanduan")
         ax.set_ylabel("Jumlah")
         st.pyplot(fig)
@@ -281,14 +371,14 @@ elif menu == "EDA":
         st.subheader("Distribusi Variabel Numerik")
         for col in numeric.columns:
             fig, ax = plt.subplots(figsize=(5, 2.5))
-            ax.hist(numeric[col], bins=20, color='#4CAF50')
+            ax.hist(numeric[col], bins=20, color='#e0a96d')
             ax.set_title(f"Distribusi {col}")
             st.pyplot(fig)
 
         st.subheader("Correlation Matrix")
         corr = numeric.corr()
         fig, ax = plt.subplots(figsize=(8, 6))
-        im = ax.imshow(corr, cmap='coolwarm')
+        im = ax.imshow(corr, cmap='YlOrBr')
         ax.set_xticks(range(len(corr.columns)))
         ax.set_xticklabels(corr.columns, rotation=90)
         ax.set_yticks(range(len(corr.columns)))
@@ -367,7 +457,7 @@ elif menu == "Training":
     st.success("Semua model dan encoder berhasil diekspor!")
 
     fig, ax = plt.subplots(figsize=(8, 4))
-    ax.bar(hasil_df["Model"], hasil_df["Accuracy"], color='#26A69A')
+    ax.bar(hasil_df["Model"], hasil_df["Accuracy"], color='#8d5b34')
     ax.set_ylabel("Accuracy Score")
     plt.xticks(rotation=15)
     st.pyplot(fig)
@@ -694,11 +784,11 @@ elif menu == "Prediksi Dataset Upload":
         }), use_container_width=True)
 
         fig, ax = plt.subplots(figsize=(10, 4))
-        bars = ax.bar(df_compare["Model"], df_compare["Accuracy"], color='#1E88E5')
+        bars = ax.bar(df_compare["Model"], df_compare["Accuracy"], color='#8d5b34')
         ax.set_ylabel("Accuracy Score")
         plt.xticks(rotation=15)
         
-        for bar in bars:
+        for bar warm in bars:
             height = bar.get_height()
             ax.text(bar.get_x() + bar.get_width()/2., height + 0.01, f"{height*100:.1f}%", ha='center', va='bottom', fontsize=9)
         st.pyplot(fig)
