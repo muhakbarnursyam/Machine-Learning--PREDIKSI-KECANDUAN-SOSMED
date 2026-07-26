@@ -1,36 +1,105 @@
-/* style.css - Clean Dashboard */
+/* =========================================================
+   CUSTOM STREAMLIT UI/UX OVERHAUL TEMPLATE
+   ========================================================= */
 
-/* Background Abu-abu Soft ala SaaS modern */
+/* 1. Background Aplikasi & Import Font Modern */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
 .stApp {
-    background-color: #f8fafc !important;
-    font-family: 'Inter', sans-serif;
+    background: #0f172a !important; /* Slate 900 */
+    color: #f8fafc !important;
 }
 
-/* Card Metric/Info */
-div[data-testid="stMetric"] {
-    background-color: #ffffff !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 12px !important;
-    padding: 15px !important;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+/* 2. Kustomisasi Sidebar */
+[data-testid="stSidebar"] {
+    background-color: #1e293b !important; /* Slate 800 */
+    border-right: 1px solid #334155 !important;
 }
 
-/* Tombol Primary */
+[data-testid="stSidebar"] * {
+    color: #e2e8f0 !important;
+}
+
+/* 3. Card / Container (Membungkus Form & Metric) */
+div[data-testid="stMetric"], 
+div[data-testid="stForm"],
+div[data-testid="stExpander"] {
+    background: #1e293b !important;
+    border: 1px solid #334155 !important;
+    border-radius: 16px !important;
+    padding: 20px !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.3s ease;
+}
+
+div[data-testid="stMetric"]:hover {
+    border-color: #6366f1 !important; /* Indigo Accent */
+    transform: translateY(-2px);
+}
+
+/* 4. Kustomisasi Tombol (st.button) */
 .stButton > button {
-    background-color: #0f172a !important;
+    width: 100%;
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
     color: #ffffff !important;
-    border-radius: 8px !important;
     border: none !important;
-    font-weight: 500 !important;
-    transition: background-color 0.2s ease;
+    border-radius: 12px !important;
+    padding: 12px 24px !important;
+    font-weight: 600 !important;
+    font-size: 15px !important;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.39) !important;
+    transition: all 0.2s ease-in-out !important;
 }
 
 .stButton > button:hover {
-    background-color: #334155 !important;
+    background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important;
+    box-shadow: 0 6px 20px 0 rgba(99, 102, 241, 0.55) !important;
+    transform: translateY(-1px);
 }
 
-/* Input Fields (Selectbox, Text Input, dll) */
-div[data-baseweb="input"], div[data-baseweb="select"] {
-    border-radius: 8px !important;
-    border: 1px solid #cbd5e1 !important;
+.stButton > button:active {
+    transform: translateY(1px);
+}
+
+/* 5. Input Text, Selectbox, Number Input, Slider */
+div[data-baseweb="input"], 
+div[data-baseweb="select"] > div {
+    background-color: #0f172a !important;
+    border: 1px solid #334155 !important;
+    border-radius: 10px !important;
+    color: #ffffff !important;
+}
+
+div[data-baseweb="input"]:focus-within,
+div[data-baseweb="select"]:focus-within {
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
+}
+
+/* 6. Header, Title, dan Subheader */
+h1 {
+    font-weight: 800 !important;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, #38bdf8, #818cf8) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+h2, h3 {
+    color: #f1f5f9 !important;
+    font-weight: 700 !important;
+}
+
+/* 7. Hilangkan Header & Footer bawaan Streamlit (Opsional agar lebih bersih) */
+header[data-testid="stHeader"] {
+    background-color: transparent !important;
+}
+
+footer {
+    visibility: hidden;
 }
