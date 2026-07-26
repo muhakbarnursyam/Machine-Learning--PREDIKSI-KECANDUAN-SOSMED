@@ -27,22 +27,135 @@ except ImportError:
     xgb = False
 
 # ==========================================================
-# KONFIGURASI HALAMAN
+# KONFIGURASI HALAMAN & TEMA RETRO PIXEL SPACE (SPACETOON STYLE)
 # ==========================================================
 st.set_page_config(
-    page_title="Prediksi Kecanduan Media Sosial",
-    page_icon="https://i.pinimg.com/originals/13/a1/56/13a15667ed324c559ca73f6d2108392b.jpg",
+    page_title="Prediksi Kecanduan Media Sosial - Space Pixel Edition",
+    page_icon="https://img.icons8.com/pixel-surveillance/64/000000/space-ship.png",
     layout="wide"
 )
 
-st.title("Prediksi Tingkat Kecanduan Media Sosial")
+# Custom CSS Inject untuk Tema Pixel Space Cartoon
+st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+    /* Global Theme - Dark Space Background */
+    .stApp {
+        background-color: #0b0e14;
+        background-image: 
+            radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+            radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+            radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 20px);
+        background-size: 550px 550px, 350px 350px, 250px 250px;
+        background-position: 0 0, 40px 60px, 130px 270px;
+        color: #e0e6ed;
+        font-family: 'VT323', monospace;
+        font-size: 20px;
+    }
+
+    /* Headings Style */
+    h1, h2, h3, h4 {
+        font-family: 'Press Start 2P', cursive !important;
+        color: #ffcc00 !important;
+        text-shadow: 3px 3px 0px #ff0055, 6px 6px 0px #000000;
+        letter-spacing: 1px;
+    }
+
+    /* Sidebar Pixel Styling */
+    [data-testid="stSidebar"] {
+        background-color: #121824 !important;
+        border-right: 4px solid #ff0055;
+    }
+    
+    [data-testid="stSidebar"] * {
+        font-family: 'VT323', monospace !important;
+        font-size: 22px !important;
+        color: #00ffcc !important;
+    }
+
+    /* Pixel Art Container Cards */
+    div.stDataFrame, div.stForm, .stAlert {
+        background: #182030 !important;
+        border: 4px solid #00ffcc !important;
+        box-shadow: 6px 6px 0px #ff0055;
+        border-radius: 0px !important;
+    }
+
+    /* Retro Pixel Buttons */
+    .stButton>button, div[data-testid="stFormSubmitButton"]>button {
+        font-family: 'Press Start 2P', cursive !important;
+        font-size: 12px !important;
+        color: #ffffff !important;
+        background-color: #ff0055 !important;
+        border: 3px solid #ffffff !important;
+        box-shadow: 4px 4px 0px #000000;
+        border-radius: 0px !important;
+        padding: 10px 20px !important;
+        transition: all 0.1s ease-in-out;
+    }
+
+    .stButton>button:hover, div[data-testid="stFormSubmitButton"]>button:hover {
+        background-color: #00ffcc !important;
+        color: #000000 !important;
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0px #000000;
+    }
+
+    /* Selectbox & Input Customization */
+    div[data-baseweb="select"] > div, input {
+        background-color: #0b0e14 !important;
+        color: #00ffcc !important;
+        border: 2px solid #00ffcc !important;
+        border-radius: 0px !important;
+        font-family: 'VT323', monospace !important;
+        font-size: 20px !important;
+    }
+
+    /* Metric Boxes Pixel Style */
+    [data-testid="stMetricValue"] {
+        font-family: 'Press Start 2P', cursive !important;
+        color: #00ffcc !important;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        font-family: 'VT323', monospace !important;
+        font-size: 22px !important;
+        color: #ffcc00 !important;
+    }
+
+    /* Tabs Retro Styling */
+    button[data-baseweb="tab"] {
+        font-family: 'Press Start 2P', cursive !important;
+        font-size: 10px !important;
+        color: #ffffff !important;
+        background-color: #182030 !important;
+        border: 2px solid #00ffcc !important;
+        border-radius: 0px !important;
+    }
+
+    button[aria-selected="true"] {
+        background-color: #ff0055 !important;
+        color: #ffffff !important;
+    }
+
+    /* Line separator */
+    hr {
+        border-top: 4px dashed #00ffcc !important;
+    }
+    </style>
+""", unsafe_allow_dict_style=True)
+
+# Header Utama
+st.title("PREDIKSI KECANDUAN MEDIA SOSIAL")
+st.caption("STASIUN CONTROL PIXEL SPACE - PLANET DATA")
 st.write("---")
 
 # ==========================================================
 # SIDEBAR MENU
 # ==========================================================
 menu = st.sidebar.selectbox(
-    "Pilih Menu",
+    "MENU NAVIGASI UTAMA",
     [
         "Home",
         "Dataset",
@@ -60,7 +173,7 @@ menu = st.sidebar.selectbox(
 TRAINING_DATASET = "Dataset_Revisi_Indikator_Kecanduan.csv"
 
 if not os.path.exists(TRAINING_DATASET):
-    st.error(f"Dataset training '{TRAINING_DATASET}' tidak ditemukan.")
+    st.error(f"Berkas dataset training '{TRAINING_DATASET}' tidak ditemukan di stasiun lokal.")
     st.stop()
 
 df = pd.read_csv(TRAINING_DATASET)
@@ -80,7 +193,7 @@ def prepare_training_data(data):
     # Validasi target
     target = "Addiction_Level"
     if target not in data.columns:
-        st.error("Kolom 'Addiction_Level' tidak ditemukan pada dataset training.")
+        st.error("Kolom target 'Addiction_Level' tidak ditemukan pada dataset.")
         st.stop()
 
     X = data.drop(columns=[target])
@@ -111,141 +224,140 @@ def prepare_training_data(data):
 
 # --- HOME ---
 if menu == "Home":
-    st.header("Machine Learning Project")
-    st.image("https://i0.wp.com/metrum.co.id/kanal/uploads/2022/01/pict-19-kecanduan-medsos.jpg?w=800&ssl=1")
+    st.header("PROYEK MACHINE LEARNING LANTARAN ANTARIKSA")
+    
+    # Gambar Cartoon Pixel World Space (Online URL)
+    st.image(
+        "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1000&auto=format&fit=crop", 
+        caption="Stasiun Pengamatan Sinyal Digital Galaksi",
+        use_container_width=True
+    )
+    
     st.write(
         """
-        ## Prediksi Tingkat Kecanduan Media Sosial
-        Aplikasi ini menggunakan Machine Learning untuk memprediksi tingkat kecanduan media sosial seseorang.
+        ### MODUL PREDIKSI TINGKAT KECANDUAN MEDIA SOSIAL
+        Sistem ini menganalisis pola konsumsi data digital dan tingkat kecanduan media sosial pada populasi humanoid menggunakan algoritma Machine Learning.
 
-        ### Model yang Digunakan:
-        ✔ Logistic Regression | ✔ Decision Tree | ✔ Random Forest | ✔ KNN | ✔ Naive Bayes | ✔ SVM | ✔ XGBoost
+        ### ALGORITMA DUKUNGAN SISTEM:
+        - Logistic Regression
+        - Decision Tree
+        - Random Forest
+        - KNN (K-Nearest Neighbors)
+        - Naive Bayes
+        - SVM (Support Vector Machine)
+        - XGBoost
 
-        ### Fitur Utama:
-        * 📊 **Dataset** - Melihat ringkasan data training.
-        * 📈 **EDA** - Exploratory Data Analysis & Visualisasi Korelasi.
-        * ⚙️ **Preprocessing** - Pembersihan data & pembagian dataset.
-        * 🤖 **Training Model** - Melatih data ke semua algoritma secara simultan.
-        * 🔍 **Prediksi Manual** - Input data mandiri via form input.
-        * 📁 **Prediksi Dataset Upload** - Upload file CSV eksternal untuk diprediksi massal.
+        ### NAVIGASI MODUL:
+        - DATASET : Inspeksi data mentah galaksi.
+        - EDA : Analisis visual dan sebaran parameter.
+        - PREPROCESSING : Transformasi sinyal dan pembagian data.
+        - TRAINING : Komputasi simulasi model.
+        - PREDIKSI MANUAL : Simulasi kalkulasi individu.
+        - PREDIKSI DATASET UPLOAD : Pemrosesan berkas massal.
         """
     )
 
 # --- DATASET ---
 elif menu == "Dataset":
-    st.header("📊 Dataset Training")
-    st.info(f"Dataset training yang digunakan: {TRAINING_DATASET}")
+    st.header("DATASET TRAINING GALAKSI")
+    st.info(f"Sumber Berkas Data: {TRAINING_DATASET}")
     
-    st.markdown("""
-    Halaman ini menampilkan seluruh isi dataset mentah yang digunakan sebagai dasar pembuatan model *Machine Learning*. 
-    Tabel di bawah memuat seluruh atribut responden mulai dari informasi demografis, kebiasaan penggunaan perangkat, hingga label tingkat kecanduan media sosial (*Addiction Level*).
+    st.write("""
+    Tabel berikut menampilkan seluruh parameter responden, meliputi demografi, kebiasaan akses perangkat, hingga tingkat kecanduan media sosial.
     """)
 
     st.dataframe(df, use_container_width=True)
 
     col1, col2, col3 = st.columns(3)
-    col1.metric("Jumlah Baris", df.shape[0])
-    col2.metric("Jumlah Kolom", df.shape[1])
+    col1.metric("JUMLAH SAMPEL", df.shape[0])
+    col2.metric("JUMLAH ATRIBUT", df.shape[1])
     
-    st.subheader("Statistik Deskriptif")
-    st.markdown("""
-    Tabel ringkasan statistik berikut menyajikan nilai-nilai parameter numerik (seperti *mean*, *std*, *min*, dan *max*) serta sebaran frekuensi untuk variabel kategorikal dari data responden.
-    """)
+    st.subheader("STATISTIK DESKRIPTIF")
     st.write(df.describe(include="all"))
 
-    st.subheader("Tipe Data")
-    st.markdown("Berikut adalah daftar variabel/kolom yang ada dalam dataset beserta tipe datanya masing-masing:")
+    st.subheader("TIPE DATA PARAMETER")
     st.write(df.dtypes.astype(str))
 
 # --- EDA ---
 elif menu == "EDA":
-    st.header("📈 Exploratory Data Analysis")
+    st.header("EXPLORATORY DATA ANALYSIS (EDA)")
     
-    st.markdown("""
-    Menu Exploratory Data Analysis (EDA) bertujuan untuk menganalisis karakteristik data melalui eksplorasi visual dan ringkasan struktur. 
-    Langkah ini membantu dalam memahami pola, mengecek keberadaan data yang hilang (*missing values*), serta melihat korelasi antar variabel.
-    """)
-
-    st.subheader("5 Data Pertama")
-    st.write("Berikut adalah sampel 5 baris pertama dari dataset untuk memberikan gambaran cepat struktur data:")
+    st.subheader("5 SAMPEL PERTAMA")
     st.dataframe(df.head())
 
-    st.subheader("Informasi Dataset")
-    st.write("Tabel ringkasan struktur kolom, jenis tipe data, jumlah *missing value*, serta jumlah nilai unik (*unique values*) dari dataset:")
+    st.subheader("STRUKTUR DAN KUALITAS DATA")
     info = pd.DataFrame({
         "Kolom": df.columns,
         "Tipe Data": df.dtypes.astype(str),
         "Missing Value": df.isnull().sum(),
-        "Unique": df.nunique()
+        "Nilai Unik": df.nunique()
     })
     st.dataframe(info, use_container_width=True)
 
+    # Style Plot Matplotlib Tema Dark Retro Pixel
+    plt.style.use('dark_background')
+
     if "Addiction_Level" in df.columns:
-        st.subheader("Distribusi Addiction Level")
-        st.write("Grafik batang di bawah menunjukkan sebaran frekuensi label tingkat kecanduan (*Addiction Level*) yang menjadi variabel target dalam model prediksi:")
-        fig, ax = plt.subplots(figsize=(6, 3))
-        df["Addiction_Level"].value_counts().plot(kind="bar", ax=ax, color='#1E88E5')
-        ax.set_xlabel("Tingkat Kecanduan")
-        ax.set_ylabel("Jumlah")
+        st.subheader("DISTRIBUSI ADDICTION LEVEL")
+        fig, ax = plt.subplots(figsize=(7, 3.5))
+        fig.patch.set_facecolor('#182030')
+        ax.set_facecolor('#0b0e14')
+        
+        df["Addiction_Level"].value_counts().plot(kind="bar", ax=ax, color='#00ffcc', edgecolor='#ff0055', linewidth=2)
+        ax.set_xlabel("Tingkat Kecanduan", color='#ffcc00')
+        ax.set_ylabel("Jumlah", color='#ffcc00')
         st.pyplot(fig)
 
     numeric = df.select_dtypes(include=np.number)
     if not numeric.empty:
-        st.subheader("Distribusi Variabel Numerik")
-        st.write("Visualisasi histogram untuk melihat bagaimana sebaran data pada tiap-tiap kolom numerik:")
+        st.subheader("SEBARAN VARIABEL NUMERIK")
         for col in numeric.columns:
-            fig, ax = plt.subplots(figsize=(5, 2.5))
-            ax.hist(numeric[col], bins=20, color='#4CAF50')
-            ax.set_title(f"Distribusi {col}")
+            fig, ax = plt.subplots(figsize=(6, 2.5))
+            fig.patch.set_facecolor('#182030')
+            ax.set_facecolor('#0b0e14')
+            
+            ax.hist(numeric[col], bins=15, color='#ff0055', edgecolor='#00ffcc', linewidth=1.5)
+            ax.set_title(f"Distribusi {col}", color='#ffcc00')
             st.pyplot(fig)
 
-        st.subheader("Correlation Matrix")
-        st.write("Matriks korelasi untuk mengukur derajat hubungan linier antar variabel numerik. Nilai mendekati 1 atau -1 menunjukkan korelasi yang semakin kuat:")
+        st.subheader("MATRIKS KORELASI PARAMETER")
         corr = numeric.corr()
-        fig, ax = plt.subplots(figsize=(8, 6))
-        im = ax.imshow(corr, cmap='coolwarm')
+        fig, ax = plt.subplots(figsize=(8, 5))
+        fig.patch.set_facecolor('#182030')
+        ax.set_facecolor('#0b0e14')
+        
+        im = ax.imshow(corr, cmap='magma')
         ax.set_xticks(range(len(corr.columns)))
-        ax.set_xticklabels(corr.columns, rotation=90)
+        ax.set_xticklabels(corr.columns, rotation=90, color='#00ffcc')
         ax.set_yticks(range(len(corr.columns)))
-        ax.set_yticklabels(corr.columns)
+        ax.set_yticklabels(corr.columns, color='#00ffcc')
         plt.colorbar(im)
         st.pyplot(fig)
 
 # --- PREPROCESSING ---
 elif menu == "Preprocessing":
-    st.header("⚙️ Preprocessing Data")
-    
-    st.markdown("""
-    Pada tahap *preprocessing*, data mentah dibersihkan dan ditransformasi agar siap diproses oleh algoritma *Machine Learning*. 
-    Proses ini mencakup penghapusan data duplikat, eliminasi kolom yang tidak relevan (seperti *Student_ID*), serta encoding pada variabel kategorikal.
-    """)
-
-    st.write(f"Dataset awal: **{df.shape[0]} baris, {df.shape[1]} kolom**")
+    st.header("PREPROCESSING DATA DIGITAL")
+    st.write(f"Ukuran Data Awal: **{df.shape[0]} baris, {df.shape[1]} kolom**")
 
     X, y, target_encoder, feature_encoders, scaler, feature_columns = prepare_training_data(df)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
-    st.success("Preprocessing berhasil dilakukan!")
+    st.success("Proses Preprocessing dan Transformasi Sinyal Berhasil.")
 
-    st.markdown("""
-    Data telah dibagi menjadi 2 bagian utama menggunakan teknik *Stratified Train-Test Split* (rasio 80:20):
-    * **Data Training (80%)**: Digunakan untuk melatih algoritma *Machine Learning*.
-    * **Data Testing (20%)**: Digunakan untuk menguji dan mengevaluasi akurasi model yang telah dilatih.
+    st.write("""
+    Data telah dibagi menggunakan metode Stratified Train-Test Split (Rasio 80:20):
+    - Data Training (80%) : Pelatihan model.
+    - Data Testing (20%) : Pengujian performa.
     """)
 
-    st.write(f"✔ Jumlah Data Training: {X_train.shape[0]} sampel")
-    st.write(f"✔ Jumlah Data Testing: {X_test.shape[0]} sampel")
-    st.write("Target Classes:", list(target_encoder.classes_))
+    st.write(f"- Data Training: {X_train.shape[0]} sampel")
+    st.write(f"- Data Testing: {X_test.shape[0]} sampel")
+    st.write("Kelas Target terdeteksi:", list(target_encoder.classes_))
 
 # --- TRAINING ---
 elif menu == "Training":
-    st.header("🤖 Training Model")
+    st.header("TRAINING MODEL KOMPUTASI")
     
-    st.markdown("""
-    Halaman ini melakukan pelatihan (*training*) secara bersamaan pada beberapa algoritma *Machine Learning* menggunakan data yang telah di-*preprocessing*. 
-    Performa tiap algoritma kemudian dievaluasi menggunakan data testing berdasarkan metrik **Accuracy**, **Precision**, **Recall**, dan **F1 Score**.
-    """)
-
     X, y, target_encoder, feature_encoders, scaler, feature_columns = prepare_training_data(df)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
@@ -284,18 +396,15 @@ elif menu == "Training":
     hasil_df = pd.DataFrame(hasil, columns=["Model", "Accuracy", "Precision", "Recall", "F1 Score"])
     hasil_df = hasil_df.sort_values(by="Accuracy", ascending=False)
 
-    st.success("Training selesai!")
+    st.success("Proses Komputasi Training Selesai.")
 
-    st.subheader("📊 Tabel Perbandingan Performa Model")
-    st.markdown("""
-    Tabel di bawah mengurutkan algoritma berdasarkan tingkat **Accuracy** tertinggi. Model dengan performa terbaik disiapkan secara otomatis sebagai model rujukan utama.
-    """)
+    st.subheader("EVALUASI PERFORMA MODEL")
     st.dataframe(hasil_df.style.format({
         "Accuracy": "{:.2%}", "Precision": "{:.2%}", "Recall": "{:.2%}", "F1 Score": "{:.2%}"
     }), use_container_width=True)
 
     best_model_name = hasil_df.iloc[0]["Model"]
-    st.subheader(f"🏆 Model Terbaik: {best_model_name}")
+    st.subheader(f"MODEL TERBAIK: {best_model_name}")
 
     # Simpan Artefak Model
     joblib.dump(trained_models, "Semua_Model.pkl")
@@ -303,72 +412,61 @@ elif menu == "Training":
     joblib.dump(target_encoder, "Target_Encoder.pkl")
     joblib.dump(feature_encoders, "Feature_Encoders.pkl")
     joblib.dump(feature_columns, "Feature_Columns.pkl")
-    st.success("Semua model dan encoder berhasil diekspor!")
+    st.success("Artefak model berhasil disimpan dalam memori stasiun.")
 
-    # Visualisasi
-    st.subheader("📈 Grafik Akurasi Model")
-    st.markdown("Perbandingan performa tingkat akurasi antar algoritma dalam bentuk grafik batang:")
-    fig, ax = plt.subplots(figsize=(8, 4))
-    ax.bar(hasil_df["Model"], hasil_df["Accuracy"], color='#26A69A')
-    ax.set_ylabel("Accuracy Score")
-    plt.xticks(rotation=15)
+    # Visualisasi Matplotlib
+    plt.style.use('dark_background')
+    fig, ax = plt.subplots(figsize=(8, 3.5))
+    fig.patch.set_facecolor('#182030')
+    ax.set_facecolor('#0b0e14')
+    
+    ax.bar(hasil_df["Model"], hasil_df["Accuracy"], color='#ff0055', edgecolor='#00ffcc', linewidth=2)
+    ax.set_ylabel("Accuracy Score", color='#ffcc00')
+    plt.xticks(rotation=15, color='#00ffcc')
     st.pyplot(fig)
 
 # ==========================================================
-# PREDIKSI MANUAL (MENDUKUNG INPUT FORM & UPLOAD CSV)
+# PREDIKSI MANUAL
 # ==========================================================
 elif menu == "Prediksi Manual":
-    st.header("🔍 Prediksi Manual & Unggah Data")
+    st.header("SIMULASI PREDIKSI INDIVIDU & BERKAS")
     
-    required_files = [
-        "Semua_Model.pkl",
-        "Scaler.pkl",
-        "Target_Encoder.pkl",
-        "Feature_Encoders.pkl",
-        "Feature_Columns.pkl"
-    ]
-    
+    required_files = ["Semua_Model.pkl", "Scaler.pkl", "Target_Encoder.pkl", "Feature_Encoders.pkl", "Feature_Columns.pkl"]
     if not all(os.path.exists(file) for file in required_files):
-        st.error("Silakan jalankan menu **Training** terlebih dahulu agar model dan komponen siap digunakan.")
+        st.error("Silakan jalankan menu Training terlebih dahulu agar komponen siap digunakan.")
         st.stop()
 
-    # Load semua komponen model
     models = joblib.load("Semua_Model.pkl")
     scaler = joblib.load("Scaler.pkl")
     target_encoder = joblib.load("Target_Encoder.pkl")
     feature_encoders = joblib.load("Feature_Encoders.pkl")
     feature_columns = joblib.load("Feature_Columns.pkl")
 
-    # Pilih Model
-    model_name = st.selectbox("Pilih Model untuk Prediksi", list(models.keys()))
+    model_name = st.selectbox("PILIH ALGORITMA PREDIKSI", list(models.keys()))
     model = models[model_name]
 
     st.write("---")
     
-    tab_form, tab_upload = st.tabs(["📝 Input Form Mandiri", "📁 Upload File CSV"])
+    tab_form, tab_upload = st.tabs(["INPUT FORM MANDIRI", "UPLOAD BERKAS CSV"])
 
-    # ------------------------------------------------------
-    # TAB 1: INPUT FORM MANDIRI
-    # ------------------------------------------------------
+    # TAB 1: FORM
     with tab_form:
-        st.subheader("Masukkan Data Pengguna Baru:")
+        st.subheader("INPUT DATA INDIVIDU:")
         input_data = {}
         
-        # 1. Kamus translasi label visual (Judul Disesuaikan)
         label_mapping = {
             "Age": "Masukkan Usia / Umur",
             "Gender": "Pilih Jenis Kelamin",
-            "Academic_Level": "Pilih Jenjang / Tingkat Pendidikan",
+            "Academic_Level": "Pilih Jenjang Education",
             "Country": "Pilih Negara Asal",
-            "Avg_Daily_Usage_Hours": "Masukkan rata-rata penggunaan handphone",
-            "Most_Used_Platform": "Pilih Platform yang Paling Sering Digunakan",
-            "Affects_Academic_Performance": "Apakah Memengaruhi Performa Akademik?",
-            "Sleep_Hours_Per_Night": "Masukkan Durasi Tidur per Malam (Jam)",
-            "Mental_Health_Score": "Masukkan Skor Kesehatan Mental (1-5 rendah, 6-10 tinggi)",
-            "Physical_Activity": "Pilih Tingkat Aktivitas Fisik"
+            "Avg_Daily_Usage_Hours": "Rata-rata Penggunaan Ponsel (Jam)",
+            "Most_Used_Platform": "Platform Utama",
+            "Affects_Academic_Performance": "Dampak Pada Performa Akademik?",
+            "Sleep_Hours_Per_Night": "Durasi Tidur per Malam (Jam)",
+            "Mental_Health_Score": "Skor Kesehatan Mental (1-10)",
+            "Physical_Activity": "Tingkat Aktivitas Fisik"
         }
 
-        # 2. Kamus translasi opsi dropdown ke Bahasa Indonesia
         option_mapping = {
             "Male": "Laki-laki",
             "Female": "Perempuan",
@@ -383,7 +481,6 @@ elif menu == "Prediksi Manual":
             "High": "Tinggi"
         }
 
-        # Kebalikan mapping untuk mengembalikan nilai asli ke Model ML
         reverse_option_mapping = {v: k for k, v in option_mapping.items()}
         
         with st.form("form_prediksi_manual"):
@@ -394,7 +491,6 @@ elif menu == "Prediksi Manual":
                 form_col = col1 if idx % 2 == 0 else col2
                 display_label = label_mapping.get(col_name, f"Masukkan {col_name.replace('_', ' ')}")
                 
-                # Input untuk Fitur Kategorikal
                 if col_name in feature_encoders:
                     labels_kategori = list(feature_encoders[col_name].classes_)
                     translated_options = [option_mapping.get(opt, opt) for opt in labels_kategori]
@@ -404,11 +500,8 @@ elif menu == "Prediksi Manual":
                         options=translated_options,
                         key=f"ui_{col_name}"
                     )
-                # Input Numerik Bebas (Tanpa Batasan Min/Max dan Bebas Koma)
                 else:
-                    # Menghitung default value sesuai rata-rata data training jika ada
                     default_val = int(df[col_name].mean()) if col_name in df.columns else 0
-                    
                     ui_inputs[col_name] = form_col.number_input(
                         display_label, 
                         value=default_val,
@@ -416,22 +509,18 @@ elif menu == "Prediksi Manual":
                         key=f"ui_{col_name}"
                     )
             
-            submitted = st.form_submit_button("🔮 Lakukan Prediksi Form")
+            submitted = st.form_submit_button("JALANKAN KALKULASI PREDIKSI")
 
-        # PROSES EKSEKUSI PREDIKSI SETELAH TOMBOL DIKLIK
         if submitted:
             for col_name in feature_columns:
                 val = ui_inputs[col_name]
                 if col_name in feature_encoders:
                     input_data[col_name] = reverse_option_mapping.get(val, val)
                 else:
-                    # Konversi angka berapapun ke float agar algoritma dapat memprosesnya
                     input_data[col_name] = float(val)
 
-            # Ubah ke DataFrame
             input_df = pd.DataFrame([input_data])
             
-            # Lakukan Encoding menggunakan encoder bawaan model
             for col, encoder in feature_encoders.items():
                 try:
                     val_str = str(input_df.at[0, col]).strip()
@@ -449,43 +538,34 @@ elif menu == "Prediksi Manual":
                         input_df[col] = encoder.transform([known_classes[0]])
                         
                 except Exception as e:
-                    st.error(f"Terjadi kesalahan saat encoding fitur '{col}': {e}")
+                    st.error(f"Gagal memproses fitur '{col}': {e}")
                     st.stop()
             
-            # Selaraskan urutan kolom dan scaling
             input_df = input_df[feature_columns]
             input_scaled = scaler.transform(input_df)
             
-            # Prediksi
             prediksi_angka = model.predict(input_scaled)
             hasil_label = target_encoder.inverse_transform(prediksi_angka)[0]
             
-            # TAMPILKAN HASILNYA DI BAWAH FORM
             st.write("---")
-            st.subheader("📊 Hasil Prediksi Form")
-            st.success(f"Berdasarkan model **{model_name}**, tingkat kecanduan pengguna ini adalah: **{hasil_label}**")
+            st.subheader("HASIL ANALISIS MODEL")
+            st.success(f"Berdasarkan Algoritma {model_name}, Tingkat Kecanduan: {hasil_label}")
             
             if hasattr(model, "predict_proba"):
                 probabilitas = model.predict_proba(input_scaled)[0]
-                st.write("**Probabilitas Keyakinan Model:**")
                 prob_df = pd.DataFrame({
                     "Tingkat Kecanduan": target_encoder.classes_,
-                    "Keyakinan (Persentase)": [f"{p*100:.2f}%" for p in probabilitas]
+                    "Probabilitas": [f"{p*100:.2f}%" for p in probabilitas]
                 })
                 st.dataframe(prob_df, use_container_width=True)
 
-    # ------------------------------------------------------
-    # TAB 2: UPLOAD FILE CSV
-    # ------------------------------------------------------
+    # TAB 2: UPLOAD
     with tab_upload:
-        st.subheader("Predict via CSV Upload")
-        st.info("Sistem akan otomatis mendeteksi, menyelaraskan, dan menyesuaikan kolom dataset yang Anda unggah.")
-        
-        uploaded_file = st.file_uploader("Upload Dataset CSV Anda", type=["csv"], key="manual_upload_csv")
+        st.subheader("PREDIKSI MASAL VIA BERKAS CSV")
+        uploaded_file = st.file_uploader("Unggah Berkas CSV Anda", type=["csv"], key="manual_upload_csv")
         
         if uploaded_file is not None:
             user_data = pd.read_csv(uploaded_file)
-            st.write("📄 **Preview Data yang Di-upload:**")
             st.dataframe(user_data.head(), use_container_width=True)
             
             aligned_data = pd.DataFrame(index=user_data.index)
@@ -531,15 +611,14 @@ elif menu == "Prediksi Manual":
             csv_labels = target_encoder.inverse_transform(csv_preds)
 
             final_result = user_data.copy()
-            final_result[f"Hasil Prediksi ({model_name})"] = csv_labels
+            final_result[f"Prediksi ({model_name})"] = csv_labels
 
-            st.write("---")
-            st.subheader("📊 Hasil Prediksi Dataset Upload")
+            st.subheader("HASIL PREDIKSI BERKAS")
             st.dataframe(final_result, use_container_width=True)
 
             csv_output = final_result.to_csv(index=False).encode("utf-8")
             st.download_button(
-                label=f"⬇️ Download Hasil Prediksi {model_name} (CSV)",
+                label=f"UNDUH HASIL PREDIKSI ({model_name})",
                 data=csv_output,
                 file_name=f"hasil_prediksi_{model_name.lower().replace(' ', '_')}.csv",
                 mime="text/csv"
@@ -549,27 +628,19 @@ elif menu == "Prediksi Manual":
 # PREDIKSI DATASET UPLOAD
 # ==========================================================
 elif menu == "Prediksi Dataset Upload":
-    st.header("📁 Upload Dataset Baru & Analisis Model")
-    st.info(
-        """
-        ### 💡 Fitur Deteksi Kolom Otomatis Aktif
-        Anda dapat mengunggah file CSV dengan format kolom apa pun. Sistem akan otomatis menyelaraskan 
-        dan mengisi kolom yang kurang agar model tidak error dan prediksi tetap bisa berjalan!
-        """
-    )
-
-    uploaded_prediction = st.file_uploader("Upload Dataset Baru (CSV)", type=["csv"], key="dataset_prediction")
+    st.header("ANALISIS MASSAL BERKAS EKSTERNAL")
+    uploaded_prediction = st.file_uploader("Unggah Dataset Eksternal (CSV)", type=["csv"], key="dataset_prediction")
+    
     if uploaded_prediction is None:
         st.warning("Silakan unggah berkas CSV terlebih dahulu.")
         st.stop()
 
     new_data = pd.read_csv(uploaded_prediction)
-    st.subheader("📄 Dataset Asli yang Di-upload User")
     st.dataframe(new_data, use_container_width=True)
 
     required_files = ["Semua_Model.pkl", "Scaler.pkl", "Target_Encoder.pkl", "Feature_Encoders.pkl", "Feature_Columns.pkl"]
     if not all(os.path.exists(file) for file in required_files):
-        st.error("Model/Komponen scaler belum tersedia. Silakan jalankan menu Training terlebih dahulu.")
+        st.error("Model durung disiapkan. Jalankan menu Training terlebih dahulu.")
         st.stop()
 
     models = joblib.load("Semua_Model.pkl")
@@ -605,8 +676,7 @@ elif menu == "Prediksi Dataset Upload":
                 prediction_data[col] = new_data[matched_col].copy()
             else:
                 if col in feature_encoders:
-                    default_cat = feature_encoders[col].classes_[0]
-                    prediction_data[col] = default_cat
+                    prediction_data[col] = feature_encoders[col].classes_[0]
                 else:
                     prediction_data[col] = 0.0
 
@@ -629,7 +699,6 @@ elif menu == "Prediksi Dataset Upload":
     prediction_data = prediction_data[feature_columns]
     prediction_scaled = scaler.transform(prediction_data)
     
-    st.write("---")
     perbandingan_list = []
     result_data_all = new_data.copy()
 
@@ -646,7 +715,7 @@ elif menu == "Prediksi Dataset Upload":
             perbandingan_list.append([name, acc, pre, rec, f1])
 
     if has_target:
-        st.subheader("📈 Perbandingan Performa Semua Model (Berdasarkan Nilai Aktual)")
+        st.subheader("PERBANDINGAN AKURASI SELURUH MODEL")
         df_compare = pd.DataFrame(
             perbandingan_list, 
             columns=["Model", "Accuracy", "Precision", "Recall", "F1 Score"]
@@ -656,25 +725,22 @@ elif menu == "Prediksi Dataset Upload":
             "Accuracy": "{:.2%}", "Precision": "{:.2%}", "Recall": "{:.2%}", "F1 Score": "{:.2%}"
         }), use_container_width=True)
 
-        fig, ax = plt.subplots(figsize=(10, 4))
-        bars = ax.bar(df_compare["Model"], df_compare["Accuracy"], color='#1E88E5')
-        ax.set_ylabel("Accuracy Score")
-        plt.xticks(rotation=15)
+        plt.style.use('dark_background')
+        fig, ax = plt.subplots(figsize=(9, 4))
+        fig.patch.set_facecolor('#182030')
+        ax.set_facecolor('#0b0e14')
         
-        for bar in bars:
-            height = bar.get_height()
-            ax.text(bar.get_x() + bar.get_width()/2., height + 0.01, f"{height*100:.1f}%", ha='center', va='bottom', fontsize=9)
+        bars = ax.bar(df_compare["Model"], df_compare["Accuracy"], color='#00ffcc', edgecolor='#ff0055', linewidth=2)
+        ax.set_ylabel("Accuracy Score", color='#ffcc00')
+        plt.xticks(rotation=15, color='#00ffcc')
         st.pyplot(fig)
-    else:
-        st.subheader("📊 Hasil Prediksi Massal Model")
-        st.info("Dataset eksternal berhasil diproses! Metrik akurasi/grafik komparasi tidak dimunculkan karena data tidak berisi kolom target aktual.")
 
-    st.subheader("📋 Data Lengkap Hasil Prediksi Seluruh Model")
+    st.subheader("TABEL HASIL PREDIKSI MASSAL")
     st.dataframe(result_data_all, use_container_width=True)
 
     csv_data = result_data_all.to_csv(index=False).encode("utf-8")
     st.download_button(
-        "⬇️ Download Hasil Prediksi Lengkap (CSV)",
+        "UNDUH HASIL PREDIKSI MASSAL (CSV)",
         data=csv_data,
         file_name="hasil_prediksi_massal.csv",
         mime="text/csv"
