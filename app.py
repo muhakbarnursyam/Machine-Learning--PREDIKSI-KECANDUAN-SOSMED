@@ -44,25 +44,6 @@ st.title("Prediksi Tingkat Kecanduan Media Sosial")
 st.write("---")
 
 # ... (Lanjutkan seluruh logika menu, EDA, Prediksi, dll.)
-# Cek ketersediaan XGBoost
-try:
-    from xgboost import XGBClassifier
-    xgb = True
-except ImportError:
-    xgb = False
-
-# ==========================================================
-# KONFIGURASI HALAMAN
-# ==========================================================
-st.set_page_config(
-    page_title="Prediksi Kecanduan Media Sosial",
-    page_icon="https://i.pinimg.com/originals/13/a1/56/13a15667ed324c559ca73f6d2108392b.jpg",
-    layout="wide"
-)
-
-st.title("Prediksi Tingkat Kecanduan Media Sosial")
-st.write("---")
-# ==========================================================
 # SIDEBAR MENU
 # ==========================================================
 menu = st.sidebar.selectbox(
@@ -720,9 +701,3 @@ elif menu == "Prediksi Dataset Upload":
         file_name="hasil_prediksi_massal.csv",
         mime="text/csv"
     )
-    import streamlit as st
-
-def local_css(file_name):
-    """Fungsi untuk membaca dan menerapkan file CSS lokal"""
-    with open(file_name) as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
