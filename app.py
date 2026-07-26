@@ -706,115 +706,36 @@ def local_css(file_name):
 
 import streamlit as st
 
-# Konfigurasi Halaman
-st.set_page_config(
-    page_title="Test Tailwind CSS di Streamlit",
-    page_icon="⚡",
-    layout="wide"
-)
+st.set_page_config(page_title="Custom UI Streamlit", page_icon="🎨", layout="wide")
 
-# 1. INJECT TAILWIND CSS VIA CDN & CUSTOM CONFIG
-st.markdown("""
-    <!-- Import CDN Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+# Fungsi untuk memuat CSS lokal
+def load_css(file_name):
+    with open(file_name, "r") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+# Panggil file CSS
+load_css("style.css")
+
+# --- KONTEN APLIKASI SEPERTI BIASA ---
+st.title("Prediksi Tingkat Kecanduan Media Sosial")
+st.write("Tampilan UI/UX komponen asli Streamlit di bawah ini sudah berubah sepenuhnya!")
+
+# Sidebar
+st.sidebar.title("📌 Menu Navigasi")
+st.sidebar.selectbox("Pilih Halaman", ["Home", "EDA", "Prediksi"])
+
+# Grid Layout
+col1, col2 = st.columns(2)
+
+with col1:
+    st.metric(label="Akurasi Model Best", value="94.2%", delta="1.2%")
+    st.number_input("Usia Pengguna", min_value=10, max_value=60, value=20)
+    st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
+
+with col2:
+    st.slider("Lama Penggunaan (Jam/Hari)", 0.0, 15.0, 5.0)
+    st.selectbox("Platform Utama", ["Instagram", "TikTok", "YouTube"])
     
-    <!-- Fix Font & Smoothing -->
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        html, body, [class*="css"] {
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
-
-# 2. TEST ELEMEN TAILWIND CSS
-
-st.title("⚡ Testing Tailwind CSS di Streamlit")
 st.write("---")
-
-# --- Card Component (Glassmorphism & Gradient) ---
-st.markdown("""
-<div class="max-w-4xl mx-auto my-6 p-8 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl shadow-2xl border border-indigo-500/20 text-white">
-    <div class="flex items-center space-x-4 mb-4">
-        <span class="flex h-3 w-3 relative">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-        </span>
-        <span class="text-xs font-semibold tracking-widest text-indigo-400 uppercase">System Active</span>
-    </div>
-    
-    <h2 class="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-200 to-sky-400 mb-2">
-        Tailwind CSS Berhasil Diintegrasikan!
-    </h2>
-    <p class="text-slate-300 text-sm leading-relaxed mb-6">
-        Komponen ini dibuat murni menggunakan tag HTML dan kelas Tailwind CSS. Anda bisa mengatur layout, warna, bayangan, hingga animasi dengan sangat fleksibel.
-    </p>
-    
-    <div class="flex items-center space-x-3">
-        <span class="px-3 py-1 bg-indigo-500/10 text-indigo-300 text-xs font-medium rounded-full border border-indigo-500/30">HTML + Tailwind</span>
-        <span class="px-3 py-1 bg-sky-500/10 text-sky-300 text-xs font-medium rounded-full border border-sky-500/30">Responsive</span>
-        <span class="px-3 py-1 bg-emerald-500/10 text-emerald-300 text-xs font-medium rounded-full border border-emerald-500/30">Custom UI</span>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-
-# --- Grid Dashboard Cards ---
-st.markdown("""
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto my-6">
-    <!-- Card 1 -->
-    <div class="p-6 bg-white rounded-xl shadow-md border border-slate-100 hover:shadow-xl transition-all duration-300">
-        <div class="text-slate-400 text-sm font-medium mb-1">Total Users</div>
-        <div class="text-2xl font-bold text-slate-800">12,450</div>
-        <div class="text-xs font-semibold text-emerald-600 mt-2 flex items-center gap-1">
-            ▲ +14% <span class="text-slate-400 font-normal">vs bulan lalu</span>
-        </div>
-    </div>
-
-    <!-- Card 2 -->
-    <div class="p-6 bg-white rounded-xl shadow-md border border-slate-100 hover:shadow-xl transition-all duration-300">
-        <div class="text-slate-400 text-sm font-medium mb-1">Avg. Accuracy</div>
-        <div class="text-2xl font-bold text-slate-800">94.8%</div>
-        <div class="text-xs font-semibold text-indigo-600 mt-2 flex items-center gap-1">
-            ★ Optimal <span class="text-slate-400 font-normal">(Random Forest)</span>
-        </div>
-    </div>
-
-    <!-- Card 3 -->
-    <div class="p-6 bg-white rounded-xl shadow-md border border-slate-100 hover:shadow-xl transition-all duration-300">
-        <div class="text-slate-400 text-sm font-medium mb-1">Latency</div>
-        <div class="text-2xl font-bold text-slate-800">42 ms</div>
-        <div class="text-xs font-semibold text-emerald-600 mt-2 flex items-center gap-1">
-            ⚡ Ultra Fast <span class="text-slate-400 font-normal">response time</span>
-        </div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-# Komponen Bawaan Streamlit (Bisa Dikombinasikan)
-st.write("---")
-st.subheader("Komponen Standard Streamlit")
-if st.button("Uji Tombol Streamlit"):
-    st.balloons()
-    import streamlit as st
-
-st.set_page_config(page_title="Test Tailwind", layout="wide")
-
-# Inject CDN Tailwind CSS
-st.markdown("""
-    <script src="https://cdn.tailwindcss.com"></script>
-""", unsafe_allow_html=True)
-
-st.write("---")
-
-# Cetak komponen HTML kustom dengan Tailwind
-st.markdown("""
-    <div class="p-6 max-w-sm mx-auto bg-indigo-600 rounded-xl shadow-lg text-center">
-        <h1 class="text-2xl font-bold text-white mb-2">Tailwind Berhasil!</h1>
-        <p class="text-indigo-100 text-sm">Jika kotak ini berwarna biru keunguan dengan sudut melengkung, berarti Tailwind CSS sudah jalan.</p>
-        <button class="mt-4 px-4 py-2 bg-white text-indigo-600 font-semibold rounded-lg shadow hover:bg-indigo-50">
-            Tombol Custom
-        </button>
-    </div>
-""", unsafe_allow_html=True)
+if st.button("🔍 Jalankan Analisis Prediksi"):
+    st.success("Tampilan tombol dan elemen form sudah berubah sesuai CSS!")
