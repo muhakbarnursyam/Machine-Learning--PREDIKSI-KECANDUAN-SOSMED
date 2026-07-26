@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import streamlit as st
-from PIL import Image
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
@@ -29,261 +28,110 @@ except ImportError:
     xgb = False
 
 # ==========================================================
-# KONFIGURASI HALAMAN & TEMA RETRO PIXEL PIALA DUNIA CHIBI
+# KONFIGURASI HALAMAN & TEMA MODERN BIRU PUTIH
 # ==========================================================
 st.set_page_config(
-    page_title="Prediksi Kecanduan Media Sosial - World Cup Chibi Pixel Edition",
-    page_icon="⚽",
+    page_title="Prediksi Kecanduan Media Sosial",
+    page_icon="📊",
     layout="wide"
 )
 
-# Custom CSS Inject untuk Tema Pixel World Cup Chibi
+# Custom CSS Inject untuk Tema Modern Blue & White
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 
-    /* Global Theme - Retro Stadium Turf Background */
+    /* Global Theme Background & Typography */
     .stApp {
-        background-color: #0d2818;
-        background-image: 
-            radial-gradient(#16db65 1px, transparent 1px),
-            radial-gradient(#058c42 1px, #0d2818 1px);
-        background-size: 40px 40px;
-        background-position: 0 0, 20px 20px;
-        color: #e0f2fe;
-        font-family: 'VT323', monospace;
-        font-size: 20px;
+        background-color: #f4f7fb;
+        color: #1e293b;
+        font-family: 'Inter', sans-serif;
     }
 
-    /* Headings Style - Gold & Neon Green Trophy Look */
+    /* Headings */
     h1, h2, h3, h4 {
-        font-family: 'Press Start 2P', cursive !important;
-        color: #ffb703 !important;
-        text-shadow: 3px 3px 0px #d90429, 6px 6px 0px #000000;
-        letter-spacing: 1px;
+        font-family: 'Inter', sans-serif !important;
+        color: #0f172a !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.5px;
     }
 
-    /* Sidebar Pixel Styling - Dugout Theme */
+    /* Sidebar Styling */
     [data-testid="stSidebar"] {
-        background-color: #051923 !important;
-        border-right: 4px solid #ffb703;
-    }
-    
-    [data-testid="stSidebar"] * {
-        font-family: 'VT323', monospace !important;
-        font-size: 22px !important;
-        color: #00f5d4 !important;
+        background-color: #ffffff !important;
+        border-right: 1px solid #e2e8f0;
     }
 
-    /* Pixel Art Container Cards */
+    /* Cards & Container */
     div.stDataFrame, div.stForm, .stAlert {
-        background: #003566 !important;
-        border: 4px solid #ffb703 !important;
-        box-shadow: 6px 6px 0px #d90429;
-        border-radius: 0px !important;
+        background: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
 
-    /* Retro Pixel Buttons */
+    /* Custom Buttons */
     .stButton>button, div[data-testid="stFormSubmitButton"]>button, .stDownloadButton>button {
-        font-family: 'Press Start 2P', cursive !important;
-        font-size: 12px !important;
+        font-family: 'Inter', sans-serif !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
         color: #ffffff !important;
-        background-color: #d90429 !important;
-        border: 3px solid #ffffff !important;
-        box-shadow: 4px 4px 0px #000000;
-        border-radius: 0px !important;
-        padding: 10px 20px !important;
-        transition: all 0.1s ease-in-out;
+        background-color: #2563eb !important;
+        border: None !important;
+        border-radius: 8px !important;
+        padding: 10px 24px !important;
+        transition: all 0.2s ease;
     }
 
     .stButton>button:hover, div[data-testid="stFormSubmitButton"]>button:hover, .stDownloadButton>button:hover {
-        background-color: #00f5d4 !important;
-        color: #000000 !important;
-        transform: translate(-2px, -2px);
-        box-shadow: 6px 6px 0px #000000;
+        background-color: #1d4ed8 !important;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
     }
 
-    /* Selectbox & Input Customization */
-    div[data-baseweb="select"] > div, input {
-        background-color: #051923 !important;
-        color: #00f5d4 !important;
-        border: 2px solid #00f5d4 !important;
-        border-radius: 0px !important;
-        font-family: 'VT323', monospace !important;
-        font-size: 20px !important;
-    }
-
-    /* Metric Boxes Pixel Style */
+    /* Metric Boxes */
     [data-testid="stMetricValue"] {
-        font-family: 'Press Start 2P', cursive !important;
-        color: #00f5d4 !important;
+        font-family: 'Inter', sans-serif !important;
+        color: #2563eb !important;
+        font-weight: 700 !important;
     }
     
     [data-testid="stMetricLabel"] {
-        font-family: 'VT323', monospace !important;
-        font-size: 22px !important;
-        color: #ffb703 !important;
+        font-family: 'Inter', sans-serif !important;
+        color: #64748b !important;
+        font-size: 14px !important;
     }
 
-    /* Tabs Retro Styling */
-    button[data-baseweb="tab"] {
-        font-family: 'Press Start 2P', cursive !important;
-        font-size: 10px !important;
-        color: #ffffff !important;
-        background-color: #003566 !important;
-        border: 2px solid #00f5d4 !important;
-        border-radius: 0px !important;
+    /* Form Inputs & Selectbox */
+    div[data-baseweb="select"] > div, input {
+        background-color: #ffffff !important;
+        border-radius: 6px !important;
+        border: 1px solid #cbd5e1 !important;
+        color: #0f172a !important;
     }
 
-    button[aria-selected="true"] {
-        background-color: #d90429 !important;
-        color: #ffffff !important;
-    }
-
-    /* Line separator */
+    /* Divider */
     hr {
-        border-top: 4px dashed #00f5d4 !important;
+        border-top: 1px solid #e2e8f0 !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
 # Header Utama
-st.title("⚽ PREDIKSI KECANDUAN MEDIA SOSIAL")
-st.caption("🏆 STADION PIXEL WORLD CUP CHIBI - DATA CENTER")
+st.title("📊 Analisis & Prediksi Kecanduan Media Sosial")
+st.caption("Platform Analytics Machine Learning Berbasis Data Sosiologis")
 st.write("---")
-
-# ==========================================================
-# CONSTANTS & ASSETS PIXEL CHIBI WORLD CUP
-# ==========================================================
-SKIN_COLORS = {
-    "Cerah": (255, 220, 177, 255),
-    "Sawo Matang": (224, 172, 105, 255),
-    "Gelap": (141, 85, 36, 255),
-}
-
-HAIR_COLORS = {
-    "Hitam": (30, 30, 30, 255),
-    "Cokelat": (101, 67, 33, 255),
-    "Pirang": (240, 200, 80, 255),
-    "Merah": (184, 51, 42, 255),
-}
-
-JERSEY_TEAMS = {
-    "Indonesia 🇮🇩": {"base": (200, 16, 46, 255), "shorts": (255, 255, 255, 255)},
-    "Jepang 🇯🇵": {"base": (0, 43, 127, 255), "shorts": (255, 255, 255, 255)},
-    "Brasil 🇧🇷": {"base": (254, 221, 0, 255), "shorts": (1, 33, 105, 255)},
-    "Argentina 🇦🇷": {"base": (117, 170, 219, 255), "shorts": (0, 0, 0, 255)},
-    "Jerman 🇩🇪": {"base": (240, 240, 240, 255), "shorts": (20, 20, 20, 255)},
-    "Prancis 🇫🇷": {"base": (5, 16, 75, 255), "shorts": (255, 255, 255, 255)},
-}
-
-def draw_pixel_chibi(skin_tone, hair_style, hair_color, team_name):
-    """Membuat avatar pixel chibi berpiksel 16x16 scaled up ke 320x320."""
-    grid = np.zeros((16, 16, 4), dtype=np.uint8)
-
-    skin_rgb = SKIN_COLORS[skin_tone]
-    hair_rgb = HAIR_COLORS[hair_color]
-    jersey_rgb = JERSEY_TEAMS[team_name]["base"]
-    shorts_rgb = JERSEY_TEAMS[team_name]["shorts"]
-
-    def set_p(x, y, color):
-        if 0 <= x < 16 and 0 <= y < 16:
-            grid[y, x] = color
-
-    # 1. KEPALA & WAJAH
-    for x in range(4, 12):
-        for y in range(2, 9):
-            set_p(x, y, skin_rgb)
-
-    # Mata Chibi
-    set_p(5, 5, (0, 0, 0, 255))
-    set_p(5, 6, (0, 0, 0, 255))
-    set_p(10, 5, (0, 0, 0, 255))
-    set_p(10, 6, (0, 0, 0, 255))
-
-    # Blush
-    set_p(4, 7, (255, 150, 150, 255))
-    set_p(11, 7, (255, 150, 150, 255))
-
-    # 2. RAMBUT
-    if hair_style == "Pendek Standard":
-        for x in range(4, 12):
-            set_p(x, 1, hair_rgb)
-            set_p(x, 2, hair_rgb)
-        set_p(3, 2, hair_rgb)
-        set_p(3, 3, hair_rgb)
-        set_p(12, 2, hair_rgb)
-        set_p(12, 3, hair_rgb)
-        set_p(6, 3, hair_rgb)
-        set_p(9, 3, hair_rgb)
-
-    elif hair_style == "Spiky / Jabrik":
-        for x in range(4, 12):
-            set_p(x, 2, hair_rgb)
-        set_p(4, 0, hair_rgb)
-        set_p(6, 0, hair_rgb)
-        set_p(8, 0, hair_rgb)
-        set_p(10, 0, hair_rgb)
-        set_p(5, 1, hair_rgb)
-        set_p(7, 1, hair_rgb)
-        set_p(9, 1, hair_rgb)
-        set_p(11, 1, hair_rgb)
-
-    elif hair_style == "Gondrong":
-        for x in range(4, 12):
-            set_p(x, 1, hair_rgb)
-            set_p(x, 2, hair_rgb)
-        for y in range(2, 9):
-            set_p(3, y, hair_rgb)
-            set_p(12, y, hair_rgb)
-
-    # 3. BADAN & JERSEY
-    for x in range(5, 11):
-        for y in range(9, 12):
-            set_p(x, y, jersey_rgb)
-
-    # Lengan
-    set_p(4, 9, jersey_rgb)
-    set_p(4, 10, skin_rgb)
-    set_p(11, 9, jersey_rgb)
-    set_p(11, 10, skin_rgb)
-
-    # Celana
-    for x in range(5, 11):
-        set_p(x, 12, shorts_rgb)
-
-    # Sepatu
-    set_p(6, 13, skin_rgb)
-    set_p(9, 13, skin_rgb)
-    set_p(6, 14, (30, 30, 30, 255))
-    set_p(5, 14, (30, 30, 30, 255))
-    set_p(9, 14, (30, 30, 30, 255))
-    set_p(10, 14, (30, 30, 30, 255))
-
-    # 4. BOLA PIXEL PIALA DUNIA
-    ball_white = (240, 240, 240, 255)
-    ball_black = (20, 20, 20, 255)
-    for bx in range(12, 15):
-        for by in range(13, 16):
-            set_p(bx, by, ball_white)
-    set_p(13, 14, ball_black)
-
-    img = Image.fromarray(grid, mode="RGBA")
-    img = img.resize((320, 320), resample=Image.NEAREST)
-    return img
 
 # ==========================================================
 # SIDEBAR MENU
 # ==========================================================
 menu = st.sidebar.selectbox(
-    "MENU NAVIGASI UTAMA",
+    "📌 MENU UTAMA",
     [
         "Home",
-        "Chibi Generator",
         "Dataset",
-        "EDA",
+        "EDA (Eksplorasi Data)",
         "Preprocessing",
-        "Training",
+        "Training Model",
         "Prediksi Manual",
         "Prediksi Dataset Upload"
     ]
@@ -334,140 +182,126 @@ def prepare_training_data(data):
 
 # --- HOME ---
 if menu == "Home":
-    st.header("🏆 MODUL ML PIALA DUNIA PIXEL CHIBI")
+    st.header("🏠 Dashboard Utama")
     
-    col_img, col_txt = st.columns([1, 2])
-    with col_img:
-        sample_chibi = draw_pixel_chibi("Cerah", "Spiky / Jabrik", "Hitam", "Indonesia 🇮🇩")
-        st.image(sample_chibi, caption="Maskot Chibi Pixel", use_container_width=True)
-    
-    with col_txt:
+    col_info, col_feat = st.columns([2, 1])
+    with col_info:
         st.write(
             """
-            ### PREDIKSI TINGKAT KECANDUAN MEDIA SOSIAL
-            Sistem cerdas bertema Piala Dunia Berpiksel yang menganalisis tingkat kecanduan media sosial dengan algoritma Machine Learning unggulan.
-
-            ### ALGORITMA DUKUNGAN SISTEM:
-            - Logistic Regression & Decision Tree
-            - Random Forest & KNN
-            - Naive Bayes, SVM & XGBoost
-
-            ### FITUR EKSKLUSIF:
-            - **Chibi Generator**: Buat avatar pemain sepak bola piksel kamu sendiri!
-            - **Analisis & Prediksi ML**: Prediksi individu & file CSV secara akurat.
+            Selamat datang di **Aplikasi Klasifikasi & Prediksi Kecanduan Media Sosial**. 
+            Sistem ini memanfaatkan berbagai algoritma Machine Learning untuk memprediksi tingkat kecanduan 
+            pengguna media sosial berdasarkan indikator-indikator perilaku, fisik, dan pola pemakaian harian.
             """
         )
+        
+        st.subheader("🤖 Algoritma yang Didukung")
+        st.markdown("""
+        - **Logistic Regression**: Pemodelan linier dasar untuk klasifikasi probabilistik.
+        - **Decision Tree & Random Forest**: Model berbasis pohon keputusan bernilai presisi tinggi.
+        - **K-Nearest Neighbors (KNN)**: Pengelompokan jarak terdekat antar sampel data.
+        - **Naive Bayes**: Klasifikasi berbasis Teorema Bayes.
+        - **Support Vector Machine (SVM)**: Pemisah marjin terbaik untuk ruang berdimensi tinggi.
+        - **XGBoost**: Extreme Gradient Boosting untuk performa klasifikasi optimal.
+        """)
 
-# --- CHIBI GENERATOR ---
-elif menu == "Chibi Generator":
-    st.header("⚽ PIXEL CHIBI WORLD CUP GENERATOR")
-    st.write("Kustomisasi dan unduh karakter chibi berpiksel tim favoritmu!")
-
-    col_ctrl, col_prev = st.columns([1, 1])
-
-    with col_ctrl:
-        selected_team = st.selectbox("Tim / Negara Jersey", list(JERSEY_TEAMS.keys()))
-        selected_skin = st.selectbox("Warna Kulit", list(SKIN_COLORS.keys()))
-        selected_hair_style = st.selectbox("Gaya Rambut", ["Pendek Standard", "Spiky / Jabrik", "Gondrong"])
-        selected_hair_color = st.selectbox("Warna Rambut", list(HAIR_COLORS.keys()))
-
-    chibi_img = draw_pixel_chibi(selected_skin, selected_hair_style, selected_hair_color, selected_team)
-
-    with col_prev:
-        st.image(chibi_img, caption=f"Pemain Chibi Pixel - {selected_team}", use_container_width=False, width=280)
-
-        buf = io.BytesIO()
-        chibi_img.save(buf, format="PNG")
-        byte_im = buf.getvalue()
-
-        st.download_button(
-            label="📥 Unduh Avatar Chibi (PNG)",
-            data=byte_im,
-            file_name=f"chibi_worldcup_{selected_team.split()[0].lower()}.png",
-            mime="image/png",
-        )
+    with col_feat:
+        st.info("💡 **Alur Penggunaan:**\n1. Pelajari data di **Dataset** & **EDA**.\n2. Jalankan **Preprocessing**.\n3. Latih model di **Training Model**.\n4. Lakukan pengujian di **Prediksi Manual**.")
 
 # --- DATASET ---
 elif menu == "Dataset":
-    st.header("📊 DATASET PIPELINE")
+    st.header("📊 Overview Dataset")
     
     if not os.path.exists(TRAINING_DATASET):
-        st.error(f"Berkas dataset training '{TRAINING_DATASET}' tidak ditemukan.")
+        st.error(f"File dataset '{TRAINING_DATASET}' tidak ditemukan di direktori kerja.")
         st.stop()
 
     df = pd.read_csv(TRAINING_DATASET)
-    st.info(f"Sumber Berkas Data: {TRAINING_DATASET}")
+    st.success(f"Dataset Aktif: `{TRAINING_DATASET}`")
     st.dataframe(df, use_container_width=True)
 
-    col1, col2 = st.columns(2)
-    col1.metric("JUMLAH SAMPEL", df.shape[0])
-    col2.metric("JUMLAH ATRIBUT", df.shape[1])
+    c1, c2 = st.columns(2)
+    c1.metric("Total Baris (Data)", df.shape[0])
+    c2.metric("Total Kolom (Fitur)", df.shape[1])
     
-    st.subheader("STATISTIK DESKRIPTIF")
+    st.subheader("Ringkasan Statistik")
     st.write(df.describe(include="all"))
 
 # --- EDA ---
-elif menu == "EDA":
-    st.header("🔍 EXPLORATORY DATA ANALYSIS")
+elif menu == "EDA (Eksplorasi Data)":
+    st.header("🔍 Exploratory Data Analysis (EDA)")
     
     if not os.path.exists(TRAINING_DATASET):
-        st.error(f"Berkas dataset training '{TRAINING_DATASET}' tidak ditemukan.")
+        st.error(f"File dataset '{TRAINING_DATASET}' tidak ditemukan.")
         st.stop()
 
     df = pd.read_csv(TRAINING_DATASET)
-    st.subheader("5 SAMPEL PERTAMA")
+    st.subheader("Pratinjau Data (Top 5 Baris)")
     st.dataframe(df.head())
 
-    plt.style.use('dark_background')
+    # Styling matplotlib biru-putih modern
+    plt.style.use('default')
 
     if "Addiction_Level" in df.columns:
-        st.subheader("DISTRIBUSI ADDICTION LEVEL")
+        st.subheader("Distribusi Kelas Target (Addiction Level)")
         fig, ax = plt.subplots(figsize=(7, 3.5))
-        fig.patch.set_facecolor('#003566')
-        ax.set_facecolor('#051923')
+        fig.patch.set_facecolor('#ffffff')
+        ax.set_facecolor('#f8fafc')
         
-        df["Addiction_Level"].value_counts().plot(kind="bar", ax=ax, color='#00f5d4', edgecolor='#ffb703', linewidth=2)
-        ax.set_xlabel("Tingkat Kecanduan", color='#ffb703')
-        ax.set_ylabel("Jumlah", color='#ffb703')
+        df["Addiction_Level"].value_counts().plot(
+            kind="bar", 
+            ax=ax, 
+            color='#2563eb', 
+            edgecolor='#1d4ed8', 
+            linewidth=1.2
+        )
+        ax.set_xlabel("Tingkat Kecanduan", color='#0f172a', fontweight='bold')
+        ax.set_ylabel("Jumlah", color='#0f172a', fontweight='bold')
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
         st.pyplot(fig)
 
     numeric = df.select_dtypes(include=np.number)
     if not numeric.empty:
-        st.subheader("MATRIKS KORELASI PARAMETER")
+        st.subheader("Matriks Korelasi Variabel Numerik")
         corr = numeric.corr()
         fig, ax = plt.subplots(figsize=(8, 5))
-        fig.patch.set_facecolor('#003566')
-        ax.set_facecolor('#051923')
+        fig.patch.set_facecolor('#ffffff')
         
-        im = ax.imshow(corr, cmap='viridis')
+        im = ax.imshow(corr, cmap='Blues')
         ax.set_xticks(range(len(corr.columns)))
-        ax.set_xticklabels(corr.columns, rotation=90, color='#00f5d4')
+        ax.set_xticklabels(corr.columns, rotation=45, ha='right', color='#0f172a')
         ax.set_yticks(range(len(corr.columns)))
-        ax.set_yticklabels(corr.columns, color='#00f5d4')
+        ax.set_yticklabels(corr.columns, color='#0f172a')
         plt.colorbar(im)
         st.pyplot(fig)
 
 # --- PREPROCESSING ---
 elif menu == "Preprocessing":
-    st.header("⚙️ PREPROCESSING DATASET")
+    st.header("⚙️ Preprocessing & Transformasi Data")
     if not os.path.exists(TRAINING_DATASET):
-        st.error(f"Berkas dataset training '{TRAINING_DATASET}' tidak ditemukan.")
+        st.error(f"File dataset '{TRAINING_DATASET}' tidak ditemukan.")
         st.stop()
 
     df = pd.read_csv(TRAINING_DATASET)
     X, y, target_encoder, feature_encoders, scaler, feature_columns = prepare_training_data(df)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
-    st.success("Proses Preprocessing Berhasil!")
-    st.write(f"- Data Training: **{X_train.shape[0]}** sampel")
-    st.write(f"- Data Testing: **{X_test.shape[0]}** sampel")
-    st.write("Kelas Target terdeteksi:", list(target_encoder.classes_))
+    st.success("Preprocessing data berhasil dijalankan!")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.info(f"**Data Training (80%):** {X_train.shape[0]} baris")
+    with col2:
+        st.info(f"**Data Testing (20%):** {X_test.shape[0]} baris")
 
-# --- TRAINING ---
-elif menu == "Training":
-    st.header("🏋️ TRAINING MODEL KOMPUTASI")
+    st.write("Label Kelas Target Teridentifikasi:")
+    st.json(list(target_encoder.classes_))
+
+# --- TRAINING MODEL ---
+elif menu == "Training Model":
+    st.header("🏋️ Pelatihan Model Machine Learning")
     if not os.path.exists(TRAINING_DATASET):
-        st.error(f"Berkas dataset training '{TRAINING_DATASET}' tidak ditemukan.")
+        st.error(f"File dataset '{TRAINING_DATASET}' tidak ditemukan.")
         st.stop()
 
     df = pd.read_csv(TRAINING_DATASET)
@@ -508,25 +342,27 @@ elif menu == "Training":
 
     hasil_df = pd.DataFrame(hasil, columns=["Model", "Accuracy", "Precision", "Recall", "F1 Score"]).sort_values(by="Accuracy", ascending=False)
 
-    st.success("Training Selesai!")
+    st.success("Proses Training Selesai!")
+    st.subheader("Perbandingan Performa Model")
     st.dataframe(hasil_df.style.format({
         "Accuracy": "{:.2%}", "Precision": "{:.2%}", "Recall": "{:.2%}", "F1 Score": "{:.2%}"
     }), use_container_width=True)
 
+    # Simpan model & pendukung
     joblib.dump(trained_models, "Semua_Model.pkl")
     joblib.dump(scaler, "Scaler.pkl")
     joblib.dump(target_encoder, "Target_Encoder.pkl")
     joblib.dump(feature_encoders, "Feature_Encoders.pkl")
     joblib.dump(feature_columns, "Feature_Columns.pkl")
-    st.success("Model dan scaler berhasil disimpan!")
+    st.info("Artefak model (.pkl) berhasil disimpan secara lokal.")
 
 # --- PREDIKSI MANUAL ---
 elif menu == "Prediksi Manual":
-    st.header("🎯 SIMULASI PREDIKSI INDIVIDU")
+    st.header("🎯 Simulasi Prediksi Individual")
     
     required_files = ["Semua_Model.pkl", "Scaler.pkl", "Target_Encoder.pkl", "Feature_Encoders.pkl", "Feature_Columns.pkl"]
     if not all(os.path.exists(f) for f in required_files):
-        st.error("Silakan jalankan menu Training terlebih dahulu.")
+        st.warning("Silakan jalankan menu 'Training Model' terlebih dahulu untuk menggenerasi berkas model.")
         st.stop()
 
     models = joblib.load("Semua_Model.pkl")
@@ -535,14 +371,13 @@ elif menu == "Prediksi Manual":
     feature_encoders = joblib.load("Feature_Encoders.pkl")
     feature_columns = joblib.load("Feature_Columns.pkl")
 
-    model_name = st.selectbox("PILIH ALGORITMA PREDIKSI", list(models.keys()))
+    model_name = st.selectbox("Pilih Algoritma Model:", list(models.keys()))
     model = models[model_name]
 
-    st.subheader("INPUT DATA PARAMETER:")
-    input_data = {}
-    with st.form("form_prediksi"):
+    st.subheader("Form Input Parameter:")
+    ui_inputs = {}
+    with st.form("form_prediksi_manual"):
         col1, col2 = st.columns(2)
-        ui_inputs = {}
         
         for idx, col_name in enumerate(feature_columns):
             form_col = col1 if idx % 2 == 0 else col2
@@ -552,7 +387,7 @@ elif menu == "Prediksi Manual":
             else:
                 ui_inputs[col_name] = form_col.number_input(col_name, value=0, step=1, key=f"ui_{col_name}")
         
-        submitted = st.form_submit_button("JALANKAN KALKULASI PREDIKSI")
+        submitted = st.form_submit_button("Hitung Prediksi")
 
     if submitted:
         input_df = pd.DataFrame([ui_inputs])
@@ -563,13 +398,14 @@ elif menu == "Prediksi Manual":
         prediksi_angka = model.predict(input_scaled)
         hasil_label = target_encoder.inverse_transform(prediksi_angka)[0]
         
-        st.success(f"Berdasarkan Algoritma **{model_name}**, Tingkat Kecanduan: **{hasil_label}**")
+        st.success(f"Hasil Klasifikasi Algoritma **{model_name}**: Tingkat Kecanduan **{hasil_label}**")
 
 # --- PREDIKSI DATASET UPLOAD ---
 elif menu == "Prediksi Dataset Upload":
-    st.header("📁 ANALISIS MASSAL FILE CSV")
-    uploaded_file = st.file_uploader("Unggah File CSV", type=["csv"])
+    st.header("📁 Prediksi Massal via Unggah File CSV")
+    uploaded_file = st.file_uploader("Unggah berkas CSV data uji baru", type=["csv"])
     
     if uploaded_file is not None:
         user_data = pd.read_csv(uploaded_file)
+        st.subheader("Pratinjau Data yang Diunggah:")
         st.dataframe(user_data.head(), use_container_width=True)
