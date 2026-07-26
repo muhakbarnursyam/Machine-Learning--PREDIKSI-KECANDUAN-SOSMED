@@ -7,9 +7,7 @@ import streamlit as st
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
-    ConfusionMatrixDisplay,
     accuracy_score,
-    confusion_matrix,
     f1_score,
     precision_score,
     recall_score,
@@ -21,6 +19,31 @@ from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC
 
+# ==========================================================
+# 1. KONFIGURASI HALAMAN & CUSTOM CSS (HARUS DI ATAS)
+# ==========================================================
+st.set_page_config(
+    page_title="Prediksi Kecanduan Media Sosial",
+    page_icon="https://i.pinimg.com/originals/13/a1/56/13a15667ed324c559ca73f6d2108392b.jpg",
+    layout="wide"
+)
+
+# Fungsi muat CSS
+def load_css(file_name):
+    if os.path.exists(file_name):
+        with open(file_name, "r") as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+# Terapkan style.css dari awal
+load_css("style.css")
+
+# ==========================================================
+# 2. ISI APLIKASI UTAMA
+# ==========================================================
+st.title("Prediksi Tingkat Kecanduan Media Sosial")
+st.write("---")
+
+# ... (Lanjutkan seluruh logika menu, EDA, Prediksi, dll.)
 # Cek ketersediaan XGBoost
 try:
     from xgboost import XGBClassifier
@@ -703,39 +726,3 @@ def local_css(file_name):
     """Fungsi untuk membaca dan menerapkan file CSS lokal"""
     with open(file_name) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-
-import streamlit as st
-
-st.set_page_config(page_title="Custom UI Streamlit", page_icon="🎨", layout="wide")
-
-# Fungsi untuk memuat CSS lokal
-def load_css(file_name):
-    with open(file_name, "r") as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-
-# Panggil file CSS
-load_css("style.css")
-
-# --- KONTEN APLIKASI SEPERTI BIASA ---
-st.title("Prediksi Tingkat Kecanduan Media Sosial")
-st.write("Tampilan UI/UX komponen asli Streamlit di bawah ini sudah berubah sepenuhnya!")
-
-# Sidebar
-st.sidebar.title("📌 Menu Navigasi")
-st.sidebar.selectbox("Pilih Halaman", ["Home", "EDA", "Prediksi"])
-
-# Grid Layout
-col1, col2 = st.columns(2)
-
-with col1:
-    st.metric(label="Akurasi Model Best", value="94.2%", delta="1.2%")
-    st.number_input("Usia Pengguna", min_value=10, max_value=60, value=20)
-    st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
-
-with col2:
-    st.slider("Lama Penggunaan (Jam/Hari)", 0.0, 15.0, 5.0)
-    st.selectbox("Platform Utama", ["Instagram", "TikTok", "YouTube"])
-    
-st.write("---")
-if st.button("🔍 Jalankan Analisis Prediksi"):
-    st.success("Tampilan tombol dan elemen form sudah berubah sesuai CSS!")
