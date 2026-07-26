@@ -14,7 +14,22 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+import streamlit as st
 
+def local_css(file_name):
+    """Fungsi untuk membaca dan menerapkan file CSS lokal"""
+    with open(file_name) as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+# Panggil fungsi CSS di awal script
+local_css("style.css")
+
+# Konten Streamlit seperti biasa
+st.title("Aplikasi Streamlit dengan Custom CSS")
+st.write("Tampilan halaman ini sudah disesuaikan menggunakan file `style.css` eksternal.")
+
+if st.button("Klik Saya"):
+    st.success("Tombol berhasil diklik!")
 try:
     from xgboost import XGBClassifier
     xgb = True
