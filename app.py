@@ -465,13 +465,29 @@ st.sidebar.markdown(
 )
 
 # ==========================================================
-# FUNGSI PREPROCESSING & TRAINING
+# FUNGSI PREPROCESSING & TRAINING (VERSI BEBAS DATA LEAKAGE)
 # ==========================================================
+# Prinsip yang dipakai di sini:
+# 1. train_test_split dilakukan PALING AWAL, sebelum proses apa pun
+#    yang "belajar" dari data (fit LabelEncoder, fit StandardScaler, dll).
+# 2. Semua encoder/scaler HANYA di-fit pada data TRAIN.
+#    Data TEST hanya ditransformasi (transform), tidak pernah dipakai fit.
+# 3. Kategori pada data test yang tidak pernah muncul di data train
+#    ditangani dengan fallback (bukan error), sama seperti pada menu
+#    prediksi upload CSV.
+# Dengan urutan ini, tidak ada informasi dari data test yang "bocor"
+# ke proses training, sehingga skor akurasi antar model jadi jujur
+# (bisa berbeda-beda sesuai karakteristik masing-masing algoritma).
 def prepare_training_data(data):
-    """Membersihkan data, melakukan encoding, dan scaling."""
+    """Membersihkan data lalu membagi menjadi train/test SEBELUM encoding & scaling."""
     data = data.copy().drop_duplicates()
 
-    # Hapus kolom yang tidak digunakan
+    # Hapus kolom yang tidak boleh dipakai sebagai fitur:
+    # - Student_ID: identifier, tidak relevan
+    # - Addicted_Score, Sleep_Addiction_Indicator, Physical_Activity_Indicator:
+    #   kolom ini adalah turunan/indikator dari target itu sendiri, sehingga
+    #   kalau ikut dipakai sebagai fitur akan jadi TARGET LEAKAGE (model
+    #   "curi start" karena diam-diam sudah tahu jawabannya).
     drop_cols = ["Student_ID", "Addicted_Score", "Sleep_Addiction_Indicator", "Physical_Activity_Indicator"]
     drop_cols = [col for col in drop_cols if col in data.columns]
     data = data.drop(columns=drop_cols)
@@ -482,27 +498,58 @@ def prepare_training_data(data):
         st.error("Kolom 'Addiction_Level' tidak ditemukan pada dataset training.")
         st.stop()
 
-    X = data.drop(columns=[target])
-    y = data[target]
+    X_raw = data.drop(columns=[target])
+    y_raw = data[target]
 
-    # Encode Target
+    # ---- 1) SPLIT DULU, SEBELUM ENCODING/SCALING APA PUN ----
+    X_train_raw, X_test_raw, y_train_raw, y_test_raw = train_test_split(
+        X_raw, y_raw, test_size=0.2, random_state=42, stratify=y_raw
+    )
+
+    # ---- 2) Encode target: fit hanya di train, transform di test ----
     target_encoder = LabelEncoder()
-    y_encoded = target_encoder.fit_transform(y.astype(str))
+    y_train = target_encoder.fit_transform(y_train_raw.astype(str))
+    y_test = target_encoder.transform(y_test_raw.astype(str))
 
-    # Encode Fitur Kategorikal
+    # ---- 3) Encode fitur kategorikal: fit hanya di train ----
     feature_encoders = {}
-    categorical_columns = X.select_dtypes(include="object").columns
+    categorical_columns = X_train_raw.select_dtypes(include="object").columns
+
+    X_train_enc = X_train_raw.copy()
+    X_test_enc = X_test_raw.copy()
+
     for col in categorical_columns:
         encoder = LabelEncoder()
-        X[col] = encoder.fit_transform(X[col].astype(str))
+        X_train_enc[col] = encoder.fit_transform(X_train_raw[col].astype(str))
+
+        # Kategori di data test yang tidak pernah terlihat saat fit (train)
+        # difallback ke kelas pertama, bukan menyebabkan error/leakage.
+        known_classes = set(encoder.classes_)
+        default_class = encoder.classes_[0]
+        test_col_str = X_test_raw[col].astype(str).apply(lambda x: x if x in known_classes else default_class)
+        X_test_enc[col] = encoder.transform(test_col_str)
+
         feature_encoders[col] = encoder
 
-    feature_columns = list(X.columns)
-    
-    # Inisialisasi Scaler
+    feature_columns = list(X_train_enc.columns)
+
+    # ---- 4) Scaling: fit hanya di train, test hanya di-transform ----
     scaler = StandardScaler()
-    
-    return X, y_encoded, target_encoder, feature_encoders, scaler, feature_columns
+    X_train_scaled = scaler.fit_transform(X_train_enc)
+    X_test_scaled = scaler.transform(X_test_enc)
+
+    return {
+        "X_train_scaled": X_train_scaled,
+        "X_test_scaled": X_test_scaled,
+        "y_train": y_train,
+        "y_test": y_test,
+        "target_encoder": target_encoder,
+        "feature_encoders": feature_encoders,
+        "scaler": scaler,
+        "feature_columns": feature_columns,
+        "n_train": X_train_enc.shape[0],
+        "n_test": X_test_enc.shape[0],
+    }
 
 # ==========================================================
 # TAMPILAN MENU
@@ -642,20 +689,22 @@ elif menu == "Preprocessing":
 
     st.write(f"Dataset awal: **{df.shape[0]} baris, {df.shape[1]} kolom**")
 
-    X, y, target_encoder, feature_encoders, scaler, feature_columns = prepare_training_data(df)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+    prep = prepare_training_data(df)
 
     st.success("Preprocessing berhasil dilakukan!")
 
     st.markdown("""
-    Data telah dibagi menjadi 2 bagian utama menggunakan teknik *Stratified Train-Test Split* (rasio 80:20):
+    Data dibagi menjadi 2 bagian menggunakan *Stratified Train-Test Split* (rasio 80:20) **sebelum** proses
+    encoding dan scaling dilakukan. Urutan ini penting: encoder dan scaler hanya "belajar" (fit) dari data
+    training, sedangkan data testing hanya ditransformasi memakai aturan yang sudah dipelajari dari data
+    training tersebut — sehingga tidak ada informasi dari data testing yang bocor ke proses training.
     * **Data Training (80%)**: Digunakan untuk melatih algoritma *Machine Learning*.
     * **Data Testing (20%)**: Digunakan untuk menguji dan mengevaluasi akurasi model yang telah dilatih.
     """)
 
-    st.write(f"✔ Jumlah Data Training: {X_train.shape[0]} sampel")
-    st.write(f"✔ Jumlah Data Testing: {X_test.shape[0]} sampel")
-    st.write("Target Classes:", list(target_encoder.classes_))
+    st.write(f"✔ Jumlah Data Training: {prep['n_train']} sampel")
+    st.write(f"✔ Jumlah Data Testing: {prep['n_test']} sampel")
+    st.write("Target Classes:", list(prep["target_encoder"].classes_))
 
 # --- TRAINING ---
 elif menu == "Training":
@@ -666,11 +715,21 @@ elif menu == "Training":
     Performa tiap algoritma kemudian dievaluasi menggunakan data testing berdasarkan metrik **Accuracy**, **Precision**, **Recall**, dan **F1 Score**.
     """)
 
-    X, y, target_encoder, feature_encoders, scaler, feature_columns = prepare_training_data(df)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+    prep = prepare_training_data(df)
+    X_train_scaled = prep["X_train_scaled"]
+    X_test_scaled = prep["X_test_scaled"]
+    y_train = prep["y_train"]
+    y_test = prep["y_test"]
+    target_encoder = prep["target_encoder"]
+    feature_encoders = prep["feature_encoders"]
+    scaler = prep["scaler"]
+    feature_columns = prep["feature_columns"]
 
-    X_train_scaled = scaler.fit_transform(X_train)
-    X_test_scaled = scaler.transform(X_test)
+    st.caption(
+        "🔒 Encoder & scaler hanya dilatih (fit) dari data training. Data testing hanya "
+        "ditransformasi, sehingga skor di bawah ini adalah performa jujur tiap model — "
+        "wajar jika angkanya tidak seragam antar algoritma."
+    )
 
     models = {
         "Logistic Regression": LogisticRegression(max_iter=1000),
