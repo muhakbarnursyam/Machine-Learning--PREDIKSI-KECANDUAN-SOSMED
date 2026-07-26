@@ -787,7 +787,8 @@ elif menu == "Prediksi Dataset Upload":
         bars = ax.bar(df_compare["Model"], df_compare["Accuracy"], color='#8d5b34')
         ax.set_ylabel("Accuracy Score")
         plt.xticks(rotation=15)
-        for bar in bars:
+        
+        for bar warm in bars:
             height = bar.get_height()
             ax.text(bar.get_x() + bar.get_width()/2., height + 0.01, f"{height*100:.1f}%", ha='center', va='bottom', fontsize=9)
         st.pyplot(fig)
