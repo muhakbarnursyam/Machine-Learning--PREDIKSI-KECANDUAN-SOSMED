@@ -14,6 +14,12 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
+try:
+    from xgboost import XGBClassifier
+    xgb = True
+except:
+    xgb = False
 import streamlit as st
 
 def local_css(file_name):
@@ -28,14 +34,6 @@ local_css("style.css")
 st.title("Aplikasi Streamlit dengan Custom CSS")
 st.write("Tampilan halaman ini sudah disesuaikan menggunakan file `style.css` eksternal.")
 
-if st.button("Klik Saya"):
-    st.success("Tombol berhasil diklik!")
-try:
-    from xgboost import XGBClassifier
-    xgb = True
-except:
-    xgb = False
-
 # Konfigurasi Halaman (Hanya satu di paling atas)
 st.set_page_config(
     page_title="Prediksi Kecanduan Media Sosial",
@@ -43,22 +41,8 @@ st.set_page_config(
     layout="wide"
 )
 
-st.markdown("""
-<style>
-    /* Ubah warna background utama */
-    .stApp {
-        background-color: #f1f5f9 !important;
-    }
-    
-    /* Ubah warna tombol utama */
-    div.stButton > button {
-        background-color: #2563eb !important;
-        color: white !important;
-        border-radius: 8px !important;
-        font-weight: bold !important;
-    }
-</style>
-""", unsafe_allow_html=True)
+st.title("📱 Prediksi Tingkat Kecanduan Media Sosial")
+st.write("---")
 
 # Sidebar Menu
 menu = st.sidebar.selectbox(
@@ -129,7 +113,7 @@ elif menu == "EDA":
     target = "Addiction_Level"
     if target in df.columns:
         fig, ax = plt.subplots(figsize=(6, 4))
-        df[target].value_counts().plot(kind="bar", ax=ax, color='#2563EB')
+        df[target].value_counts().plot(kind="bar", ax=ax)
         ax.set_xlabel("Level")
         ax.set_ylabel("Jumlah")
         ax.set_title("Distribusi Addiction Level")
@@ -141,7 +125,7 @@ elif menu == "EDA":
     numeric = df.select_dtypes(include=np.number)
     for col in numeric.columns:
         fig, ax = plt.subplots(figsize=(6, 3))
-        ax.hist(numeric[col], bins=20, color='#3B82F6', edgecolor='#1D4ED8')
+        ax.hist(numeric[col], bins=20)
         ax.set_title(col)
         st.pyplot(fig)
 
@@ -156,7 +140,7 @@ elif menu == "EDA":
     if not numeric.empty:
         corr = numeric.corr()
         fig, ax = plt.subplots(figsize=(10, 8))
-        im = ax.imshow(corr, cmap='Blues')
+        im = ax.imshow(corr)
         ax.set_xticks(range(len(corr.columns)))
         ax.set_xticklabels(corr.columns, rotation=90)
         ax.set_yticks(range(len(corr.columns)))
@@ -276,7 +260,7 @@ elif menu == "Training":
 
     st.subheader("Grafik Accuracy")
     fig, ax = plt.subplots(figsize=(10, 5))
-    ax.bar(hasil_df["Model"], hasil_df["Accuracy"], color='#2563EB')
+    ax.bar(hasil_df["Model"], hasil_df["Accuracy"])
     plt.xticks(rotation=20)
     st.pyplot(fig)
 
@@ -375,7 +359,7 @@ elif menu == "Prediksi":
 
             # Grafik Probabilitas
             fig, ax = plt.subplots(figsize=(6, 4))
-            ax.bar(hasil_prob["Kategori"], hasil_prob["Probabilitas (%)"], color=['#22C55E', '#F59E0B', '#EF4444'])
+            ax.bar(hasil_prob["Kategori"], hasil_prob["Probabilitas (%)"], color=['green', 'orange', 'red'])
             ax.set_ylabel("Persentase (%)")
             ax.set_title("Grafik Persentase Tingkat Kecanduan")
             st.pyplot(fig)
