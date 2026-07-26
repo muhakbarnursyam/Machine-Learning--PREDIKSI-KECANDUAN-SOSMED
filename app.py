@@ -28,16 +28,31 @@ st.set_page_config(
     layout="wide"
 )
 
-# Memuat Custom CSS
-def local_css(file_name):
-    if os.path.exists(file_name):
-        with open(file_name) as f:
-            st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
-local_css("style.css")
-
-st.title("📱 Prediksi Tingkat Kecanduan Media Sosial")
-st.write("---")
+# MASUKKAN CSS LANGSUNG DI SINI:
+st.markdown("""
+<style>
+    /* Mengubah background utama */
+    .stApp {
+        background-color: #f8fafc;
+    }
+    
+    # Custom styling tombol
+    .stButton>button {
+        background-color: #2563eb;
+        color: white;
+        border-radius: 8px;
+        border: none;
+        padding: 0.5rem 1rem;
+        font-weight: 600;
+        width: 100%;
+    }
+    
+    .stButton>button:hover {
+        background-color: #1d4ed8;
+        color: white;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # Sidebar Menu
 menu = st.sidebar.selectbox(
