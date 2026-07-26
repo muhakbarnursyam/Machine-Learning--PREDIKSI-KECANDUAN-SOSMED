@@ -7,7 +7,9 @@ import streamlit as st
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
+    ConfusionMatrixDisplay,
     accuracy_score,
+    confusion_matrix,
     f1_score,
     precision_score,
     recall_score,
@@ -19,8 +21,15 @@ from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC
 
+# Cek ketersediaan XGBoost
+try:
+    from xgboost import XGBClassifier
+    xgb = True
+except ImportError:
+    xgb = False
+
 # ==========================================================
-# 1. KONFIGURASI HALAMAN & CUSTOM CSS (HARUS DI ATAS)
+# KONFIGURASI HALAMAN
 # ==========================================================
 st.set_page_config(
     page_title="Prediksi Kecanduan Media Sosial",
@@ -28,22 +37,9 @@ st.set_page_config(
     layout="wide"
 )
 
-# Fungsi muat CSS
-def load_css(file_name):
-    if os.path.exists(file_name):
-        with open(file_name, "r") as f:
-            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-
-# Terapkan style.css dari awal
-load_css("style.css")
-
-# ==========================================================
-# 2. ISI APLIKASI UTAMA
-# ==========================================================
 st.title("Prediksi Tingkat Kecanduan Media Sosial")
 st.write("---")
-
-# ... (Lanjutkan seluruh logika menu, EDA, Prediksi, dll.)
+# ==========================================================
 # SIDEBAR MENU
 # ==========================================================
 menu = st.sidebar.selectbox(
