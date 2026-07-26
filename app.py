@@ -35,8 +35,184 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("Prediksi Tingkat Kecanduan Media Sosial")
-st.write("---")
+# ==========================================================
+# TEMA / CSS KUSTOM (Modern, Hangat, Tidak Kaku)
+# ==========================================================
+CUSTOM_CSS = """
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Quicksand:wght@500;600;700&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Latar belakang utama dengan gradasi lembut, bukan putih polos */
+.stApp {
+    background: linear-gradient(160deg, #FFF7F0 0%, #FDEFF3 35%, #F1F0FF 70%, #EAF7F1 100%);
+}
+
+/* Sembunyikan header bawaan Streamlit yang polos */
+header[data-testid="stHeader"] {
+    background: transparent;
+}
+
+/* ==================== HERO / JUDUL ==================== */
+.hero-box {
+    background: linear-gradient(120deg, #FF8A65 0%, #FF6F91 45%, #A78BFA 100%);
+    padding: 2.2rem 2.5rem;
+    border-radius: 28px;
+    box-shadow: 0 12px 30px -10px rgba(167, 139, 250, 0.45);
+    margin-bottom: 1.8rem;
+    position: relative;
+    overflow: hidden;
+}
+.hero-box::after {
+    content: "";
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+}
+.hero-box h1 {
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 2.1rem;
+    margin: 0;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.12);
+}
+.hero-box p {
+    color: rgba(255,255,255,0.92);
+    font-size: 1.02rem;
+    margin-top: 0.5rem;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 500;
+}
+
+/* ==================== SIDEBAR ==================== */
+section[data-testid="stSidebar"] {
+    background: linear-gradient(200deg, #6C63FF 0%, #FF6F91 100%);
+}
+section[data-testid="stSidebar"] * {
+    color: #FFFFFF !important;
+}
+section[data-testid="stSidebar"] .stSelectbox label {
+    font-weight: 700 !important;
+    font-size: 1.02rem;
+}
+section[data-testid="stSidebar"] div[data-baseweb="select"] > div {
+    background-color: rgba(255,255,255,0.18) !important;
+    border-radius: 14px !important;
+    border: 1.5px solid rgba(255,255,255,0.5) !important;
+}
+
+/* ==================== KARTU KONTEN ==================== */
+div[data-testid="stVerticalBlockBorderWrapper"] {
+    border-radius: 20px;
+}
+
+.card {
+    background: #FFFFFF;
+    border-radius: 22px;
+    padding: 1.6rem 1.8rem;
+    box-shadow: 0 10px 25px -12px rgba(80, 50, 120, 0.18);
+    margin-bottom: 1.3rem;
+    border: 1px solid rgba(167, 139, 250, 0.12);
+}
+
+/* ==================== HEADER / SUBHEADER ==================== */
+h1, h2, h3 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: #3F3355;
+}
+h2 { color: #6C4AB6; }
+h3 { color: #FF6F91; }
+
+/* ==================== TOMBOL ==================== */
+.stButton > button, .stFormSubmitButton > button, .stDownloadButton > button {
+    background: linear-gradient(120deg, #FF8A65, #FF6F91);
+    color: white;
+    border: none;
+    border-radius: 999px;
+    padding: 0.6rem 1.6rem;
+    font-weight: 700;
+    box-shadow: 0 8px 18px -6px rgba(255, 111, 145, 0.55);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.stButton > button:hover, .stFormSubmitButton > button:hover, .stDownloadButton > button:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 12px 22px -6px rgba(255, 111, 145, 0.65);
+    color: white;
+}
+
+/* ==================== METRIC ==================== */
+div[data-testid="stMetric"] {
+    background: linear-gradient(135deg, #FFFFFF, #F3EEFF);
+    border-radius: 18px;
+    padding: 1rem 1.2rem;
+    border: 1px solid rgba(167, 139, 250, 0.25);
+    box-shadow: 0 8px 18px -10px rgba(108, 74, 182, 0.25);
+}
+
+/* ==================== TABS ==================== */
+button[data-baseweb="tab"] {
+    border-radius: 14px 14px 0 0 !important;
+    font-weight: 600;
+}
+div[data-baseweb="tab-highlight"] {
+    background-color: #FF6F91 !important;
+}
+
+/* ==================== EXPANDER / INFO / ALERT ==================== */
+div[data-testid="stAlert"] {
+    border-radius: 16px;
+}
+
+/* ==================== DATAFRAME ==================== */
+div[data-testid="stDataFrame"] {
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+/* ==================== FITUR GRID (Home) ==================== */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+.feature-item {
+    background: #FFFFFF;
+    border-radius: 18px;
+    padding: 1.1rem 1.2rem;
+    border-left: 6px solid #FF8A65;
+    box-shadow: 0 8px 18px -12px rgba(80, 50, 120, 0.2);
+    font-family: 'Quicksand', sans-serif;
+}
+.feature-item b { color: #6C4AB6; }
+
+/* ==================== BADGE MODEL (Home) ==================== */
+.badge-row { display:flex; flex-wrap:wrap; gap:0.5rem; margin: 0.8rem 0 1.2rem 0; }
+.badge {
+    background: linear-gradient(120deg,#A78BFA,#FF6F91);
+    color:white; font-weight:600; font-size:0.85rem;
+    padding: 0.35rem 0.9rem; border-radius: 999px;
+}
+</style>
+"""
+st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
+
+st.markdown(
+    """
+    <div class="hero-box">
+        <h1>🧠 Prediksi Tingkat Kecanduan Media Sosial</h1>
+        <p>Eksplorasi data, latih model, dan prediksi kecanduan media sosial dengan tampilan yang lebih hangat & santai ✨</p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # ==========================================================
 # SIDEBAR MENU
@@ -111,24 +287,58 @@ def prepare_training_data(data):
 
 # --- HOME ---
 if menu == "Home":
-    st.header("Machine Learning Project")
-    st.image("https://i0.wp.com/metrum.co.id/kanal/uploads/2022/01/pict-19-kecanduan-medsos.jpg?w=800&ssl=1")
-    st.write(
-        """
-        ## Prediksi Tingkat Kecanduan Media Sosial
-        Aplikasi ini menggunakan Machine Learning untuk memprediksi tingkat kecanduan media sosial seseorang.
+    col_img, col_text = st.columns([1, 1.3], gap="large")
 
-        ### Model yang Digunakan:
-        ✔ Logistic Regression | ✔ Decision Tree | ✔ Random Forest | ✔ KNN | ✔ Naive Bayes | ✔ SVM | ✔ XGBoost
+    with col_img:
+        st.image(
+            "https://i0.wp.com/metrum.co.id/kanal/uploads/2022/01/pict-19-kecanduan-medsos.jpg?w=800&ssl=1",
+            use_container_width=True
+        )
 
-        ### Fitur Utama:
-        * 📊 **Dataset** - Melihat ringkasan data training.
-        * 📈 **EDA** - Exploratory Data Analysis & Visualisasi Korelasi.
-        * ⚙️ **Preprocessing** - Pembersihan data & pembagian dataset.
-        * 🤖 **Training Model** - Melatih data ke semua algoritma secara simultan.
-        * 🔍 **Prediksi Manual** - Input data mandiri via form input.
-        * 📁 **Prediksi Dataset Upload** - Upload file CSV eksternal untuk diprediksi massal.
+    with col_text:
+        st.markdown(
+            """
+            <div class="card">
+                <h3 style="margin-top:0;">👋 Selamat Datang!</h3>
+                <p style="font-family:'Quicksand', sans-serif; font-size:1.02rem; color:#4A4358;">
+                    Aplikasi ini memakai <b>Machine Learning</b> untuk membantu memprediksi tingkat
+                    kecanduan media sosial seseorang berdasarkan kebiasaan sehari-hari, kondisi
+                    akademik, hingga kesehatan mental. Yuk eksplor datanya! 🚀
+                </p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        st.markdown("**🤖 Model yang Digunakan:**")
+        st.markdown(
+            """
+            <div class="badge-row">
+                <span class="badge">Logistic Regression</span>
+                <span class="badge">Decision Tree</span>
+                <span class="badge">Random Forest</span>
+                <span class="badge">KNN</span>
+                <span class="badge">Naive Bayes</span>
+                <span class="badge">SVM</span>
+                <span class="badge">XGBoost</span>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    st.markdown("### ✨ Fitur Utama")
+    st.markdown(
         """
+        <div class="feature-grid">
+            <div class="feature-item">📊 <b>Dataset</b><br>Melihat ringkasan data training.</div>
+            <div class="feature-item">📈 <b>EDA</b><br>Exploratory Data Analysis & visualisasi korelasi.</div>
+            <div class="feature-item">⚙️ <b>Preprocessing</b><br>Pembersihan data & pembagian dataset.</div>
+            <div class="feature-item">🤖 <b>Training Model</b><br>Melatih data ke semua algoritma sekaligus.</div>
+            <div class="feature-item">🔍 <b>Prediksi Manual</b><br>Input data mandiri via form.</div>
+            <div class="feature-item">📁 <b>Prediksi Dataset Upload</b><br>Upload CSV untuk prediksi massal.</div>
+        </div>
+        """,
+        unsafe_allow_html=True
     )
 
 # --- DATASET ---
